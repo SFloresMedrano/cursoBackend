@@ -103,6 +103,7 @@ class ProductManager {
       this.products.splice(foundCode, 1);
       const productsString = JSON.stringify(this.products);
       fs.writeFileSync('products.json', productsString);
+      return 'El elemento fue borrado'
     }
   }
 }
