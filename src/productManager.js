@@ -1,5 +1,4 @@
-const fs = require('fs');
-const { CLIENT_RENEG_WINDOW } = require('tls');
+import fs from 'fs';
 
 class ProductManager {
   constructor(path) {
@@ -141,19 +140,5 @@ const product2 = {
   stock: 300,
 };
 
-const PM = new ProductManager('products.json');
+export default ProductManager;
 
-const asyncFn = async () => {
-  console.log(await PM.addProduct(product1));
-  console.log(await PM.addProduct(product2));
-  console.log(await PM.getProduct());
-  console.log(await PM.getProductById(2));
-  console.log(await PM.getProductById(22));
-  console.log(
-    await PM.updateProduct(2, { title: 'Modified product', price: 500 })
-  );
-  console.log(await PM.deleteProducts(5));
-  console.log(await PM.getProduct());
-};
-
-asyncFn();

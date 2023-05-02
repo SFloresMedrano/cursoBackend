@@ -1,1 +1,51 @@
-[{"title":"Modified product","description":"Este es un producto prueba","price":500,"thumbnail":"Sin imagen","code":"abc123","stock":25,"id":2},{"title":"producto prueba","description":"Este es un producto prueba","price":200,"thumbnail":"Sin imagen","code":"abc123","stock":25,"id":3},{"title":"producto prueba","description":"Este es un producto prueba","price":200,"thumbnail":"Sin imagen","code":"abc123","stock":25,"id":4},{"title":"producto prueba 2 ","description":"Este es un producto prueba 2","price":300,"thumbnail":"Sin imagen","code":"Alfa500","stock":300,"id":6}]
+[{"title":"Modified product","description":"Este es un producto prueba","price":500,"thumbnail":"Sin imagen","code":"abc123","stock":25,"id":2},{"title":"producto prueba","description":"Este es un producto prueba","price":200,"thumbnail":"Sin imagen","code":"abc123","stock":25,"id":3},{"title":"producto prueba","description":"Este es un producto prueba","price":200,"thumbnail":"Sin imagen","code":"abc123","stock":25,"id":4},{"title":"producto prueba 2 ","description":"Este es un producto prueba 2","price":300,"thumbnail":"Sin imagen","code":"Alfa500","stock":300,"id":6},{
+    "title": "producto prueba 7 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 7
+},
+{
+    "title": "producto prueba 8 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 8
+},
+{
+    "title": "producto prueba 9 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 9
+},{
+    "title": "producto prueba 10 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 10
+},{
+    "title": "producto prueba 11 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 11
+},{
+    "title": "producto prueba 12 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 12
+}]
