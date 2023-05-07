@@ -1,0 +1,27 @@
+{
+  "name": "clase-1",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon ./src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SFloresMedrano/cursoBackend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SFloresMedrano/cursoBackend/issues"
+  },
+  "homepage": "https://github.com/SFloresMedrano/cursoBackend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "moment": "^2.29.4",
+    "nodemon": "^2.0.22"
+  },
+  "description": ""
+}

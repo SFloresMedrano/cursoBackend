@@ -1,31 +1,22 @@
 import express from 'express';
-import ProductManager from './productManager.js';
-const PM = new ProductManager('./src/products.json');
+import productsRouter from './routes/productsRouter.js';
 
 const app = express();
 const PORT = 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.get('/products', async (req, res) => {
-  const limit = req.query.limit;
-  const products = await PM.getProduct();
-  if (!limit) {
-    res.json(products);
-  } else {
-    res.json(products.slice(0, limit));
-  }
+app.get('/', (req, res, next) => {
+  res.status(200).json({ message: "Yes, server's up and running" });
 });
+app.use('/api/products', productsRouter);
 
-app.get('/products/:id', async (req, res) => {
-  const id = req.params.id;
-  const product = await PM.getProductById(parseInt(id));
-  if (product) {
-    res.json(product);
-  } else {
-    res.json({ error: 'Product not found' });
-  }
+app.get('*', async (req, res) => {
+  return res.status(404).json({
+    status: 'error',
+    msg: 'No se encuentra implementada la ruta',
+    data: {},
+  });
 });
 
 app.listen(PORT, () => {
