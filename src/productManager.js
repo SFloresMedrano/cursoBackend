@@ -30,7 +30,6 @@ class ProductManager {
     const newProduct = { ...product, id: idFile, status: true };
     data.push(newProduct);
     const productString = JSON.stringify(data);
-    console.log(this.path);
     await fs.promises.writeFile(this.path, productString);
   }
 

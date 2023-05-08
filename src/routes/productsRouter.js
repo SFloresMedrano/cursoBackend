@@ -118,7 +118,6 @@ productsRouter.delete('/:pid', async (req, res) => {
     let data = await PM.getProduct();
     let foundCode = data.findIndex((element) => element.id === parseInt(idReq));
     if (foundCode > 0) {
-      console.log("entra")
       await PM.deleteProduct(foundCode);
       return res.status(200).json({
         status: 'Succes',
