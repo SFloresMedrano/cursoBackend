@@ -1,6 +1,6 @@
 import express from 'express';
 import ProductManager from '../productManager.js';
-const PM = new ProductManager('./src/products.json');
+const PM = new ProductManager('./src/products.json','./src/id.json');
 const productsRouter = express.Router();
 
 // middleware para leer los productos

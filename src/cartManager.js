@@ -1,8 +1,9 @@
 import fs from 'fs';
 
 class CartManager {
-  constructor(path) {
+  constructor(path, productPath) {
     this.path = path;
+    this.productPath = productPath;
   }
 
   async getCarts() {
@@ -16,11 +17,11 @@ class CartManager {
   }
 
   async getProduct() {
-    if (fs.existsSync('./src/products.json')) {
-      const data = await fs.promises.readFile('./src/products.json', 'utf-8');
+    if (fs.existsSync(this.productPath)) {
+      const data = await fs.promises.readFile(this.productPath, 'utf-8');
       return JSON.parse(data);
     }
-    await fs.promises.writeFile(this.path, JSON.stringify([]));
+    await fs.promises.writeFile(this.productPath, JSON.stringify([]));
     return [];
   }
 
@@ -61,13 +62,16 @@ class CartManager {
     if (foundCode === -1 || foundCart === -1) {
       return 'Product or cart not found. Please check the element or the cart';
     }
-    const productLoaded = cartList.flatMap(element=>element.products).findIndex(product=>product.id=== productId)
-    if(productLoaded > -1){
-      cartList[foundCart].products.quantity = cartList[foundCart].product.quantity + 1
-    }else{
-      cartList[foundCart].products.push({id: productId, quantity})
+    const products = [...cartList[foundCart].products];
+    const isLoaded = products.findIndex((element) => element.id === productId);
+    console.log(isLoaded)
+    if (isLoaded === -1) {
+      products.push({ id: productId, quantity: quantity });
+    } else {
+      products[isLoaded].quantity = products[isLoaded].quantity + "1";
     }
-    console.log(cartList[foundCart])
+    cartList[cartId].products = products;
+    console.log(products)
     await fs.promises.writeFile(this.path, JSON.stringify(cartList));
     return cartList[foundCart];
   }

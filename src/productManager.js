@@ -1,8 +1,9 @@
 import fs from 'fs';
 
 class ProductManager {
-  constructor(path) {
+  constructor(path, pathProductId) {
     this.path = path;
+    this.pathProductId = pathProductId;
   }
 
   async getProduct() {
@@ -15,18 +16,18 @@ class ProductManager {
   }
 
   async readId() {
-    if (fs.existsSync('./src/id.json')) {
-      const idString = await fs.promises.readFile('./src/id.json', 'utf-8');
+    if (fs.existsSync(this.pathProductId)) {
+      const idString = await fs.promises.readFile(this.pathProductId, 'utf-8');
       const id = JSON.parse(idString);
       return id;
     }
-    await fs.promises.writeFile('./src/id.json', JSON.stringify(0));
+    await fs.promises.writeFile(this.pathProductId, JSON.stringify(0));
   }
 
   async addProduct(product) {
     const data = await this.getProduct();
     let idFile = (await this.readId()) + 1;
-    await fs.promises.writeFile('./src/id.json', JSON.stringify(idFile));
+    await fs.promises.writeFile(this.pathProductId, JSON.stringify(idFile));
     const newProduct = { ...product, id: idFile, status: true };
     data.push(newProduct);
     const productString = JSON.stringify(data);

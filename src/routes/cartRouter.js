@@ -1,6 +1,6 @@
 import express from 'express';
 import CartManager from '../cartManager.js';
-const CM = new CartManager('./src/carts.json');
+const CM = new CartManager('./src/carts.json','./src/products.json');
 const cartRouter = express.Router();
 
 // middleware para leer los productos
@@ -36,7 +36,6 @@ cartRouter.post('/:cid/product/:pid', async (req, res) => {
   try {
     const cartId = parseInt(req.params.cid)
     const productCode = parseInt(req.params.pid);
-    console.log('cartId', cartId)
     await CM.addProductToCart(cartId, productCode);
     return res.status(200).json({
       status: 'Succes',
