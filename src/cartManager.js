@@ -57,21 +57,20 @@ class CartManager {
     let data = await this.getProduct();
     let cartList = await this.getCarts();
     let foundCode = data.findIndex((element) => element.id === productId);
+    console.log(foundCode)
     let foundCart = cartList.findIndex((element) => element.id === cartId);
     const quantity = 1;
     if (foundCode === -1 || foundCart === -1) {
-      return 'Product or cart not found. Please check the element or the cart';
+      throw new Error('Product or cart not found')
     }
     const products = [...cartList[foundCart].products];
     const isLoaded = products.findIndex((element) => element.id === productId);
-    console.log(isLoaded)
     if (isLoaded === -1) {
       products.push({ id: productId, quantity: quantity });
     } else {
-      products[isLoaded].quantity = products[isLoaded].quantity + "1";
+      products[isLoaded].quantity = parseInt(products[isLoaded].quantity) + 1;
     }
-    cartList[cartId].products = products;
-    console.log(products)
+    cartList[foundCart].products = products;
     await fs.promises.writeFile(this.path, JSON.stringify(cartList));
     return cartList[foundCart];
   }

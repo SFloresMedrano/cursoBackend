@@ -44,7 +44,7 @@ cartRouter.post('/:cid/product/:pid', async (req, res) => {
   } catch {
     return res.status(400).json({
       status: 'Error',
-      msg: "Can't add new product. Please try again later",
+      msg: "Can't add new product. Please check the cart or product",
     });
   }
 });
