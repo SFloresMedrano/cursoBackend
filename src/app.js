@@ -12,8 +12,6 @@ const PORT = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//Render carpeta public
-app.use(express.static(path.join(__dirname + '/public/uploads')));
 
 // Rutas API
 app.use('/api/products', productsRouter);
@@ -24,6 +22,8 @@ app.engine('handlebars', handlebars.engine());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
 
+//Render carpeta public
+app.use(express.static(path.join(__dirname + '/public/uploads')));
 
 app.get('*', async (req, res) => {
   return res.status(404).json({

@@ -1,11 +1,10 @@
-<div>
-  <h1>Esta es la prueba</h1> 
-</div>
-
-
+  <h1>Esta es la prueba {{products.title}}</h1> 
+    <div>
   {{#each products}}
   <ul style="margin-bottom:30px;">
   <li>Nombre: {{title}}</li>
   <li>Codigo: {{code}}</li>
   </ul>
   {{/each}}
+
+    </div>

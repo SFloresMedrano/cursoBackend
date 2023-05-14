@@ -10,9 +10,10 @@ productsRouter.get('/', async (req, res) => {
     const limit = req.query.limit;
     const products = await PM.getProduct();
     if (!limit) {
-      res.status(200).render('index', products);
+      res.status(200).render('index', {products});
     } else {
-      res.status(200).json(products.slice(0, limit));
+      const productsSliced = products.slice(0, limit)
+      res.status(200).render('index',{productsSliced});
     }
   } catch {
     return res.status(500).json({
