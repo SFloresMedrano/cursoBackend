@@ -1,6 +1,7 @@
 import express from 'express';
 import ProductManager from '../productManager.js';
-const PM = new ProductManager('./src/products.json','./src/id.json');
+import { uploader } from '../utils.js';
+const PM = new ProductManager('./src/products.json', './src/id.json');
 const productsRouter = express.Router();
 
 // middleware para leer los productos
@@ -9,9 +10,9 @@ productsRouter.get('/', async (req, res) => {
     const limit = req.query.limit;
     const products = await PM.getProduct();
     if (!limit) {
-      res.json(products);
+      res.status(200).render('index', products);
     } else {
-      res.json(products.slice(0, limit));
+      res.status(200).json(products.slice(0, limit));
     }
   } catch {
     return res.status(500).json({
@@ -43,10 +44,13 @@ productsRouter.get('/:pid', async (req, res) => {
 });
 
 //middleware para agregar un producto nuevo
-productsRouter.post('/', async (req, res) => {
+productsRouter.post('/', uploader.single('file'), async (req, res) => {
   try {
     const data = await PM.getProduct();
     const productBody = req.body;
+    const newPicture = req.file.filename;
+    productBody.file = 'http://localhost:8080/public/uploads/' + newPicture;
+    console.log(productBody);
     let foundCode = data.find((element) => element.code === productBody.code);
     const reqFields = [
       'title',
