@@ -1,1 +1,92 @@
-[{"title":"Nuevo titulo de nuevo","description":"Esta es una descripcion modificada","price":500,"thumbnail":"Sin imagen","code":"abc123","stock":10,"id":2},{"title":"producto prueba","description":"Este es un producto prueba","price":200,"thumbnail":"Sin imagen","code":"abc123","stock":25,"id":3},{"title":"producto prueba","description":"Este es un producto prueba","price":200,"thumbnail":"Sin imagen","code":"abc123","stock":25,"id":4},{"title":"producto prueba 2 ","description":"Este es un producto prueba 2","price":300,"thumbnail":"Sin imagen","code":"Alfa500","stock":300,"id":6},{"title":"producto prueba 7 ","description":"Este es un producto prueba 2","price":300,"thumbnail":"Sin imagen","code":"Alfa500","stock":300,"id":7},{"title":"producto prueba 8 ","description":"Este es un producto prueba 2","price":300,"thumbnail":"Sin imagen","code":"Alfa500","stock":300,"id":8},{"title":"producto prueba 9 ","description":"Este es un producto prueba 2","price":300,"thumbnail":"Sin imagen","code":"Alfa500","stock":300,"id":9},{"title":"producto prueba 10 ","description":"Este es un producto prueba 2","price":300,"thumbnail":"Sin imagen","code":"Alfa500","stock":300,"id":10},{"title":"producto prueba 11 ","description":"Este es un producto prueba 2","price":300,"thumbnail":"Sin imagen","code":"Alfa500","stock":300,"id":11},{"title":"producto prueba 12 ","description":"Este es un producto prueba 2","price":300,"thumbnail":"Sin imagen","code":"Alfa500","stock":300,"id":12},{"title":"Modified product","description":"Este es un producto prueba","code":"2063","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":null,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"2064","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":1,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"2065","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":2,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"2066","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":3,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"2067","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":3,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"2068","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":26,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"2069","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":27,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"3","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":28,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"4","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":29,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"22","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":30,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"25","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":31,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"30","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":32,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"5","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":33,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"6","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":34,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"7","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":35,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"55","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":37,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"215","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":38,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"216","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":39,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"217","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":40,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"218","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":41,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"219","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":42,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"220","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":43,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"221","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":44,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"222","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":45,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"223","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":46,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"225","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":48,"status":true},{"title":"Modified product","description":"Este es un producto prueba","code":"15","price":500,"stock":25,"category":"Categoria 1","thumbnail":[""],"id":49,"status":true},{"title":"Algun titulo","description":"Alguna desc","code":"525","price":"1300","stock":"20","category":"Objeto","file":"http://localhost:8080/api/products/indepte.jpg","id":50,"status":true},{"title":"Algun titulo","description":"Alguna desc","code":"526","price":"1300","stock":"20","category":"Objeto","file":"http://localhost:8080/public/uploads/indepte.jpg","id":51,"status":true}]
+[
+  {
+    "title": "Nuevo titulo de nuevo",
+    "description": "Esta es una descripcion modificada",
+    "price": 500,
+    "thumbnail": "Sin imagen",
+    "code": "abc123",
+    "stock": 10,
+    "id": 2
+  },
+  {
+    "title": "producto prueba",
+    "description": "Este es un producto prueba",
+    "price": 200,
+    "thumbnail": "Sin imagen",
+    "code": "abc123",
+    "stock": 25,
+    "id": 3
+  },
+  {
+    "title": "producto prueba",
+    "description": "Este es un producto prueba",
+    "price": 200,
+    "thumbnail": "Sin imagen",
+    "code": "abc123",
+    "stock": 25,
+    "id": 4
+  },
+  {
+    "title": "producto prueba 2 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 6
+  },
+  {
+    "title": "producto prueba 7 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 7
+  },
+  {
+    "title": "producto prueba 8 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 8
+  },
+  {
+    "title": "producto prueba 9 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 9
+  },
+  {
+    "title": "producto prueba 10 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 10
+  },
+  {
+    "title": "producto prueba 11 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 11
+  },
+  {
+    "title": "producto prueba 12 ",
+    "description": "Este es un producto prueba 2",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "Alfa500",
+    "stock": 300,
+    "id": 12
+  }
+]

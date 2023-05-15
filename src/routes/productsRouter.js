@@ -19,7 +19,7 @@ productsRouter.get('/', async (req, res) => {
     return res.status(500).json({
       status: 'Error',
       msg: 'Error trying to get the products. Please, try again later',
-    });
+  });
   }
 });
 
@@ -51,7 +51,6 @@ productsRouter.post('/', uploader.single('file'), async (req, res) => {
     const productBody = req.body;
     const newPicture = req.file.filename;
     productBody.file = 'http://localhost:8080/public/uploads/' + newPicture;
-    console.log(productBody);
     let foundCode = data.find((element) => element.code === productBody.code);
     const reqFields = [
       'title',
