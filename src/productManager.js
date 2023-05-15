@@ -25,7 +25,6 @@ class ProductManager {
   }
 
   async addProduct(product) {
-    console.log('entra al addProduct')
     const data = await this.getProduct();
     let idFile = (await this.readId()) + 1;
     await fs.promises.writeFile(this.pathProductId, JSON.stringify(idFile));

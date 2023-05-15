@@ -18,8 +18,7 @@ homeRouter.get('/', async (req, res) => {
 });
 
 //middleware para agregar un producto nuevo
-homeRouter.post('/', uploader.single('file'), async (req, res) => {
-  console.log(req);
+homeRouter.post('/', uploader.single('thumbnail'), async (req, res) => {
   try {
     const data = await PM.getProduct();
     const productBody = {};

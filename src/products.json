@@ -88,5 +88,17 @@
     "code": "Alfa500",
     "stock": 300,
     "id": 12
+  },
+  {
+    "title": "Zapatillas Adidas",
+    "description": "Zapatillas blancas",
+    "code": "1000",
+    "price": "5000",
+    "stock": "50",
+    "category": "Zapatillas",
+    "file": "http://localhost:8080/public/uploads/adidas.jpg",
+    "thumbnail": "http://localhost:8080/public/uploads/adidas.jpg",
+    "id": 52,
+    "status": true
   }
 ]

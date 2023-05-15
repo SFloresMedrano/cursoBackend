@@ -20,7 +20,7 @@ app.use('/api/carts', cartRouter);
 app.use('/',homeRouter)
 
 //Rutas sockets
-app.use('/socket', socketRouter);
+app.use('/realtimeproducts', socketRouter);
 
 //handlebars
 app.engine('handlebars', handlebars.engine());
@@ -28,7 +28,7 @@ app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
 
 //Render carpeta public
-app.use(express.static(path.join(__dirname + '/public')));
+app.use(express.static(path.join(__dirname + '/public/uploads')));
 
 // Captura de cualquier ruta fuera de las definidas
 app.get('*', async (req, res) => {
@@ -46,9 +46,10 @@ const httpServer = app.listen(PORT, () => {
 
 // Servidor socket
 const socketServer = new Server(httpServer);
+
 socketServer.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
-  socket.emit('msg_back_to_front', { msg: 'hola desde el back' });
+  socket.emit('msg_back_to_front', { msg: 'Cliente Conectado' });
 
   socket.on("msg_front_to_back", (data) => {
     console.log(JSON.stringify(data));

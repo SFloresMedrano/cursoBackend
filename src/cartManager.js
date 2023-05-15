@@ -57,7 +57,6 @@ class CartManager {
     let data = await this.getProduct();
     let cartList = await this.getCarts();
     let foundCode = data.findIndex((element) => element.id === productId);
-    console.log(foundCode)
     let foundCart = cartList.findIndex((element) => element.id === cartId);
     const quantity = 1;
     if (foundCode === -1 || foundCart === -1) {
