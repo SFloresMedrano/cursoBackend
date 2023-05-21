@@ -10,10 +10,10 @@ productsRouter.get('/', async (req, res) => {
     const limit = req.query.limit;
     const products = await PM.getProduct();
     if (!limit) {
-      res.status(200).render('index', {products});
+      res.status(200).render('home', {products});
     } else {
       const productsSliced = products.slice(0, limit)
-      res.status(200).render('index',{productsSliced});
+      res.status(200).render('home',{productsSliced});
     }
   } catch {
     return res.status(500).json({
@@ -45,12 +45,12 @@ productsRouter.get('/:pid', async (req, res) => {
 });
 
 //middleware para agregar un producto nuevo
-productsRouter.post('/', uploader.single('file'), async (req, res) => {
+productsRouter.post('/', /* uploader.single('thumbnail'), */ async (req, res) => {
   try {
     const data = await PM.getProduct();
     const productBody = req.body;
-    const newPicture = req.file.filename;
-    productBody.file = 'http://localhost:8080/public/uploads/' + newPicture;
+/*     const newPicture = req.file.filename;
+    productBody.file = 'http://localhost:8080/public/uploads/' + newPicture; */
     let foundCode = data.find((element) => element.code === productBody.code);
     const reqFields = [
       'title',
@@ -58,7 +58,6 @@ productsRouter.post('/', uploader.single('file'), async (req, res) => {
       'code',
       'price',
       'stock',
-      'category',
     ];
     const checkFields = reqFields.every((prop) => productBody[prop]);
     if (foundCode) {

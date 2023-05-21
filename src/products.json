@@ -100,5 +100,85 @@
     "thumbnail": "http://localhost:8080/public/uploads/adidas.jpg",
     "id": 52,
     "status": true
+  },
+  {
+    "title": "Algo",
+    "description": "Algo mas",
+    "code": "50000",
+    "price": "12000",
+    "stock": "50",
+    "category": "Algo",
+    "id": 53,
+    "status": true
+  },
+  {
+    "title": "Algo",
+    "description": "Algo mas",
+    "code": "12000",
+    "price": "5000",
+    "stock": "50",
+    "category": "25",
+    "id": 54,
+    "status": true
+  },
+  {
+    "title": "Algo",
+    "description": "Algo mas",
+    "code": "13000",
+    "price": "5000",
+    "stock": "125",
+    "category": "pas",
+    "id": 55,
+    "status": true
+  },
+  {
+    "title": "Algo",
+    "description": "Algo mas",
+    "code": "14000",
+    "price": "5000",
+    "stock": "20",
+    "category": "Zapas",
+    "id": 56,
+    "status": true
+  },
+  {
+    "title": "Algun producto",
+    "description": "Algo mas",
+    "code": "16000",
+    "price": "5000",
+    "stock": "50",
+    "category": "Zapas",
+    "id": 57,
+    "status": true
+  },
+  {
+    "title": "Algo",
+    "description": "Algo mas",
+    "code": "1200",
+    "price": "500",
+    "stock": "26",
+    "category": "Zapas",
+    "id": 58,
+    "status": true
+  },
+  {
+    "title": "Algo",
+    "description": "Algo mas",
+    "code": "1201",
+    "price": "5000",
+    "stock": "30",
+    "category": "Auto",
+    "id": 59,
+    "status": true
+  },
+  {
+    "title": "Un nuevo articulo",
+    "description": "Copado Articulo",
+    "code": "1202",
+    "price": "12000",
+    "stock": "50",
+    "category": "Zpas",
+    "id": 60,
+    "status": true
   }
 ]

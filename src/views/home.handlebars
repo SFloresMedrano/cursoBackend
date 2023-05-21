@@ -1,6 +1,6 @@
 <h1>Vista Home</h1>
 <div>
-    <form action="/" method="post" enctype="multipart/form-data">
+    <form action="/" method="post" enctype="multipart/form-data" id="form">
         <label for="title">
             Title :<input type="text" name="title" id="inputName" >
         </label>
@@ -19,17 +19,15 @@
         <label for="category">
             Category :<input type="text" name="category" id="inputCategory">
         </label>
-        <label for="thumbnail">
-            thumbnail :<input type="file" name="thumbnail" id="inputThumbnail">
-        </label>
         <input type="submit">
-</div>
+</div> 
 
-<div>
+<div id="list">
   {{#each products}}
-    <ul style='margin-bottom:30px;'>
+    <ul id="{{code}}" style='margin-bottom:30px;'>
       <li>Nombre: {{title}}</li>
       <li>Codigo: {{code}}</li>
+      <button onclick=""></button>Remove</button>
     </ul>
   {{/each}}
 

@@ -3,10 +3,13 @@ import handlebars from 'express-handlebars';
 import path from 'path';
 import { Server } from 'socket.io';
 import cartRouter from './routes/cartRouter.js';
-import homeRouter from './routes/homeRouter.js';
 import productsRouter from './routes/productsRouter.js';
-import socketRouter from './routes/socketRouter.js';
+import viewsRouter from './routes/viewsRouter.js';
 import { __dirname } from './utils.js';
+import { Socket } from 'socket.io';
+import ProductManager from './productManager.js';
+
+const PM = new ProductManager('./src/products.json', './src/id.json');
 
 const app = express();
 const PORT = 8080;
@@ -14,21 +17,18 @@ const PORT = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//Render carpeta public
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Rutas API
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartRouter);
-app.use('/',homeRouter)
-
-//Rutas sockets
-app.use('/realtimeproducts', socketRouter);
+app.use('/', viewsRouter);
 
 //handlebars
 app.engine('handlebars', handlebars.engine());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
-
-//Render carpeta public
-app.use(express.static(path.join(__dirname + '/public/uploads')));
 
 // Captura de cualquier ruta fuera de las definidas
 app.get('*', async (req, res) => {
@@ -51,7 +51,10 @@ socketServer.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
   socket.emit('msg_back_to_front', { msg: 'Cliente Conectado' });
 
-  socket.on("msg_front_to_back", (data) => {
-    console.log(JSON.stringify(data));
-  });
+  socket.on('productAdd',async (data)=>{
+    const product = await PM.addProduct(data);
+    socketServer.emit('productAdded', product)
+  })
 });
+
+export default app;
