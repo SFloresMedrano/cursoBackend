@@ -51,10 +51,16 @@ socketServer.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
   socket.emit('msg_back_to_front', { msg: 'Cliente Conectado' });
 
-  socket.on('productAdd',async (data)=>{
+  socket.on('productAdd', async (data) => {
     const product = await PM.addProduct(data);
-    socketServer.emit('productAdded', product)
-  })
+    socketServer.emit('productAdded', product);
+  });
+
+  socket.on('productDelete', async (id) => {
+    console.log('Llega el delete')
+    await PM.deleteProduct(id);
+    socketServer.emit('productDeleted', id);
+  });
 });
 
 export default app;
