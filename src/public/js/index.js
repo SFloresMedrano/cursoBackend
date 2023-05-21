@@ -14,10 +14,10 @@ async function deleteProduct(id) {
   }
 }
 
-async function deleteProductSockets(id){
-  console.log('click')
+function deleteProductSocket(id){
   socket.emit('productDelete',(id)=>{
   })
+  window.location.reload();
 }
 
 

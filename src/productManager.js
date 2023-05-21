@@ -55,8 +55,9 @@ class ProductManager {
     return data[foundCode];
   }
 
-  async deleteProduct(foundCode) {
+  async deleteProduct(id) {
     let data = await this.getProduct();
+    let foundCode = data.findIndex((element) => element.id === id);
     data.splice(foundCode, 1);
     const productsString = JSON.stringify(data);
     await fs.promises.writeFile(this.path, productsString);
