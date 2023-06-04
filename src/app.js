@@ -2,17 +2,18 @@ import express from 'express';
 import handlebars from 'express-handlebars';
 import path from 'path';
 import { Server } from 'socket.io';
+import ProductManager from './productManager.js';
 import cartRouter from './routes/cartRouter.js';
 import productsRouter from './routes/productsRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
-import { __dirname } from './utils.js';
-import { Socket } from 'socket.io';
-import ProductManager from './productManager.js';
+import { __dirname, connectMongo } from './utils.js';
 
 const PM = new ProductManager('./src/products.json', './src/id.json');
 
 const app = express();
 const PORT = 8080;
+
+connectMongo();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -57,7 +58,6 @@ socketServer.on('connection', (socket) => {
   });
 
   socket.on('productDelete', async (id) => {
-    console.log('Llega el delete')
     await PM.deleteProduct(id);
     socketServer.emit('productDeleted', id);
   });

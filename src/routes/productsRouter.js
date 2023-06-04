@@ -1,11 +1,12 @@
 import express from 'express';
 import ProductManager from '../productManager.js';
+import { ProductsModel } from '../DAO/models/products.model.js';
 import { uploader } from '../utils.js';
 const PM = new ProductManager('./src/products.json', './src/id.json');
 const productsRouter = express.Router();
 
-// middleware para leer los productos
-productsRouter.get('/', async (req, res) => {
+// middleware para leer los productos desde FS
+/* productsRouter.get('/', async (req, res) => {
   try {
     const limit = req.query.limit;
     const products = await PM.getProduct();
@@ -22,9 +23,30 @@ productsRouter.get('/', async (req, res) => {
     });
   }
 });
+ */
 
-// middleware para traer un producto especifico
-productsRouter.get('/:pid', async (req, res) => {
+//Middleware para traer desde la db
+productsRouter.get('/', async (req, res) => {
+  try {
+    const limit = req.query.limit;
+    const products = await ProductsModel.find({}).limit(limit);
+    return res.status(200).json({
+      status: 'Success',
+      msg: 'Listado de usuarios',
+      data: products,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      status: 'error',
+      msg: "Couldn't retrieve products",
+      data: {},
+    });
+  }
+});
+
+// middleware para traer un producto especifico desde FS
+/* productsRouter.get('/:pid', async (req, res) => {
   try {
     const pid = req.params.pid;
     const product = await PM.getProductById(parseInt(pid));
@@ -42,47 +64,80 @@ productsRouter.get('/:pid', async (req, res) => {
       msg: 'Error trying to get the products. Please, try again later',
     });
   }
-});
+}); */
 
 //middleware para agregar un producto nuevo
-productsRouter.post(
-  '/',
-  /* uploader.single('thumbnail'), */ async (req, res) => {
-    try {
-      const data = await PM.getProduct();
-      const productBody = req.body;
-      /*     const newPicture = req.file.filename;
-    productBody.file = 'http://localhost:8080/public/uploads/' + newPicture; */
-      let foundCode = data.find((element) => element.code === productBody.code);
-      const reqFields = ['title', 'description', 'code', 'price', 'stock'];
-      const checkFields = reqFields.every((prop) => productBody[prop]);
-      if (foundCode) {
-        return res.status(400).json({
-          status: 'error',
-          msg: 'Code already in use. Please, change the product code',
-        });
-      }
-      if (checkFields) {
-        await PM.addProduct(productBody);
-        return res.status(200).json({
-          status: 'Success',
-          msg: 'Product added',
-        });
-      } else {
-        return res.status(400).json({
-          status: 'Error',
-          msg: "Product wasn't saved. Please check the attributes of your product.",
-          data: productBody,
-        });
-      }
-    } catch (error) {
-      return res.status(500).json({
-        status: 'Error',
-        msg: 'Error trying to save the product. Please, try again later',
+
+/* uploader.single('thumbnail'), */
+/*     const newPicture = req.file.filename;
+productBody.file = 'http://localhost:8080/public/uploads/' + newPicture; */
+
+/* productsRouter.post('/', async (req, res) => {
+  try {
+    const data = await PM.getProduct();
+    const productBody = req.body;
+    let foundCode = data.find((element) => element.code === productBody.code);
+    const reqFields = ['title', 'description', 'code', 'price', 'stock'];
+    const checkFields = reqFields.every((prop) => productBody[prop]);
+    if (foundCode) {
+      return res.status(400).json({
+        status: 'error',
+        msg: 'Code already in use. Please, change the product code',
       });
     }
+    if (checkFields) {
+      await PM.addProduct(productBody);
+      return res.status(200).json({
+        status: 'Success',
+        msg: 'Product added',
+      });
+    } else {
+      return res.status(400).json({
+        status: 'Error',
+        msg: "Product wasn't saved. Please check the attributes of your product.",
+        data: productBody,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 'Error',
+      msg: 'Error trying to save the product. Please, try again later',
+    });
   }
-);
+}); */
+
+// middleware para agregar producto en DB
+productsRouter.post("/", async (req, res) => {
+  const productBody = req.body;
+  const reqFields = ['title', 'description', 'code', 'price', 'stock','category'];
+  const checkFields = reqFields.every((prop) => productBody[prop]);
+  try {
+    if (!checkFields) {
+      console.log(
+        "Product fields error"
+      );
+      return res.status(400).json({
+        status: "error",
+        msg: "Please check the product's fields",
+        data: {},
+      });
+    }
+    const productAdded = await ProductsModel.create({ productBody });
+    return res.status(201).json({
+      status: "Success",
+      msg: "Product Added",
+      data: productAdded,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      status: "Error",
+      msg: "Couldn't add product",
+      data: {},
+    });
+  }
+});
+
 
 //middleware para modificar producto
 productsRouter.put('/', async (req, res) => {
@@ -116,7 +171,9 @@ productsRouter.delete('/:pid', async (req, res) => {
   try {
     const idReq = req.params.pid;
     let data = await PM.getProduct();
-    let foundCode = data.findIndex((element) => element.code === (idReq.toString()));
+    let foundCode = data.findIndex(
+      (element) => element.code === idReq.toString()
+    );
     if (foundCode > 0) {
       await PM.deleteProduct(foundCode);
       return res.status(200).json({

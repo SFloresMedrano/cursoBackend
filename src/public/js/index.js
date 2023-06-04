@@ -6,21 +6,18 @@ async function deleteProduct(id) {
   const response = await fetch(`/api/products/${id}`, {
     method: 'delete',
   });
-  if (response.ok){
+  if (response.ok) {
     const ul = document.getElementById(id);
     ul.remove();
-  }else{
-    alert('Esto no pudo ser borrado')
+  } else {
+    alert('Esto no pudo ser borrado');
   }
 }
 
-function deleteProductSocket(id){
-  socket.emit('productDelete',(id)=>{
-  })
+function deleteProductSocket(id) {
+  socket.emit('productDelete', (id) => {});
   window.location.reload();
 }
-
-
 
 try {
   addProductForm.addEventListener('submit', async (e) => {
@@ -48,7 +45,6 @@ try {
 } catch (error) {}
 
 try {
-
   socket.on('connect', () => {
     console.log('Conexion establecida con el servidor');
   });
