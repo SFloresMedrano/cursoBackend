@@ -24,11 +24,11 @@
 
 <div id="list">
   {{#each products}}
-    <ul id="{{code}}" style='margin-bottom:30px;'>
+    <ul id="{{_id}}" style='margin-bottom:30px;'>
       <li>Nombre: {{title}}</li>
       <li>Codigo: {{code}}</li>
       <li>ID: {{_id}}</li>
-      <button type="button" onclick="deleteProduct({{code}})" name="Remove">Remove</button>
+      <button type="button" onclick="deleteProduct('{{_id}}')" name="Remove">Remove</button>
     </ul>
   {{/each}}
 

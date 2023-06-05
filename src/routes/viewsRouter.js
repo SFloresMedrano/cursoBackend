@@ -7,7 +7,6 @@ const router = Router();
 
 router.get('/', async (req, res) => {
   const products = await ProductsModel.find({}).lean();
-  console.log(products);
   res.render('home', { products });
 });
 

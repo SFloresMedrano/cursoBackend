@@ -3,6 +3,7 @@ const addProductFormRealtime = document.getElementById('formRealtime');
 const productListContainer = document.getElementById('list');
 
 async function deleteProduct(id) {
+  console.log(id)
   const response = await fetch(`/api/products/${id}`, {
     method: 'delete',
   });
@@ -26,21 +27,22 @@ try {
 
     const title = document.getElementById('inputName').value;
     const description = document.getElementById('inputDescription').value;
-    const code = document.getElementById('inputCode').value;
-    const price = document.getElementById('inputPrice').value;
-    const stock = document.getElementById('inputStock').value;
+    const code = Number(document.getElementById('inputCode').value);
+    const price = Number(document.getElementById('inputPrice').value);
+    const stock = Number(document.getElementById('inputStock').value);
     const category = document.getElementById('inputCategory').value;
 
     const newProduct = { title, description, code, price, stock, category };
 
-    const response = await fetch('/api/products/', {
+ const response = await fetch('/api/products/', {
       method: 'post',
       body: JSON.stringify(newProduct),
       headers: {
         'content-type': 'application/json',
       },
-    });
+    }); 
     addProductForm.reset();
+    window.location.reload();
   });
 } catch (error) {}
 

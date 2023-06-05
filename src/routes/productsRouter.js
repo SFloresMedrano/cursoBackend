@@ -1,12 +1,12 @@
 import express from 'express';
 import ProductManager from '../productManager.js';
-import { ProductsModel } from '../DAO/models/products.model.js';
 import { uploader } from '../utils.js';
+import { ProductsModel } from '../DAO/models/products.model.js';
 const PM = new ProductManager('./src/products.json', './src/id.json');
 const productsRouter = express.Router();
 
-// middleware para leer los productos desde FS
-/* productsRouter.get('/', async (req, res) => {
+// middleware para leer los productos
+productsRouter.get('/', async (req, res) => {
   try {
     const limit = req.query.limit;
     const products = await PM.getProduct();
@@ -23,30 +23,9 @@ const productsRouter = express.Router();
     });
   }
 });
- */
 
-//Middleware para traer desde la db
-productsRouter.get('/', async (req, res) => {
-  try {
-    const limit = req.query.limit;
-    const products = await ProductsModel.find({}).limit(limit);
-    return res.status(200).json({
-      status: 'Success',
-      msg: 'Listado de usuarios',
-      data: products,
-    });
-  } catch (e) {
-    console.log(e);
-    return res.status(500).json({
-      status: 'error',
-      msg: "Couldn't retrieve products",
-      data: {},
-    });
-  }
-});
-
-// middleware para traer un producto especifico desde FS
-/* productsRouter.get('/:pid', async (req, res) => {
+// middleware para traer un producto especifico
+productsRouter.get('/:pid', async (req, res) => {
   try {
     const pid = req.params.pid;
     const product = await PM.getProductById(parseInt(pid));
@@ -64,18 +43,18 @@ productsRouter.get('/', async (req, res) => {
       msg: 'Error trying to get the products. Please, try again later',
     });
   }
-}); */
+});
 
-//middleware para agregar un producto nuevo
-
+//middleware para agregar un producto nuevo con FS
 /* uploader.single('thumbnail'), */
 /*     const newPicture = req.file.filename;
-productBody.file = 'http://localhost:8080/public/uploads/' + newPicture; */
+    productBody.file = 'http://localhost:8080/public/uploads/' + newPicture; */
 
 /* productsRouter.post('/', async (req, res) => {
   try {
     const data = await PM.getProduct();
     const productBody = req.body;
+
     let foundCode = data.find((element) => element.code === productBody.code);
     const reqFields = ['title', 'description', 'code', 'price', 'stock'];
     const checkFields = reqFields.every((prop) => productBody[prop]);
@@ -106,41 +85,42 @@ productBody.file = 'http://localhost:8080/public/uploads/' + newPicture; */
   }
 }); */
 
-// middleware para agregar producto en DB
-productsRouter.post("/", async (req, res) => {
+//middleware para crear un producto con mongoose
+
+productsRouter.post('/', async (req, res) => {
   const productBody = req.body;
-  const reqFields = ['title', 'description', 'code', 'price', 'stock','category'];
+  const reqFields = [
+    'title',
+    'description',
+    'code',
+    'price',
+    'stock',
+    'category',
+  ];
   const checkFields = reqFields.every((prop) => productBody[prop]);
-  try {
-    if (!checkFields) {
-      console.log(
-        "Product fields error"
-      );
-      return res.status(400).json({
-        status: "error",
-        msg: "Please check the product's fields",
+  if (checkFields) {
+    try {
+      const productAdded = await ProductsModel.create({
+        ...productBody,
+      });
+      return res.status(201).json({
+        status: 'Success',
+        msg: 'Product added',
+        data: productAdded,
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({
+        status: 'Error',
+        msg: 'Please check that the fields arent empty or code is alredy in use',
         data: {},
       });
     }
-    const productAdded = await ProductsModel.create({ productBody });
-    return res.status(201).json({
-      status: "Success",
-      msg: "Product Added",
-      data: productAdded,
-    });
-  } catch (e) {
-    console.log(e);
-    return res.status(500).json({
-      status: "Error",
-      msg: "Couldn't add product",
-      data: {},
-    });
   }
 });
 
-
 //middleware para modificar producto
-productsRouter.put('/', async (req, res) => {
+/* productsRouter.put('/', async (req, res) => {
   try {
     const modProps = req.body;
     let data = await PM.getProduct();
@@ -163,11 +143,11 @@ productsRouter.put('/', async (req, res) => {
       msg: 'Error trying to save the product. Please, try again later',
     });
   }
-});
+}); */
 
 //middleware para eliminar un elemento
 
-productsRouter.delete('/:pid', async (req, res) => {
+/* productsRouter.delete('/:pid', async (req, res) => {
   try {
     const idReq = req.params.pid;
     let data = await PM.getProduct();
@@ -193,4 +173,27 @@ productsRouter.delete('/:pid', async (req, res) => {
     });
   }
 });
+*/
+
+//middleware para borrar un elemento en MongoDB
+
+productsRouter.delete('/:pid', async (req, res) => {
+  try {
+    const { id } = req.params.pid;
+    const productDelete = await ProductsModel.deleteOne({ _id: id });
+    return res.status(200).json({
+      status: 'Success',
+      msg: 'Product deleted',
+      data: {},
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      status: 'Error',
+      msg: "Couldn't delete the item(",
+      data: {},
+    });
+  }
+});
+
 export default productsRouter;
