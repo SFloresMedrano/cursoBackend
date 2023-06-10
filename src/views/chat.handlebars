@@ -1,0 +1,15 @@
+<h1>Bienvenido al CHAT</h1>
+<div id="list">
+  {{#each messages}}
+    <ul id="{{_id}}" style='margin-bottom:30px;'>
+      <li>User: {{user}}</li>
+      <li>Message: {{msg}}</li>
+      <li>ID: {{_id}}</li>
+      <button type="button" onclick="deleteProduct('{{_id}}')" name="Remove">Remove</button>
+    </ul>
+  {{/each}}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="../public/js/swalert.js"></script>

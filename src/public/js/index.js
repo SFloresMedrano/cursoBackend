@@ -3,7 +3,6 @@ const addProductFormRealtime = document.getElementById('formRealtime');
 const productListContainer = document.getElementById('list');
 
 async function deleteProduct(id) {
-  console.log(id)
   const response = await fetch(`/api/products/${id}`, {
     method: 'delete',
   });

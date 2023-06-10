@@ -7,6 +7,7 @@ import cartRouter from './routes/cartRouter.js';
 import productsRouter from './routes/productsRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
 import { __dirname, connectMongo } from './utils.js';
+import chatRouter from './routes/chatRouter.js';
 
 const PM = new ProductManager('./src/products.json', './src/id.json');
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Rutas API
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartRouter);
+app.use('/chat', chatRouter);
 app.use('/', viewsRouter);
 
 //handlebars
