@@ -22,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 //Render carpeta public
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // Rutas API
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartRouter);
