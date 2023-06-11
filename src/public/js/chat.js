@@ -1,30 +1,20 @@
 let nombreUsuario = '';
 const chatBox = document.getElementById('chat-box');
 
-async function chatMsg() {
-  chatBox.addEventListener('keyup', ({ key }) => {
-    if (key == 'Enter') {
-      const msg = chatBox.value;
-      chatBox.value = '';
-    }
-  });
-  console.log('Enter');
-  const response = await fetch('/chat', {
-    method: 'post',
-    body: JSON.stringify({nombreUsuario, msg}),
-    headers: {
-      'content-type': 'application/json',
-    },
-  });
-  const render = await fetch ('/chat',{
-    method: 'get',
-    headers: {
-      'content-type': 'application/json',
-    }, 
-  })
+async function pushChat(user, msg) {
+  try {
+    const msgChat = { user, msg };
+    fetch('/chat', {
+      method: 'post',
+      body: JSON.stringify(msgChat),
+      headers: {
+        'content-type': 'application/json',
+      },
+    }).then((data) => {
+      console.log(data)
+    });
+  } catch (error) {}
 }
-
-chatMsg();
 
 async function pedirNombre() {
   const { value: nombre } = await Swal.fire({
@@ -44,3 +34,16 @@ async function pedirNombre() {
 }
 
 pedirNombre();
+
+async function chatMsg() {
+  chatBox.addEventListener('keydown', function (e) {
+    e.stopPropagation();
+    if (e.key === 'Enter') {
+      const msg = chatBox.value;
+      chatBox.value = '';
+      pushChat(nombreUsuario, msg);
+    }
+  });
+}
+
+chatMsg();

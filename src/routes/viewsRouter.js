@@ -7,7 +7,8 @@ const router = Router();
 
 router.get('/', async (req, res) => {
   const products = await ProductsModel.find({}).lean();
-  res.render('home', { products });
+  /* res.render('home', { products }); */
+  res.json({asd:'algo'})
 });
 
 router.get('/realtimeProducts', async (req, res) => {
