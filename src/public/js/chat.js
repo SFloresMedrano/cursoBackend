@@ -4,14 +4,14 @@ const chatBox = document.getElementById('chat-box');
 async function pushChat(user, msg) {
   try {
     const msgChat = { user, msg };
-    fetch('/chat', {
+    const response = await fetch('/chat', {
       method: 'post',
       body: JSON.stringify(msgChat),
       headers: {
         'content-type': 'application/json',
       },
-    }).then((data) => {
-      console.log(data)
+    }).then((result) => {
+      console.log(JSON.stringify(result))
     });
   } catch (error) {}
 }

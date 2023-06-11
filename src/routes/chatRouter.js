@@ -8,9 +8,9 @@ chatRouter.get('/', async (req, res) => {
   res.render('chat', { messages });
 });
 
-chatRouter.post('/', (req, res) => {
+chatRouter.post('/', async (req, res) => {
   const { user, msg } = req.body;
-  MessagesModel.create({ user, msg })
+  const response = await  MessagesModel.create({ user, msg })
   .then((result) => {
     console.log(result)
     res.json(result);

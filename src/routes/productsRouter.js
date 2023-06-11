@@ -10,7 +10,6 @@ productsRouter.get('/', async (req, res) => {
   try {
     const limit = req.query.limit;
     const products = await PM.getProduct();
-    console.log(products)
     if (!limit) {
       res.status(200).render('home', { products });
     } else {
