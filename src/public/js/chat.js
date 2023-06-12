@@ -11,7 +11,7 @@ async function pushChat(user, msg) {
         'content-type': 'application/json',
       },
     }).then((result) => {
-      console.log(JSON.stringify(result))
+      console.log(JSON.stringify(result)  )
     });
   } catch (error) {}
 }

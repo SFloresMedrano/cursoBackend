@@ -1,6 +1,10 @@
 const addProductForm = document.getElementById('form');
 const addProductFormRealtime = document.getElementById('formRealtime');
 const productListContainer = document.getElementById('list');
+const pageLinks = document.getElementsByClassName('page-link')
+const prevLinkE = document.getElementById('prevLink')
+const nextLinkE = document.getElementById('nextLink')
+
 
 async function deleteProduct(id) {
   const response = await fetch(`/api/products/${id}`, {
@@ -82,3 +86,33 @@ try {
     addProductFormRealtime.reset();
   });
 } catch (error) {}
+
+
+Array.from(pageLinks).forEach(link => link.addEventListener('click', async e => {
+  e.preventDefault()
+  const link = e.target.href
+  const response = await fetch(link)
+  const data = await response.json()
+
+  console.log(response)
+
+  const products = data.payload
+  const nextLink = data.nextLink
+  const prevLink = data.prevLink
+ 
+  if (prevLink) {
+    prevLinkE.parentElement.classList.remove('disabled')
+    prevLinkE.setAttribute('href', prevLink)
+  } else {
+    prevLinkE.parentElement.classList.add('disabled')
+  }
+  if (nextLink) {
+    nextLinkE.parentElement.classList.remove('disabled')
+    nextLinkE.setAttribute('href', nextLink)
+  } else {
+    nextLinkE.parentElement.classList.add('disabled')
+  }
+
+  productListContainer.innerHTML = ''
+
+}))

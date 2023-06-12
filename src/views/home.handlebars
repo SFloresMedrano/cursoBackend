@@ -28,8 +28,16 @@
       <li>Nombre: {{title}}</li>
       <li>Codigo: {{code}}</li>
       <li>ID: {{_id}}</li>
-      <button type="button" onclick="deleteProduct('{{_id}}')" name="Remove">Remove</button>
+      <button type="button" onclick="addProduct('{{_id}}')" name="Add">Add to Cart</button>
+      <button type="button" onclick="deleteProduct('{{_id}}')" name="Remove">Remove from Cart</button>
     </ul>
   {{/each}}
 
+{{#if (gt currentPage 1)}}
+  <a href="{{#if this.prevLink}}{{this.prevLink}}{{else}}#{{/if}}" class="page-link">Previous Page</a>
+{{/if}}
+
+{{#if (lt currentPage totalPages)}}
+  <a href="{{this.nextLink}}"  class="page-link">Next Page</a>
+{{/if}}
 </div>

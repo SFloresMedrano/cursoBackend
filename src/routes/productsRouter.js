@@ -7,22 +7,19 @@ const productsRouter = express.Router();
 
 // middleware para leer los productos
 productsRouter.get('/', async (req, res) => {
-  try {
-    const limit = req.query.limit;
-    const products = await PM.getProduct();
-    if (!limit) {
-      res.status(200).render('home', { products });
-    } else {
-      const productsSliced = products.slice(0, limit);
-      res.status(200).render('home', { productsSliced });
-    }
-  } catch {
-    return res.status(500).json({
-      status: 'Error',
-      msg: 'Error trying to get the products. Please, try again later',
-    });
-  }
+  const limit = req.query.limit || 10;
+  const page = req.query.page || 1;
+  const category = req.query.category || '';
+  const sort = req.query.sort || '';    
+  
+  const products = await ProductsModel.paginate(category,{page,limit,sort,lean:true});
+  res.render('home', {
+    products: products.docs,
+    currentPage: products.page,
+    totalPages: products.totalPages
+  });
 });
+
 
 //middleware para crear un producto con mongoose
 

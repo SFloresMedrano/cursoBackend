@@ -1,5 +1,5 @@
 import express from 'express';
-import handlebars from 'express-handlebars';
+import exphbs from 'express-handlebars';
 import path from 'path';
 import { Server } from 'socket.io';
 import ProductManager from './productManager.js';
@@ -30,7 +30,23 @@ app.use('/chat', chatRouter);
 app.use('/', viewsRouter);
 
 //handlebars
-app.engine('handlebars', handlebars.engine());
+/* app.engine('handlebars', handlebars.engine()); */
+app.engine(
+  'handlebars',
+  exphbs.create({
+    helpers: {
+      gt: function (a, b) {
+        return a > b;
+      },
+      lt: function (a, b) {
+        return a < b;
+      },
+      add: function (a, b) {
+        return a + b;
+      }
+    }
+  }).engine
+);
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
 
