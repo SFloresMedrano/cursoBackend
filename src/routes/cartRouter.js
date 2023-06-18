@@ -1,17 +1,18 @@
 import express from 'express';
-import { CartModel } from '../DAO/models/carts.model.js';
+import CartService from '../services/cartService.js';
+const cartService = new CartService();
 const cartRouter = express.Router();
 
 // middleware para leer los productos mongoose
 cartRouter.get('/:cid', async (req, res) => {
   try {
     const cartId = req.params.cid;
-    const cartProducts = await CartModel.find({}).lean();
-    return res.status(200).json({ cartProducts });
-  } catch {
+    const cart = await cartService.getCart(cartId);
+    return res.status(200).json({ cart });
+  } catch (error) {
     return res.status(400).json({
       status: 'Error',
-      msg: 'Cart not found',
+      msg: error.message,
     });
   }
 });

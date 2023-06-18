@@ -1,25 +1,25 @@
 import express from 'express';
-import ProductManager from '../productManager.js';
-import { uploader } from '../utils.js';
 import { ProductsModel } from '../DAO/models/products.model.js';
-const PM = new ProductManager('./src/products.json', './src/id.json');
+import ProductManager from '../productManager.js';
+import ProductService from '../services/productsService.js';
+const productService = new ProductService();
 const productsRouter = express.Router();
 
 // middleware para leer los productos
 productsRouter.get('/', async (req, res) => {
-  const limit = req.query.limit || 10;
-  const page = req.query.page || 1;
-  const category = req.query.category || '';
-  const sort = req.query.sort || '';    
-  
-  const products = await ProductsModel.paginate(category,{page,limit,sort,lean:true});
-  res.render('home', {
-    products: products.docs,
-    currentPage: products.page,
-    totalPages: products.totalPages
-  });
+  try {
+    const query = req.query;
+    const response = await productService.get(query);
+    return res.status(200).json(response);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      status: 'Error',
+      msg: "Could'n retrieve data. Please try again later",
+      data: {},
+    });
+  }
 });
-
 
 //middleware para crear un producto con mongoose
 
