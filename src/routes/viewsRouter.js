@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
   const sort = req.query.sort || '';
 
   const products = await ProductsModel.paginate(category,{page,limit,sort,lean:true});
-  res.render('home', {
+  res.render('products', {
     products: products.docs,
     currentPage: products.page,
     totalPages: products.totalPages

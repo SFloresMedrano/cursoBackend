@@ -27,3 +27,4 @@ export async function connectMongo() {
     throw "Cannot connect to database"
   }
 }
+

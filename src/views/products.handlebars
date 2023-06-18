@@ -2,6 +2,7 @@
 {{#each products}}
     <div>
         <h2>{{this.title}}</h2>
+        <p>{{this._id}}</p>
         <p>{{this.description}}</p>
         <p>Price: {{this.price}}</p>
         <p>{{this.code}}</p>
@@ -13,6 +14,7 @@
     </div>
 {{/each}}
 
+<div>
 totalPages:
 {{totalPages}}
 prevPage:
@@ -29,6 +31,7 @@ prevLink:
 {{prevLink}}
 nextLink:
 {{nextLink}}
+</div>
 
 <div class="pagination">
     {{#if prevLink}}

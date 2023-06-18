@@ -27,10 +27,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartRouter);
 app.use('/chat', chatRouter);
+app.use('/products',viewsRouter)
 app.use('/', viewsRouter);
 
-//handlebars
-/* app.engine('handlebars', handlebars.engine()); */
+
+
 app.engine(
   'handlebars',
   exphbs.create({

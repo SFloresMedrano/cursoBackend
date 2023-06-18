@@ -20,13 +20,21 @@ class CartService {
     try {
       const cart = await CartModel.findById(cartId);
       const product = await ProductsModel.findById(productId);
+      const prodIndex = cart.products.findIndex(
+        (p) => p.product.toString() === productId
+      );
       if (!cart) {
         throw new Error('Cart not found');
       }
       if (!product) {
         throw new Error('Product not found');
       }
-      cart.products.push({ product: product._id, quantity: 1 });
+      if (prodIndex === -1) {
+        cart.products.push({ product: product._id, quantity: 1 });
+      } else {
+        cart.products[prodIndex].quantity =
+          cart.products[prodIndex].quantity + 1;
+      }
       await cart.save();
       return cart;
     } catch (error) {
@@ -53,8 +61,8 @@ class CartService {
       const prodIndex = cart.products.findIndex(
         (p) => p.product.toString() === productId
       );
-      if (prodIndex === -1) {
-        throw new Error('Product not found in cart');
+      if (prodIndex === -1 || quantity === 0) {
+        throw new Error('Product not found in cart or quantity not');
       }
       cart.products[prodIndex].quantity = quantity;
       await cart.save();

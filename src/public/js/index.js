@@ -1,10 +1,10 @@
+
 const addProductForm = document.getElementById('form');
 const addProductFormRealtime = document.getElementById('formRealtime');
 const productListContainer = document.getElementById('list');
-const pageLinks = document.getElementsByClassName('page-link')
-const prevLinkE = document.getElementById('prevLink')
-const nextLinkE = document.getElementById('nextLink')
-
+const pageLinks = document.getElementsByClassName('page-link');
+const prevLinkE = document.getElementById('prevLink');
+const nextLinkE = document.getElementById('nextLink');
 
 async function deleteProduct(id) {
   const response = await fetch(`/api/products/${id}`, {
@@ -37,13 +37,13 @@ try {
 
     const newProduct = { title, description, code, price, stock, category };
 
- const response = await fetch('/api/products/', {
+    const response = await fetch('/api/products/', {
       method: 'post',
       body: JSON.stringify(newProduct),
       headers: {
         'content-type': 'application/json',
       },
-    }); 
+    });
     addProductForm.reset();
     window.location.reload();
   });
@@ -87,32 +87,83 @@ try {
   });
 } catch (error) {}
 
+Array.from(pageLinks).forEach((link) =>
+  link.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const link = e.target.href;
+    const response = await fetch(link);
+    const data = await response.json();
 
-Array.from(pageLinks).forEach(link => link.addEventListener('click', async e => {
-  e.preventDefault()
-  const link = e.target.href
-  const response = await fetch(link)
-  const data = await response.json()
+    console.log(response);
 
-  console.log(response)
+    const products = data.payload;
+    const nextLink = data.nextLink;
+    const prevLink = data.prevLink;
 
-  const products = data.payload
-  const nextLink = data.nextLink
-  const prevLink = data.prevLink
- 
-  if (prevLink) {
-    prevLinkE.parentElement.classList.remove('disabled')
-    prevLinkE.setAttribute('href', prevLink)
-  } else {
-    prevLinkE.parentElement.classList.add('disabled')
-  }
-  if (nextLink) {
-    nextLinkE.parentElement.classList.remove('disabled')
-    nextLinkE.setAttribute('href', nextLink)
-  } else {
-    nextLinkE.parentElement.classList.add('disabled')
-  }
+    if (prevLink) {
+      prevLinkE.parentElement.classList.remove('disabled');
+      prevLinkE.setAttribute('href', prevLink);
+    } else {
+      prevLinkE.parentElement.classList.add('disabled');
+    }
+    if (nextLink) {
+      nextLinkE.parentElement.classList.remove('disabled');
+      nextLinkE.setAttribute('href', nextLink);
+    } else {
+      nextLinkE.parentElement.classList.add('disabled');
+    }
 
-  productListContainer.innerHTML = ''
+    productListContainer.innerHTML = '';
+  })
+);
 
-}))
+//Fetching cartId
+let cartId = localStorage.getItem('cart-id');
+const API_URL = 'http://localhost:8080/api';
+
+function putIntoCart(_id) {
+  cartId = localStorage.getItem('cart-id');
+  const url = API_URL + '/carts/' + cartId + '/product/' + _id;
+  const data = {};
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  };
+  fetch(url, options)
+    .then((response) => response.json())
+    .then((res) => {
+      console.log(res);
+      alert('added');
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert(JSON.stringify(error));
+    });
+}
+
+if (!cartId) {
+  alert('no id');
+  const url = API_URL + '/carts';
+  const data = {};
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  };
+  fetch(url, options)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Response:', data);
+      const cartId = data.data.cart._id
+      localStorage.setItem('cart-id', cartId);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert(JSON.stringify(error));
+    });
+}

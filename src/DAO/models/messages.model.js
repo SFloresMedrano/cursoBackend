@@ -18,6 +18,7 @@ const ChatSchema = new Schema({
     ],
   },
   msg: { type: String, required: true, max: 100 },
+  
 });
 
 export const MessagesModel = model('messages', ChatSchema);

@@ -1,6 +1,7 @@
 import express from 'express';
 import CartManager from '../cartManager.js';
 const CM = new CartManager('./src/carts.json','./src/products.json');
+
 const cartRouter = express.Router();
 
 // middleware para leer los productos
