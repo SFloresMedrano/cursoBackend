@@ -1,6 +1,4 @@
 import express from 'express';
-import { isUser } from '../middlewares/auth.js';
-import { isAdmin } from '../middlewares/auth.js';
 import { UserModel } from '../DAO/models/users.model.js';
 
 export const authRouter = express.Router();
@@ -21,22 +19,17 @@ authRouter.get('/logout', (req, res) => {
   return res.render('login', {});
 });
 
-authRouter.get('/perfil', (req, res) => {
-  const user = {
-    email: req.session.email,
-    isAdmin: req.session.isAdmin,
-    Firstname: req.session.first_name,
-    Lastname: req.session.last_name,
-    age: req.session.age,
-  };
-  return res.render('perfil', { user: user });
-});
-
 //generar model y generar en base de datos los usuarios
 authRouter.post('/', async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).render('error', { error: 'Verifique los campos' });
+  }
+  if (req.session.first_name) {
+    res.render('error', { error: 'Ya se encuentra iniciada una session' });
+    setTimeout(()=>{
+      res.redirect('/products')
+    },5000);
   }
   const userFound = await UserModel.findOne({ email: email });
   if (userFound && userFound.password == password) {
@@ -46,7 +39,7 @@ authRouter.post('/', async (req, res) => {
     req.session.email = userFound.email;
     req.session.isAdmin = userFound.isAdmin;
 
-    return res.redirect('/api/sessions/perfil');
+    return res.redirect('/products');
   } else {
     return res
       .status(401)
@@ -72,6 +65,11 @@ authRouter.post('/register', async (req, res) => {
       age,
       isAdmin: false,
     });
+    req.session.first_name = first_name;
+    req.session.last_name = last_name;
+    req.session.age = age;
+    req.session.email = email;
+    req.session.isAdmin = false;
   } catch (e) {
     console.log(e);
     return res.status(400).render('error', {
@@ -79,10 +77,6 @@ authRouter.post('/register', async (req, res) => {
     });
   }
   return res.redirect('/api/sessions/perfil');
-});
-
-authRouter.get('/administracion', isUser, isAdmin, (req, res) => {
-  return res.send('Datos Admin');
 });
 
 export default authRouter;
