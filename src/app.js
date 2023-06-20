@@ -1,14 +1,16 @@
+import MongoStore from 'connect-mongo';
 import express from 'express';
 import exphbs from 'express-handlebars';
+import session from 'express-session';
 import path from 'path';
 import { Server } from 'socket.io';
 import ProductManager from './productManager.js';
 import cartRouter from './routes/cartRouter.js';
+import chatRouter from './routes/chatRouter.js';
 import productsRouter from './routes/productsRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
 import { __dirname, connectMongo } from './utils.js';
-import chatRouter from './routes/chatRouter.js';
-
+import { authRouter } from './routes/authRouter.js';
 const PM = new ProductManager('./src/products.json', './src/id.json');
 
 const app = express();
@@ -22,15 +24,27 @@ app.use(express.urlencoded({ extended: true }));
 //Render carpeta public
 app.use(express.static(path.join(__dirname, 'public')));
 
+//cookie parser
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl:
+        'mongodb+srv://asfloresmedrano:Sinreaper1@coderdbatlas.ud2qdcy.mongodb.net/ecommerce?retryWrites=true&w=majority',
+      ttl: 3660,
+    }),
+    secret: 'un-re-secreto',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
 // Rutas API
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartRouter);
 app.use('/chat', chatRouter);
-app.use('/products',viewsRouter)
+app.use('/products', viewsRouter);
+app.use('/api/sessions', authRouter)
 app.use('/', viewsRouter);
-
-
 
 app.engine(
   'handlebars',
@@ -44,8 +58,8 @@ app.engine(
       },
       add: function (a, b) {
         return a + b;
-      }
-    }
+      },
+    },
   }).engine
 );
 app.set('view engine', 'handlebars');
