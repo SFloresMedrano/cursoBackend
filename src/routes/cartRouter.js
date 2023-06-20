@@ -8,7 +8,7 @@ cartRouter.get('/:cid', async (req, res) => {
   try {
     const cartId = req.params.cid;
     const cart = await cartService.getCart(cartId);
-    return res.status(200).json({ cart });
+    return res.render('carts',{cart})
   } catch (error) {
     return res.status(400).json({
       status: 'Error',
