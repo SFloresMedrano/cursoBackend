@@ -88,9 +88,25 @@ router.get('/carts/:cid', async (req, res) => {
       code: item.product.code,
       category: item.product.category,
       quantity: item.product.quantity,
-      id: item.product._id
+      id: item.product._id,
     };
   });
   res.render('carts', { cart: simplifiedCart });
+});
+
+router.get('/products/:pid', async (req, res) => {
+  const pid = req.params.pid;
+  const product = await productService.getOne(pid);
+  const simplifiedProduct = {
+      title: product.title,
+      description: product.description,
+      price: product.price,
+      code: product.code,
+      category: product.category,
+      quantity: product.quantity,
+      id: product._id,
+    };
+
+  return res.render('detail', { product: simplifiedProduct });
 });
 export default router;
