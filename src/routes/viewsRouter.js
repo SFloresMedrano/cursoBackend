@@ -6,24 +6,9 @@ const productService = new ProductService();
 
 const router = Router();
 
-/* router.get('/', async (req, res) => {
-  const limit = req.query.limit || 10;
-  const page = req.query.page || 1;
-  const category = req.query.category || '';
-  const sort = req.query.sort || '';
-
-  const products = await ProductsModel.paginate(category, {
-    page,
-    limit,
-    sort,
-    lean: true,
-  });
-  res.render('products', {
-    products: products.docs,
-    currentPage: products.page,
-    totalPages: products.totalPages,
-  });
-}); */
+router.get('/', async (req, res) => {
+  res.redirect('/api/sessions')
+});
 
 router.get('/realtimeProducts', async (req, res) => {
   const products = await ProductsModel.find({}).lean();
