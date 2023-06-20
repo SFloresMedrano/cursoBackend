@@ -1,7 +1,6 @@
 import express from 'express';
 import { UserModel } from '../DAO/models/users.model.js';
 
-
 export const authRouter = express.Router();
 
 authRouter.get('/', (req, res) => {
@@ -27,9 +26,9 @@ authRouter.post('/', async (req, res) => {
   }
   if (req.session.first_name) {
     res.render('error', { error: 'Ya se encuentra iniciada una session' });
-    setTimeout(()=>{
-      res.redirect('/products')
-    },5000);
+    setTimeout(() => {
+      res.redirect('/products');
+    }, 5000);
   }
   const userFound = await UserModel.findOne({ email: email });
   if (userFound && userFound.password == password) {
