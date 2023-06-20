@@ -39,8 +39,27 @@ router.get('/products', async (req, res) => {
       hasNextPage,
       prevLink,
       nextLink,
+      payload: products,
+      totalPages,
+      payload,
+      prevPage,
+      nextPage,
+      page: currentPage,
+      hasPrevPage,
+      hasNextPage,
+      prevLink,
+      nextLink,
     } = await productService.get(queryParams);
     let productsSimplified = products.map((item) => {
+      return {
+        _id: item._id.toString(),
+        title: item.title,
+        description: item.description,
+        price: item.price,
+        code: item.code,
+        stock: item.stock,
+        category: item.category,
+      };
       return {
         _id: item._id.toString(),
         title: item.title,
@@ -70,5 +89,43 @@ router.get('/products', async (req, res) => {
       .status(500)
       .json({ status: 'error', message: 'Error in server' });
   }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: 'error', message: 'Error in server' });
+  }
+});
+
+router.get('/carts/:cid', async (req, res) => {
+  const cid = req.params.cid;
+  const cart = await cartService.getCart(cid);
+  const simplifiedCart = cart.products.map((item) => {
+    return {
+      title: item.product.title,
+      description: item.product.description,
+      price: item.product.price,
+      code: item.product.code,
+      category: item.product.category,
+      quantity: item.product.quantity,
+      id: item.product._id,
+    };
+  });
+  res.render('carts', { cart: simplifiedCart });
+});
+
+router.get('/products/:pid', async (req, res) => {
+  const pid = req.params.pid;
+  const product = await productService.getOne(pid);
+  const simplifiedProduct = {
+      title: product.title,
+      description: product.description,
+      price: product.price,
+      code: product.code,
+      category: product.category,
+      quantity: product.quantity,
+      id: product._id,
+    };
+
+  return res.render('detail', { product: simplifiedProduct });
 });
 export default router;

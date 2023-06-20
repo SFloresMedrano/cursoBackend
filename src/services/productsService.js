@@ -90,6 +90,11 @@ class ProductService {
     );
     return productUptaded;
   }
+
+  async getOne(pid){
+    const product = await ProductsModel.findById(pid)
+    return product
+  }
 }
 
 export default ProductService;

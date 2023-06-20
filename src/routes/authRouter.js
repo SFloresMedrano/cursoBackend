@@ -78,4 +78,7 @@ authRouter.post('/register', async (req, res) => {
   return res.redirect('/api/sessions/perfil');
 });
 
-export default authRouter;
+authRouter.get('/administracion', isUser, isAdmin, (req, res) => {
+  return res.send('Datos Admin');
+});
+ */
