@@ -42,7 +42,7 @@ cartRouter.post('/:cid/product/:pid', async (req, res) => {
     await cartService.addProduct(cartId, productId);
     return res.status(200).json({
       status: 'Succes',
-      msg: 'Proudct added',
+      msg: 'Product added',
     });
   } catch {
     return res.status(400).json({
