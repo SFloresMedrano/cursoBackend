@@ -9,11 +9,11 @@ const productService = new ProductService();
 const router = Router();
 
 router.get('/', async (req, res) => {
-  if(!req.session.cart){
+  if (!req.session.cart) {
     const cart = await cartService.createOne();
-    req.session.cart= cart._id
+    req.session.cart = cart._id;
   }
-  res.redirect('/api/sessions')
+  res.redirect('/api/sessions');
 });
 
 router.get('/realtimeProducts', async (req, res) => {
@@ -29,16 +29,6 @@ router.get('/products', async (req, res) => {
     const last_name = req.session.last_name;
     const isAdmin = req.session.isAdmin || '';
     const {
-      payload: products,
-      totalPages,
-      payload,
-      prevPage,
-      nextPage,
-      page: currentPage,
-      hasPrevPage,
-      hasNextPage,
-      prevLink,
-      nextLink,
       payload: products,
       totalPages,
       payload,
@@ -89,11 +79,6 @@ router.get('/products', async (req, res) => {
       .status(500)
       .json({ status: 'error', message: 'Error in server' });
   }
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ status: 'error', message: 'Error in server' });
-  }
 });
 
 router.get('/carts/:cid', async (req, res) => {
@@ -117,14 +102,14 @@ router.get('/products/:pid', async (req, res) => {
   const pid = req.params.pid;
   const product = await productService.getOne(pid);
   const simplifiedProduct = {
-      title: product.title,
-      description: product.description,
-      price: product.price,
-      code: product.code,
-      category: product.category,
-      quantity: product.quantity,
-      id: product._id,
-    };
+    title: product.title,
+    description: product.description,
+    price: product.price,
+    code: product.code,
+    category: product.category,
+    quantity: product.quantity,
+    id: product._id,
+  };
 
   return res.render('detail', { product: simplifiedProduct });
 });
