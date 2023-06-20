@@ -22,7 +22,13 @@ authRouter.get('/logout', (req, res) => {
 });
 
 authRouter.get('/perfil', (req, res) => {
-  const user = { email: req.session.email, isAdmin: req.session.isAdmin };
+  const user = {
+    email: req.session.email,
+    isAdmin: req.session.isAdmin,
+    Firstname: req.session.first_name,
+    Lastname: req.session.last_name,
+    age: req.session.age,
+  };
   return res.render('perfil', { user: user });
 });
 
@@ -34,8 +40,12 @@ authRouter.post('/', async (req, res) => {
   }
   const userFound = await UserModel.findOne({ email: email });
   if (userFound && userFound.password == password) {
+    req.session.first_name = userFound.first_name;
+    req.session.last_name = userFound.last_name;
+    req.session.age = userFound.age;
     req.session.email = userFound.email;
     req.session.isAdmin = userFound.isAdmin;
+
     return res.redirect('/api/sessions/perfil');
   } else {
     return res
@@ -49,8 +59,7 @@ authRouter.get('/register', (req, res) => {
 });
 
 authRouter.post('/register', async (req, res) => {
-  const { first_name,last_name,age,email, password } = req.body;
-  console.log(first_name,last_name,age,email, password)
+  const { first_name, last_name, age, email, password } = req.body;
   if (!email || !password || !first_name || !last_name || !age) {
     return res.status(400).render('error', { error: 'Verifique los campos' });
   }

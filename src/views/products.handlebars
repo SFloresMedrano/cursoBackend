@@ -1,3 +1,7 @@
+<h1>Bienvenido {{first_name}} {{last_name}} {{#if isAdmin}} Admin{{else}}User{{/if}}
+</h1>
+<a href="/api/sessions/logout">Cerrar sesión</a>
+
 <h1>Products Paginated</h1>
 {{#each products}}
     <div>

@@ -42,9 +42,8 @@ app.use(
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartRouter);
 app.use('/chat', chatRouter);
-app.use('/products', viewsRouter);
-app.use('/api/sessions', authRouter)
 app.use('/', viewsRouter);
+app.use('/api/sessions', authRouter)
 
 app.engine(
   'handlebars',
