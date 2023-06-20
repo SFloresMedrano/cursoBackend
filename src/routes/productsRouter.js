@@ -1,6 +1,5 @@
 import express from 'express';
 import { ProductsModel } from '../DAO/models/products.model.js';
-import ProductManager from '../productManager.js';
 import ProductService from '../services/productsService.js';
 const productService = new ProductService();
 const productsRouter = express.Router();
@@ -15,7 +14,7 @@ productsRouter.get('/', async (req, res) => {
     console.log(e);
     return res.status(500).json({
       status: 'Error',
-      msg: "Could'n retrieve data. Please try again later",
+      msg: "Couldn't retrieve data. Please try again later",
       data: {},
     });
   }

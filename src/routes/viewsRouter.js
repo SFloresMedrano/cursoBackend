@@ -1,12 +1,18 @@
 import { Router } from 'express';
 import { ProductsModel } from '../DAO/models/products.model.js';
 import ProductService from '../services/productsService.js';
+import CartService from '../services/cartService.js';
+const cartService = new CartService();
 
 const productService = new ProductService();
 
 const router = Router();
 
 router.get('/', async (req, res) => {
+  if(!req.session.cart){
+    const cart = await cartService.createOne();
+    req.session.cart= cart._id
+  }
   res.redirect('/api/sessions')
 });
 

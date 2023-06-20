@@ -1,6 +1,7 @@
 import express from 'express';
 import { UserModel } from '../DAO/models/users.model.js';
 
+
 export const authRouter = express.Router();
 
 authRouter.get('/', (req, res) => {
@@ -16,7 +17,6 @@ authRouter.get('/logout', (req, res) => {
     }
     return res.redirect('/');
   });
-  return res.render('login', {});
 });
 
 //generar model y generar en base de datos los usuarios

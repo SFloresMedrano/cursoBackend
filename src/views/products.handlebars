@@ -1,6 +1,6 @@
-<h1>Bienvenido {{first_name}} {{last_name}} {{#if isAdmin}} Admin{{else}}User{{/if}}
+<h1>Bienvenido {{first_name}} {{last_name}} {{#if isAdmin}} Admin{{else}}{{#if first_name}}User{{/if}}{{/if}}
 </h1>
-<a href="/api/sessions/logout">Cerrar sesión</a>
+{{#if first_name}}<a href="/api/sessions/logout">Cerrar sesión</a>{{else}}<a href="/api/sessions">Iniciar sesión</a>{{/if}}
 
 <h1>Products Paginated</h1>
 {{#each products}}
@@ -13,8 +13,8 @@
         <p>{{this.stock}}</p>
         <p>{{this.category}}</p>
 
-        <a href="/products/{{this._id}}">View details of {{this._id}}</a>
-        <button onclick="putIntoCart('{{this._id}}')">Add to cart {{this._id}}</button>
+        <a href="/products/{{this._id}}">View details</a>
+        <button onclick="putIntoCart('{{this._id}}')">Add to cart</button>
     </div>
 {{/each}}
 
