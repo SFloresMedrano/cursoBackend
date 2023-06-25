@@ -25,9 +25,9 @@ router.get('/products', async (req, res) => {
   try {
     const { limit = 10, page = 1, sort, query } = req.query;
     const queryParams = { limit, page, sort, query };
-    const first_name = req.session.first_name;
-    const last_name = req.session.last_name;
-    const isAdmin = req.session.isAdmin || '';
+    const first_name = req.session.user.first_name;
+    const last_name = req.session.user.last_name;
+    const isAdmin = req.session.user.isAdmin || '';
     const {
       payload: products,
       totalPages,

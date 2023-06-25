@@ -1,5 +1,6 @@
 import express from 'express';
 import { UserModel } from '../DAO/models/users.model.js';
+import passport from 'passport';
 
 export const authRouter = express.Router();
 
@@ -18,64 +19,51 @@ authRouter.get('/logout', (req, res) => {
   });
 });
 
-//generar model y generar en base de datos los usuarios
-authRouter.post('/', async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).render('error', { error: 'Verifique los campos' });
-  }
-  if (req.session.first_name) {
-    res.render('error', { error: 'Ya se encuentra iniciada una session' });
-    setTimeout(() => {
-      res.redirect('/products');
-    }, 5000);
-  }
-  const userFound = await UserModel.findOne({ email: email });
-  if (userFound && userFound.password == password) {
-    req.session.first_name = userFound.first_name;
-    req.session.last_name = userFound.last_name;
-    req.session.age = userFound.age;
-    req.session.email = userFound.email;
-    req.session.isAdmin = userFound.isAdmin;
-
+//Login con passport
+authRouter.post(
+  '/',
+  passport.authenticate('login', { failureRedirect: '/api/sessions/faillogin' }),
+  async (req, res) => {
+    if (!req.user) {
+      return res.json({ error: 'Invalid credentials' });
+    }
+    req.session.user = {
+      _id: req.user._id,
+      email: req.user.email,
+      first_name: req.user.first_name,
+      last_name: req.user.last_name,
+      age: req.user.age,
+      isAdmin: req.user.isAdmin,
+    };
     return res.redirect('/products');
-  } else {
-    return res
-      .status(401)
-      .render('error', { error: 'El usuario o la contraseña son incorrectos' });
   }
+);
+
+authRouter.get('/faillogin', async (req, res) => {
+  return res.json({ error: 'Fail to login' });
 });
 
 authRouter.get('/register', (req, res) => {
   return res.render('register', {});
 });
 
-authRouter.post('/register', async (req, res) => {
-  const { first_name, last_name, age, email, password } = req.body;
-  if (!email || !password || !first_name || !last_name || !age) {
-    return res.status(400).render('error', { error: 'Verifique los campos' });
+authRouter.post(
+  '/register',
+  passport.authenticate('register', { failureRedirect: '/auth/failregister' }),
+  (req, res) => {
+    if (!req.user) {
+      return res.json({ error: 'Something went wrong' });
+    }
+    req.session.user = {
+      _id: req.user._id,
+      email: req.user.email,
+      firstName: req.user.first_name,
+      lastName: req.user.last_name,
+      age: req.user.age,
+      isAdmin: req.user.isAdmin,
+    };
+    return res.redirect('/products');
   }
-  try {
-    const userCreate = await UserModel.create({
-      email,
-      password,
-      first_name,
-      last_name,
-      age,
-      isAdmin: false,
-    });
-    req.session.first_name = first_name;
-    req.session.last_name = last_name;
-    req.session.age = age;
-    req.session.email = email;
-    req.session.isAdmin = false;
-  } catch (e) {
-    console.log(e);
-    return res.status(400).render('error', {
-      error: 'No se pudo crear el usuario. Controle los campos',
-    });
-  }
-  return res.redirect('/api/sessions/perfil');
-});
+);
 
 export default authRouter;

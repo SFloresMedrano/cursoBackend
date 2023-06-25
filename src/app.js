@@ -4,13 +4,15 @@ import exphbs from 'express-handlebars';
 import session from 'express-session';
 import path from 'path';
 import { Server } from 'socket.io';
+import { iniPassport } from './config/passport.config.js';
 import ProductManager from './productManager.js';
+import { authRouter } from './routes/authRouter.js';
 import cartRouter from './routes/cartRouter.js';
 import chatRouter from './routes/chatRouter.js';
 import productsRouter from './routes/productsRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
+import passport from 'passport';
 import { __dirname, connectMongo } from './utils.js';
-import { authRouter } from './routes/authRouter.js';
 const PM = new ProductManager('./src/products.json', './src/id.json');
 
 const app = express();
@@ -38,12 +40,17 @@ app.use(
   })
 );
 
+//Passport Login
+iniPassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Rutas API
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartRouter);
 app.use('/chat', chatRouter);
 app.use('/', viewsRouter);
-app.use('/api/sessions', authRouter)
+app.use('/api/sessions', authRouter);
 
 app.engine(
   'handlebars',
