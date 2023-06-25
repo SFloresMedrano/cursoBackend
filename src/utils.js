@@ -1,4 +1,5 @@
 import multer from 'multer';
+import bcrypt from 'bcrypt';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -28,3 +29,6 @@ export async function connectMongo() {
   }
 }
 
+//----------------bcrypt------------------------------
+export const createHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+export const isValidPassword = (password, hashPassword) => bcrypt.compareSync(password, hashPassword);
