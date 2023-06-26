@@ -50,15 +50,6 @@ router.get('/products', async (req, res) => {
         stock: item.stock,
         category: item.category,
       };
-      return {
-        _id: item._id.toString(),
-        title: item.title,
-        description: item.description,
-        price: item.price,
-        code: item.code,
-        stock: item.stock,
-        category: item.category,
-      };
     });
     return res.render('products', {
       products: productsSimplified,
