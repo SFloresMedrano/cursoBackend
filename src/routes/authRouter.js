@@ -8,7 +8,7 @@ authRouter.get('/github', passport.authenticate('github', { scope: ['user:email'
 authRouter.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
   req.session.user = req.user;
   // Successful authentication, redirect home.
-  res.redirect('/api/sessions/products');
+  res.redirect('/products');
 });
 authRouter.get('/', (req, res) => {
   return res.render('login', {});
