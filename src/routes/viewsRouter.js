@@ -9,11 +9,11 @@ const productService = new ProductService();
 const router = Router();
 
 router.get('/', async (req, res) => {
-  if(!req.session.cart){
+  if (!req.session.cart) {
     const cart = await cartService.createOne();
     req.session.cart = cart._id;
   }
-  res.redirect('/api/sessions')
+  res.redirect('/api/sessions');
 });
 
 router.get('/realtimeProducts', async (req, res) => {
@@ -27,7 +27,8 @@ router.get('/products', async (req, res) => {
     const queryParams = { limit, page, sort, query };
     const first_name = req.session.user.first_name;
     const last_name = req.session.user.last_name;
-    const isAdmin = req.session.user.isAdmin || '';
+    const cart = req.session.user.cart;
+    const role = req.session.user.role;
     const {
       payload: products,
       totalPages,
@@ -63,7 +64,8 @@ router.get('/products', async (req, res) => {
       nextLink: nextLink?.substring(4) || '',
       first_name,
       last_name,
-      isAdmin,
+      role,
+      cart,
     });
   } catch (error) {
     return res

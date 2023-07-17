@@ -9,7 +9,6 @@ cartRouter.get('/:cid', async (req, res) => {
     const cartId = req.params.cid;
     const cart = await cartService.getCart(cartId);
     return res.render('carts',{cart})
-    return res.render('carts',{cart})
   } catch (error) {
     return res.status(400).json({
       status: 'Error',
@@ -23,7 +22,7 @@ cartRouter.post('/', async (req, res) => {
   try {
     const cart = await cartService.createOne();
     return res.status(200).json({
-      status: 'Succes',
+      status: 'Success',
       msg: 'New Cart Created',
       data: { cart },
     });

@@ -6,7 +6,8 @@ const schema = new Schema({
   email: { type: String, required: true, max: 100 },
   age: { type: Number},
   password: { type: String, required: true, max: 100 },
-  isAdmin: { type: Boolean, required: true, max: 100 },
+  role: { type: String, required: true, default: 'user' },
+  cart: { type: String},
 });
 
 export const UserModel = model('users', schema);

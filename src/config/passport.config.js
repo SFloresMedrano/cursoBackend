@@ -4,6 +4,8 @@ import { UserModel } from '../DAO/models/users.model.js';
 import { createHash, isValidPassword } from '../utils.js';
 import GitHubStrategy from 'passport-github2';
 import fetch from 'node-fetch';
+import CartService from '../services/cartService.js';
+const cartService = new CartService();
 
 const LocalStrategy = local.Strategy;
 
@@ -47,14 +49,16 @@ export function iniPassport() {
             console.log('User already exists');
             return done(null, false);
           }
-
+          const cart = await cartService.createOne();
+          const cartId = cart._id;
           const newUser = {
             email,
             first_name,
             last_name,
             age,
-            isAdmin: false,
+            role: 'user',
             password: createHash(password),
+            cart: cartId,
           };
           let userCreated = await UserModel.create(newUser);
           console.log(userCreated);
@@ -95,18 +99,21 @@ export function iniPassport() {
           profile.email = emailDetail.email;
 
           let user = await UserModel.findOne({ email: profile.email });
-          const fullname = profile._json.name.split(" ")
+          const fullname = profile._json.name.split(' ');
           if (!user) {
+            const cart = await cartService.createOne();
+            const cartId = cart._id;
             const newUser = {
               email: profile.email,
               first_name: fullname[0] || profile._json.login || 'noname',
-              last_name: fullname[fullname.length-1],
-              isAdmin: false,
+              last_name: fullname[fullname.length - 1],
+              role: 'user',
               age: '',
               password: 'nopass',
+              cart: cartId,
             };
             let userCreated = await UserModel.create(newUser);
-            console.log('User Registration succesful');
+            console.log('User Registration successful');
             return done(null, userCreated);
           } else {
             console.log('User already exists');

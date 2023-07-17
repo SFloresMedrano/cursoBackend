@@ -1,4 +1,4 @@
-<h1>Bienvenido {{first_name}} {{#if isAdmin}} Admin{{else}}{{#if first_name}}User{{/if}}{{/if}}
+<h1>Bienvenido {{first_name}} {{#if isAdmin}} Admin{{else}}{{#if first_name}}User Cart ID: {{cart}}{{/if}}{{/if}}
 </h1>
 {{#if first_name}}<a href="/api/sessions/logout">Cerrar sesión</a>{{else}}<a href="/api/sessions">Iniciar sesión</a>{{/if}}
 

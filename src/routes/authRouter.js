@@ -1,19 +1,27 @@
 import express from 'express';
 import passport from 'passport';
+import CartService from '../services/cartService.js';
+const cartService = new CartService();
 
 export const authRouter = express.Router();
 
-authRouter.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
+authRouter.get(
+  '/github',
+  passport.authenticate('github', { scope: ['user:email'] })
+);
 
-authRouter.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
-  req.session.user = req.user;
-  // Successful authentication, redirect home.
-  res.redirect('/products');
-});
+authRouter.get(
+  '/githubcallback',
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  (req, res) => {
+    req.session.user = req.user;
+    // Successful authentication, redirect home.
+    res.redirect('/products');
+  }
+);
 authRouter.get('/', (req, res) => {
   return res.render('login', {});
 });
-
 
 authRouter.get('/logout', (req, res) => {
   req.session.destroy((err) => {
@@ -29,7 +37,9 @@ authRouter.get('/logout', (req, res) => {
 //Login con passport
 authRouter.post(
   '/',
-  passport.authenticate('login', { failureRedirect: '/api/sessions/faillogin' }),
+  passport.authenticate('login', {
+    failureRedirect: '/api/sessions/faillogin',
+  }),
   async (req, res) => {
     if (!req.user) {
       return res.json({ error: 'Invalid credentials' });
@@ -40,7 +50,8 @@ authRouter.post(
       first_name: req.user.first_name,
       last_name: req.user.last_name,
       age: req.user.age,
-      isAdmin: req.user.isAdmin,
+      role: req.user.role,
+      cart: req.user.cart,
     };
     return res.redirect('/products');
   }
@@ -56,8 +67,10 @@ authRouter.get('/register', (req, res) => {
 
 authRouter.post(
   '/register',
-  passport.authenticate('register', { failureRedirect: '/auth/failregister' }),
-  (req, res) => {
+  passport.authenticate('register', {
+    failureRedirect: '/api/sessions/failregister',
+  }),
+  async (req, res) => {
     if (!req.user) {
       return res.json({ error: 'Something went wrong' });
     }
@@ -67,11 +80,15 @@ authRouter.post(
       firstName: req.user.first_name,
       lastName: req.user.last_name,
       age: req.user.age,
-      isAdmin: req.user.isAdmin,
+      role: req.user.role,
+      cart: req.user.cart,
     };
     return res.redirect('/products');
   }
 );
 
+authRouter.get('/failregister', async (req, res) => {
+  return res.json({ error: 'Fail to register' });
+});
 
 export default authRouter;
