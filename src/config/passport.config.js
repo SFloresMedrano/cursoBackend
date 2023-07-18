@@ -5,8 +5,9 @@ import { createHash, isValidPassword } from '../utils.js';
 import GitHubStrategy from 'passport-github2';
 import fetch from 'node-fetch';
 import CartService from '../services/cartService.js';
-const cartService = new CartService();
+import 'dotenv/config';
 
+const cartService = new CartService();
 const LocalStrategy = local.Strategy;
 
 export function iniPassport() {
@@ -77,8 +78,8 @@ export function iniPassport() {
     'github',
     new GitHubStrategy(
       {
-        clientID: 'Iv1.a514e444299ce5ad',
-        clientSecret: 'CLIENT SECRET',
+        clientID: `${process.env.GITHUB_clientID}`,
+        clientet: `${process.env.GITHUB_clientSecret}`,
         callbackURL: 'http://localhost:8080/api/sessions/githubcallback',
       },
       async (accesToken, _, profile, done) => {

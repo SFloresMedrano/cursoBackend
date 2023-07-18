@@ -1,5 +1,6 @@
 import multer from 'multer';
 import bcrypt from 'bcrypt';
+import 'dotenv/config';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -21,14 +22,16 @@ import { connect } from 'mongoose';
 export async function connectMongo() {
   try {
     await connect(
-      'mongodb+srv://asfloresmedrano:Sinreaper1@coderdbatlas.ud2qdcy.mongodb.net/ecommerce'
+      `mongodb+srv://${process.env.MONGO_USER}@coderdbatlas.ud2qdcy.mongodb.net/ecommerce`
     );
-    console.log("Plugged to mongo")
+    console.log('Plugged to mongo');
   } catch (e) {
-    throw "Cannot connect to database"
+    throw 'Cannot connect to database';
   }
 }
 
 //----------------bcrypt------------------------------
-export const createHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-export const isValidPassword = (password, hashPassword) => bcrypt.compareSync(password, hashPassword);
+export const createHash = (password) =>
+  bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+export const isValidPassword = (password, hashPassword) =>
+  bcrypt.compareSync(password, hashPassword);
