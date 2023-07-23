@@ -2,14 +2,7 @@ import { ProductsModel } from '../DAO/models/products.model.js';
 
 class ProductService {
   validate(title, description, price, code, stock, category) {
-    if (
-      !title ||
-      !description ||
-      !price ||
-      !code ||
-      !stock ||
-      !category
-    ) {
+    if (!title || !description || !price || !code || !stock || !category) {
       console.log('Validation error: Please check if all fields are correct.');
       throw new Error(
         'Validation error: Please check if all fields are correct.'
@@ -74,15 +67,7 @@ class ProductService {
     }
   }
 
-  async updateOne(
-    id,
-    title,
-    description,
-    price,
-    code,
-    stock,
-    category
-  ) {
+  async updateOne(id, title, description, price, code, stock, category) {
     this.validate(title, description, price, code, stock, category);
     const productUptaded = await ProductsModel.updateOne(
       { _id: id },
@@ -91,10 +76,10 @@ class ProductService {
     return productUptaded;
   }
 
-  async getOne(pid){
-    const product = await ProductsModel.findById(pid)
-    return product
+  async getOne(pid) {
+    const product = await ProductsModel.findById(pid);
+    return product;
   }
 }
 
-export default ProductService;
+export const productService = new ProductService();

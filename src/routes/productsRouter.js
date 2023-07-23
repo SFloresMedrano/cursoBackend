@@ -1,7 +1,7 @@
 import express from 'express';
 import { ProductsModel } from '../DAO/models/products.model.js';
-import ProductService from '../services/productsService.js';
-const productService = new ProductService();
+import {productService} from '../services/productsService.js';
+
 const productsRouter = express.Router();
 
 // middleware para leer los productos

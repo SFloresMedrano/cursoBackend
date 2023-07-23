@@ -1,8 +1,10 @@
 import 'dotenv/config';
+import MongoStore from 'connect-mongo';
 import express from 'express';
 import exphbs from 'express-handlebars';
 import passport from 'passport';
 import path from 'path';
+import session from 'express-session';
 import { Server } from 'socket.io';
 import { iniPassport } from './config/passport.config.js';
 import ProductManager from './productManager.js';
@@ -19,6 +21,19 @@ const PORT = 8080;
 
 connectMongo();
 
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl:
+        'mongodb+srv://asfloresmedrano:Sinreaper1@coderdbatlas.ud2qdcy.mongodb.net/ecommerce?retryWrites=true&w=majority',
+      ttl: 3660,
+    }),
+    secret: 'un-re-secreto',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -27,9 +42,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Passport Login
 iniPassport();
+
 app.use(passport.initialize());
 app.use(passport.session());
-
+  
 // Rutas API
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartRouter);
