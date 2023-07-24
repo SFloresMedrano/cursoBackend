@@ -1,4 +1,3 @@
-import passport from 'passport';
 class AuthController {
   async authenticate(req, res) {
     passport.authenticate('github', { scope: ['user:email'] });
@@ -28,25 +27,20 @@ class AuthController {
     });
   }
 
-  async loginPassport(req, res, next) {
-    passport.authenticate('login', {
-      failureRedirect: '/api/sessions/faillogin',
-    }),
-      async (req, res) => {
-        if (!req.user) {
-          return res.json({ error: 'Invalid credentials' });
-        }
-        req.session.user = {
-          _id: req.user._id,
-          email: req.user.email,
-          first_name: req.user.first_name,
-          last_name: req.user.last_name,
-          age: req.user.age,
-          role: req.user.role,
-          cart: req.user.cart,
-        };
-        return res.redirect('/products');
-      };
+  async loginPassport(req, res) {
+    if (!req.user) {
+      return res.json({ error: 'Invalid credentials' });
+    }
+    req.session.user = {
+      _id: req.user._id,
+      email: req.user.email,
+      first_name: req.user.first_name,
+      last_name: req.user.last_name,
+      age: req.user.age,
+      role: req.user.role,
+      cart: req.user.cart,
+    };
+    return res.redirect('/products');
   }
 
   async failLogin(req, res) {
@@ -58,24 +52,19 @@ class AuthController {
   }
 
   async registerPassport(req, res) {
-    passport.authenticate('register', {
-      failureRedirect: '/api/sessions/failregister',
-    }),
-      async (req, res) => {
-        if (!req.user) {
-          return res.json({ error: 'Something went wrong' });
-        }
-        req.session.user = {
-          _id: req.user._id,
-          email: req.user.email,
-          firstName: req.user.first_name,
-          lastName: req.user.last_name,
-          age: req.user.age,
-          role: req.user.role,
-          cart: req.user.cart,
-        };
-        return res.redirect('/products');
-      };
+    if (!req.user) {
+      return res.json({ error: 'Something went wrong' });
+    }
+    req.session.user = {
+      _id: req.user._id,
+      email: req.user.email,
+      firstName: req.user.first_name,
+      lastName: req.user.last_name,
+      age: req.user.age,
+      role: req.user.role,
+      cart: req.user.cart,
+    };
+    return res.redirect('/products');
   }
 
   async failRegister(req, res) {
