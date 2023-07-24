@@ -100,4 +100,4 @@ class CartService {
   }
 }
 
-export default CartService;
+export const cartService = new CartService();

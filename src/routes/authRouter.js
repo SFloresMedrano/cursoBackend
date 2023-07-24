@@ -1,8 +1,6 @@
 import express from 'express';
-import passport from 'passport';
 import { authController } from '../controllers/authController.js';
-import CartService from '../services/cartService.js';
-const cartService = new CartService();
+
 
 export const authRouter = express.Router();
 

@@ -1,3 +1,4 @@
+import passport from 'passport';
 class AuthController {
   async authenticate(req, res) {
     passport.authenticate('github', { scope: ['user:email'] });
@@ -27,7 +28,7 @@ class AuthController {
     });
   }
 
-  async loginPassport(req, res) {
+  async loginPassport(req, res, next) {
     passport.authenticate('login', {
       failureRedirect: '/api/sessions/faillogin',
     }),

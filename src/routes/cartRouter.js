@@ -1,56 +1,15 @@
-import express from 'express';
-import CartService from '../services/cartService.js';
-const cartService = new CartService();
-const cartRouter = express.Router();
+import express, { Router } from 'express';
+import { cartController } from '../controllers/carts.controller.js';
+export const cartRouter = new Router();
 
 // endpoint para leer los productos mongoose
-cartRouter.get('/:cid', async (req, res) => {
-  try {
-    const cartId = req.params.cid;
-    const cart = await cartService.getCart(cartId);
-    return res.render('carts',{cart})
-  } catch (error) {
-    return res.status(400).json({
-      status: 'Error',
-      msg: error.message,
-    });
-  }
-});
+cartRouter.get('/:cid', cartController.getCart);
 
 //endpoint para agregar un carrito
-cartRouter.post('/', async (req, res) => {
-  try {
-    const cart = await cartService.createOne();
-    return res.status(200).json({
-      status: 'Success',
-      msg: 'New Cart Created',
-      data: { cart },
-    });
-  } catch {
-    return res.status(400).json({
-      status: 'Error',
-      msg: "Can't create new cart. Please try again later",
-    });
-  }
-});
+cartRouter.post('/', cartController.createCart);
 
 //endpoint para agregar un producto
-cartRouter.post('/:cid/product/:pid', async (req, res) => {
-  try {
-    const cartId = req.params.cid;
-    const productId = req.params.pid;
-    await cartService.addProduct(cartId, productId);
-    return res.status(200).json({
-      status: 'Success',
-      msg: 'Product added',
-    });
-  } catch {
-    return res.status(400).json({
-      status: 'Error',
-      msg: "Can't add new product. Please check the cart or product",
-    });
-  }
-});
+cartRouter.post('/:cid/product/:pid', cartController.addProductToCart);
 
 //endpoint para modificar cantidad por body
 cartRouter.put('/:cid/product/:pid', async (req, res) => {

@@ -4,10 +4,9 @@ import { UserModel } from '../DAO/models/users.model.js';
 import { createHash, isValidPassword } from '../utils.js';
 import GitHubStrategy from 'passport-github2';
 import fetch from 'node-fetch';
-import CartService from '../services/cartService.js';
+import {cartService} from '../services/cartService.js';
 import 'dotenv/config';
 
-const cartService = new CartService();
 const LocalStrategy = local.Strategy;
 
 export function iniPassport() {
