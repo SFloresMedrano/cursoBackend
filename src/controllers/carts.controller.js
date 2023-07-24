@@ -6,14 +6,14 @@ class CartController {
       if (!req.session.cart) {
         const cart = await CartService.createOne();
         req.session.cart = cart._id;
-        return res.status(201).json({ cart });
+        res.status(201).json({ cart });
       } else {
         cart = req.session.cart;
-        return res.status(201).json({ cart });
+        res.status(201).json({ cart });
       }
     } catch (error) {
       console.log('Couldnt create Cart');
-      return res.status(500).json({ msg: 'Couldnt create Cart' });
+      res.status(500).json({ msg: 'Couldnt create Cart' });
     }
   }
 
