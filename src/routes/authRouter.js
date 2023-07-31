@@ -4,9 +4,16 @@ import passport from 'passport';
 
 export const authRouter = express.Router();
 
-authRouter.get('/github', authController.authenticate);
+authRouter.get(
+  '/github',
+  passport.authenticate('github', { scope: ['user:email'] })
+);
 
-authRouter.get('/githubcallback', authController.callback);
+authRouter.get(
+  '/githubcallback',
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  authController.callback
+);
 
 authRouter.get('/', authController.login);
 
@@ -30,21 +37,7 @@ authRouter.post(
   passport.authenticate('register', {
     failureRedirect: '/api/sessions/failregister',
   }),
-  async (req, res) => {
-    if (!req.user) {
-      return res.json({ error: 'Something went wrong' });
-    }
-    req.session.user = {
-      _id: req.user._id,
-      email: req.user.email,
-      firstName: req.user.first_name,
-      lastName: req.user.last_name,
-      age: req.user.age,
-      role: req.user.role,
-      cart: req.user.cart,
-    };
-    return res.redirect('/products');
-  }
+  authController.registerPassport
 );
 
 authRouter.get('/failregister', authController.failRegister);

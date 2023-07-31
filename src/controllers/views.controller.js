@@ -17,13 +17,12 @@ class ViewsController {
         const { limit = 10, page = 1, sort, query } = req.query;
         const queryParams = { limit, page, sort, query };
         const products = await viewsService.getProducts(queryParams);
-        products.first_name = req.session.user.first_name;
-        products.cart = req.session.user.cart;
-        products.last_name = req.session.user.last_name;
-        products.role = req.session.user.role;
+        products.first_name = req.session.user.first_name
+        products.last_name = req.session.user.last_name
+        products.cart = req.session.user.cart
         return res.render('products', products);
     } catch (error) {
-        return res.status(500).json({ status: 'error', message: 'Error in server' });
+        return res.status(500).json({ status: 'error', message: 'Error getting products' });
     }
 }
 }

@@ -1,15 +1,8 @@
 class AuthController {
-  async authenticate(req, res) {
-    passport.authenticate('github', { scope: ['user:email'] });
-  }
-
   async callback(req, res) {
-    passport.authenticate('github', { failureRedirect: '/login' }),
-      (req, res) => {
-        req.session.user = req.user;
-        // Successful authentication, redirect home.
-        res.redirect('/products');
-      };
+    req.session.user = req.user;
+    // Successful authentication, redirect home.
+    res.redirect('/products');
   }
 
   async login(req, res) {
@@ -40,6 +33,7 @@ class AuthController {
       role: req.user.role,
       cart: req.user.cart,
     };
+    console.log(req.session.user)
     return res.redirect('/products');
   }
 
@@ -64,6 +58,7 @@ class AuthController {
       role: req.user.role,
       cart: req.user.cart,
     };
+    console.log(req.session.user)
     return res.redirect('/products');
   }
 

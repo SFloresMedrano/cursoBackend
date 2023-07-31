@@ -1,4 +1,4 @@
-
+import {cartService} from '../services/cartService.js';
 
 class CartController {
   async createCart(req, res) {
@@ -20,7 +20,7 @@ class CartController {
   async getCart(req, res) {
     try {
       const cid = req.params.cid;
-      const cart = await CartService.getCart(cid);
+      const cart = await cartService.getCart(cid);
       const simplifiedCart = cart.products.map((item) => {
         return {
           title: item.product.title,
@@ -40,7 +40,7 @@ class CartController {
       });
     }
   }
-  async addProductToCart (req,res){
+  async addProductToCart(req, res) {
     try {
       const cartId = req.params.cid;
       const productId = req.params.pid;
@@ -53,6 +53,56 @@ class CartController {
       return res.status(400).json({
         status: 'Error',
         msg: "Can't add new product. Please check the cart or product",
+      });
+    }
+  }
+
+  async updateProductQuantity(req, res) {
+    try {
+      const cartId = req.params.cid;
+      const productId = req.params.pid;
+      const prodQuantity = req.body;
+      await cartService.updateProductQuantity(cartId, productId, prodQuantity);
+      return res.status(200).json({
+        status: 'Succes',
+        msg: 'Quantity update',
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: 'Error',
+        msg: "Can't update quantity. Please check the cart, product or quantity",
+      });
+    }
+  }
+  async deleteProductFromCart(req, res) {
+    try {
+      const cartId = req.params.cid;
+      const productId = req.params.pid;
+      await cartService.removeProduct(cartId, productId);
+      return res.status(200).json({
+        status: 'Succes',
+        msg: 'Product removed',
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: 'Error',
+        msg: "Can't remove the product. Please check the cart or product",
+      });
+    }
+  }
+
+  async emptyCart(req, res) {
+    try {
+      const cartId = req.params.cid;
+      await cartService.clearCart(cartId);
+      return res.status(200).json({
+        status: 'Succes',
+        msg: 'Emptied cart',
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: 'Error',
+        msg: "Can't empty the cart. Please try again later",
       });
     }
   }

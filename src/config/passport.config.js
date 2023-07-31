@@ -7,6 +7,7 @@ import fetch from 'node-fetch';
 import {cartService} from '../services/cartService.js';
 import 'dotenv/config';
 
+
 const LocalStrategy = local.Strategy;
 
 export function iniPassport() {
@@ -63,6 +64,15 @@ export function iniPassport() {
           let userCreated = await UserModel.create(newUser);
           console.log(userCreated);
           console.log('User Registration successful');
+          req.session.user = {
+            _id: userCreated._id,
+            email: userCreated.email,
+            first_name: userCreated.first_name,
+            last_name: userCreated.last_name,
+            age: userCreated.age,
+            role: userCreated.role,
+            cart: userCreated.cart,
+          };
           return done(null, userCreated);
         } catch (e) {
           console.log('Error in register');
@@ -77,8 +87,8 @@ export function iniPassport() {
     'github',
     new GitHubStrategy(
       {
-        clientID: 'Iv1.a514e444299ce5ad',
-        clientSecret: '29f601580b94fbf00dd039e0b68826e316aff26d',
+        clientID: process.env.GITHUB_clientID,
+        clientSecret: process.env.GITHUB_clientSecret,
         callbackURL: 'http://localhost:8080/api/sessions/githubcallback',
       },
       async (accesToken, _, profile, done) => {
@@ -114,6 +124,15 @@ export function iniPassport() {
             };
             let userCreated = await UserModel.create(newUser);
             console.log('User Registration successful');
+            req.session.user = {
+              _id: userCreated._id,
+              email: userCreated.email,
+              first_name: userCreated.first_name,
+              last_name: userCreated.last_name,
+              age: userCreated.age,
+              role: userCreated.role,
+              cart: userCreated.cart,
+            };
             return done(null, userCreated);
           } else {
             console.log('User already exists');
