@@ -1,14 +1,14 @@
-import { CartModel } from '../DAO/models/carts.model.js';
-import { ProductsModel } from '../DAO/models/products.model.js';
+import { CartModel, cartModelLogic } from '../DAO/models/carts.model.js';
+import { productsModelLogic } from '../DAO/models/products.model.js';
 
 class CartService {
   async createOne() {
-    const createCart = await CartModel.create({});
+    const createCart = cartModelLogic.createCart;
     return createCart;
   }
 
   async getCart(cartId) {
-    const cart = await CartModel.findById(cartId).populate('products.product');
+    const cart = await cartModelLogic.findById(cartId);
     if (cart) {
       return cart;
     } else {
@@ -18,8 +18,8 @@ class CartService {
 
   async addProduct(cartId, productId) {
     try {
-      const cart = await CartModel.findById(cartId);
-      const product = await ProductsModel.findById(productId);
+      const cart = await cartModelLogic.findById(cartId);
+      const product = await productsModelLogic.findById(productId);
       const prodIndex = cart.products.findIndex(
         (p) => p.product.toString() === productId
       );
@@ -35,7 +35,7 @@ class CartService {
         cart.products[prodIndex].quantity =
           cart.products[prodIndex].quantity + 1;
       }
-      await cart.save();
+      await cartModelLogic.save(cart)
       return cart;
     } catch (error) {
       throw new Error('Couldnt add product. Please try again later');
@@ -44,11 +44,7 @@ class CartService {
 
   async udpdateCart(cartId, products) {
     try {
-      const cart = await CartModel.findByIdAndUpdate(
-        cartId,
-        { products },
-        { new: true }
-      );
+      const cart = await cartModelLogic.cartUpdate(cartId, products);
       return cart;
     } catch (error) {
       throw new Error('Error updating Cart.Please try again later');
@@ -57,7 +53,7 @@ class CartService {
 
   async updateProductQuantity(cartId, productId, quantity) {
     try {
-      const cart = await CartModel.findById(cartId);
+      const cart = await cartModelLogic.findById(cartId);
       const prodIndex = cart.products.findIndex(
         (p) => p.product.toString() === productId
       );
@@ -65,7 +61,7 @@ class CartService {
         throw new Error('Product not found in cart or quantity not');
       }
       cart.products[prodIndex].quantity = quantity;
-      await cart.save();
+      await cartModelLogic.save(cart);
       return cart;
     } catch (error) {
       throw new Error('Error updating product quantity');
@@ -74,7 +70,7 @@ class CartService {
 
   async removeProduct(cartId, productId) {
     try {
-      const cart = await CartModel.findById(cartId);
+      const cart = await cartModelLogic.findById(cartId);
       const prodIndex = cart.products.findIndex(
         (p) => p.product.toString() === productId
       );
@@ -82,7 +78,7 @@ class CartService {
         throw new Error('Product not found in cart');
       }
       cart.products.splice(prodIndex, 1);
-      await cart.save();
+      await cartModelLogic.save(cart);
       return cart;
     } catch (error) {
       throw new Error('Couldnt remove product from cart.');
@@ -91,9 +87,7 @@ class CartService {
 
   async clearCart(cartId) {
     try {
-      const cart = await CartModel.findById(cartId);
-      cart.products = [];
-      await cart.save();
+      const cart = await cartModelLogic.findById(cartId);
     } catch (error) {
       throw new Error('Couldnt empty cart.');
     }

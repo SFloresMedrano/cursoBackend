@@ -1,4 +1,7 @@
-import { ProductsModel } from '../DAO/models/products.model.js';
+import {
+  ProductsModel,
+  productsModelLogic,
+} from '../DAO/models/products.model.js';
 
 class ProductService {
   validate(title, description, price, code, stock, category) {
@@ -24,7 +27,7 @@ class ProductService {
       sort: sort === 'desc' ? '-price' : 'price',
     };
 
-    const result = await ProductsModel.paginate(filter, options);
+    const result = await productsModelLogic.paginate(filter, options);
 
     const response = {
       status: 'success',
@@ -47,33 +50,33 @@ class ProductService {
 
   async createOne(title, description, price, code, stock, category) {
     this.validate(title, description, price, code, stock, category);
-    const productCreated = await ProductsModel.create({
+    const productCreated = await productsModelLogic.createProduct(
       title,
       description,
       price,
       code,
       stock,
-      category,
-    });
+      category
+    );
     return productCreated;
   }
 
   async deleteOne(_id) {
-    const deleted = await ProductsModel.deleteOne({ _id });
+    const deleted = await productsModelLogic.deleteOne(_id);
     if (deleted.deletedCount === 1) {
       return true;
     } else {
       throw new Error('Product not found');
     }
   }
-
+//to do
   async updateOne(id, title, description, price, code, stock, category) {
     this.validate(title, description, price, code, stock, category);
-    const productUptaded = await ProductsModel.updateOne(
+    const productUpdated = await ProductsModel.updateOne(
       { _id: id },
       { title, description, price, code, stock, category }
     );
-    return productUptaded;
+    return productUpdated;
   }
 
   async getOne(pid) {

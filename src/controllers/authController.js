@@ -33,7 +33,6 @@ class AuthController {
       role: req.user.role,
       cart: req.user.cart,
     };
-    console.log(req.session.user)
     return res.redirect('/products');
   }
 
@@ -58,7 +57,6 @@ class AuthController {
       role: req.user.role,
       cart: req.user.cart,
     };
-    console.log(req.session.user)
     return res.redirect('/products');
   }
 

@@ -12,3 +12,23 @@ const schema = new Schema({
 
 schema.plugin(mongoosePaginate);
 export const ProductsModel = model('products', schema);
+
+export class ProductsModelLogic {
+  async paginate(filter, options) {
+    await ProductsModel.paginate(filter, options);
+  }
+
+  async createProduct(title, description, price, code, stock, category) {
+    const productCreated = await ProductsModel.create({
+      title,
+      description,
+      price,
+      code,
+      stock,
+      category,
+    });
+    return productCreated;
+  }
+}
+
+export const productsModelLogic = new ProductsModelLogic();
