@@ -14,12 +14,14 @@ import chatRouter from './routes/chatRouter.js';
 import productsRouter from './routes/productsRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
 import { __dirname, connectMongo } from './utils.js';
+import { persistance } from './config/configPersistence.js';
 const PM = new ProductManager('./src/products.json', './src/id.json');
 
 const app = express();
 const PORT = 8080;
 
 connectMongo();
+console.log(persistance)
 
 app.use(
   session({
@@ -51,6 +53,7 @@ app.use('/api/carts', cartRouter);
 app.use('/chat', chatRouter);
 app.use('/', viewsRouter);
 app.use('/api/sessions', authRouter);
+app.use('/current', viewsRouter)
 
 app.engine(
   'handlebars',

@@ -1,12 +1,12 @@
-import passport from 'passport';
-import local from 'passport-local';
-import { UserModel } from '../DAO/models/users.model.js';
-import { createHash, isValidPassword } from '../utils.js';
-import GitHubStrategy from 'passport-github2';
-import fetch from 'node-fetch';
-import {cartService} from '../services/cartService.js';
 import 'dotenv/config';
-
+import fetch from 'node-fetch';
+import passport from 'passport';
+import GitHubStrategy from 'passport-github2';
+import local from 'passport-local';
+import { CartModel } from '../DAO/mongo/models/carts.model.js';
+import { UserSchema } from '../DAO/mongo/models/users.model.js';
+import { userModelLogic } from '../DAO/mongo/users.mongo.js';
+import { createHash, isValidPassword } from '../utils.js';
 
 const LocalStrategy = local.Strategy;
 
@@ -17,7 +17,7 @@ export function iniPassport() {
       { usernameField: 'email' },
       async (username, password, done) => {
         try {
-          const user = await UserModel.findOne({ email: username });
+          const user = await UserSchema.findOne({ email: username });
           if (!user) {
             console.log('User Not Found with username (email) ' + username);
             return done(null, false);
@@ -45,12 +45,12 @@ export function iniPassport() {
       async (req, username, password, done) => {
         try {
           const { email, first_name, last_name, age, password } = req.body;
-          let user = await UserModel.findOne({ email: username });
+          let user = await UserSchema.findOne({ email: username });
           if (user) {
             console.log('User already exists');
             return done(null, false);
           }
-          const cart = await cartService.createOne();
+          const cart = await CartModel.create({})
           const cartId = cart._id;
           const newUser = {
             email,
@@ -61,7 +61,7 @@ export function iniPassport() {
             password: createHash(password),
             cart: cartId,
           };
-          let userCreated = await UserModel.create(newUser);
+          let userCreated = await userModelLogic.create(newUser);
           console.log(userCreated);
           console.log('User Registration successful');
           req.session.user = {
@@ -73,6 +73,7 @@ export function iniPassport() {
             role: userCreated.role,
             cart: userCreated.cart,
           };
+          console.log(req.session.user)
           return done(null, userCreated);
         } catch (e) {
           console.log('Error in register');
@@ -108,10 +109,10 @@ export function iniPassport() {
           }
           profile.email = emailDetail.email;
 
-          let user = await UserModel.findOne({ email: profile.email });
+          let user = await UserSchema.findOne({ email: profile.email });
           const fullname = profile._json.name.split(' ');
           if (!user) {
-            const cart = await cartService.createOne();
+            const cart = await CartModel.create({});
             const cartId = cart._id;
             const newUser = {
               email: profile.email,
@@ -122,7 +123,7 @@ export function iniPassport() {
               password: 'nopass',
               cart: cartId,
             };
-            let userCreated = await UserModel.create(newUser);
+            let userCreated = await userModelLogic.create(newUser);
             console.log('User Registration successful');
             req.session.user = {
               _id: userCreated._id,
@@ -133,6 +134,7 @@ export function iniPassport() {
               role: userCreated.role,
               cart: userCreated.cart,
             };
+            console.log(req.session.user)
             return done(null, userCreated);
           } else {
             console.log('User already exists');
@@ -152,7 +154,7 @@ export function iniPassport() {
   });
 
   passport.deserializeUser(async (id, done) => {
-    let user = await UserModel.findById(id);
+    let user = await userModelLogic.findById(id);
     done(null, user);
   });
 }

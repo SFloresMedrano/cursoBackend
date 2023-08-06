@@ -1,6 +1,6 @@
 import express from 'express';
-import ProductManager from '../productManager.js';
-import { uploader } from '../utils.js';
+import ProductManager from '../../productManager.js';
+import { uploader } from '../../utils.js';
 import { ProductsModel } from '../DAO/models/products.model.js';
 const PM = new ProductManager('./src/products.json', './src/id.json');
 const productsRouter = express.Router();

@@ -1,28 +1,11 @@
-import { Schema, model } from 'mongoose';
-
-const cartSchema = new Schema({
-  products: {
-    type: [
-      {
-        product: {
-          type: Schema.Types.ObjectId,
-          ref: 'products',
-        },
-        quantity: { type: Number, min: 1, default: 1 },
-      },
-    ],
-    default: [],
-  },
-});
-
-export const CartModel = model('cart', cartSchema);
+import { CartModel } from "./models/carts.model.js";
 
 export class CartModelLogic {
   async cartSave(cart) {
     return await cart.save();
   }
 
-  async createCart(req, res) {
+  async createCart() {
     try {
       const cart = await CartModel.create({});
       return cart;

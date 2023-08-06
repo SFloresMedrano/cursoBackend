@@ -1,5 +1,5 @@
-import { CartModel, cartModelLogic } from '../DAO/models/carts.model.js';
-import { productsModelLogic } from '../DAO/models/products.model.js';
+import { cartModelLogic } from '../DAO/mongo/carts.mongo.js';
+import { productsModelLogic } from '../DAO/mongo/products.mongo.js';
 
 class CartService {
   async createOne() {
@@ -8,7 +8,7 @@ class CartService {
   }
 
   async getCart(cartId) {
-    const cart = await cartModelLogic.findById(cartId);
+    const cart = await cartModelLogic.getCartById(cartId);
     if (cart) {
       return cart;
     } else {

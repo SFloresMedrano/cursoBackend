@@ -10,4 +10,4 @@ const schema = new Schema({
   cart: { type: String},
 });
 
-export const UserModel = model('users', schema);
+export const UserSchema = model('users', schema);

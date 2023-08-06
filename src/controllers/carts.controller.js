@@ -1,10 +1,10 @@
-import {cartService} from '../services/cartService.js';
+import { cartService } from '../services/cartService.js';
 
 class CartController {
-  async createCart(req, res) {
+  async createCart() {
     try {
       if (!req.session.cart) {
-        const cart = await cartService.createOne();
+        const cart = cartService.createOne;
         req.session.cart = cart._id;
         return res.status(201).json({ cart });
       } else {
@@ -12,15 +12,17 @@ class CartController {
         return res.status(201).json({ cart });
       }
     } catch (error) {
-      console.log('Couldnt create Cart');
-      return res.status(500).json({ msg: 'Couldnt create Cart' });
+      console.log('Couldnt create cart');
     }
   }
 
   async getCart(req, res) {
     try {
+      console.log('entra');
       const cid = req.params.cid;
+      console.log(cid);
       const cart = await cartService.getCart(cid);
+      console.log(cart);
       const simplifiedCart = cart.products.map((item) => {
         return {
           title: item.product.title,
@@ -35,7 +37,7 @@ class CartController {
       res.render('carts', { cart: simplifiedCart });
     } catch (error) {
       return res.status(400).json({
-        status: 'Error',
+        status: 'Error getting cart',
         msg: error.message,
       });
     }
