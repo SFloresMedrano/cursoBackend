@@ -1,12 +1,15 @@
-import express, { Router } from 'express';
+import { Router } from 'express';
 import { cartController } from '../controllers/carts.controller.js';
 export const cartRouter = new Router();
 
 // endpoint para leer los productos mongoose
+cartRouter.get('/',cartController.getCartId)
+
 cartRouter.get('/:cid', cartController.getCart);
 
 //endpoint para agregar un carrito
 cartRouter.post('/', cartController.createCart);
+
 
 //endpoint para agregar un producto
 cartRouter.post('/:cid/product/:pid', cartController.addProductToCart);

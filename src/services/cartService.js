@@ -3,7 +3,7 @@ import { productsModelLogic } from '../DAO/mongo/products.mongo.js';
 
 class CartService {
   async createOne() {
-    const createCart = cartModelLogic.createCart;
+    const createCart = await cartModelLogic.createCart;
     return createCart;
   }
 
@@ -18,11 +18,13 @@ class CartService {
 
   async addProduct(cartId, productId) {
     try {
-      const cart = await cartModelLogic.findById(cartId);
+      const cart = await cartModelLogic.getCartById(cartId);
       const product = await productsModelLogic.findById(productId);
-      const prodIndex = cart.products.findIndex(
+      console.log(cart)
+      const prodIndex = cartProducts.findIndex(
         (p) => p.product.toString() === productId
       );
+      console.log(prodIndex)
       if (!cart) {
         throw new Error('Cart not found');
       }
@@ -35,7 +37,7 @@ class CartService {
         cart.products[prodIndex].quantity =
           cart.products[prodIndex].quantity + 1;
       }
-      await cartModelLogic.save(cart)
+      await cartModelLogic.cartUpdate(cartId,cart.products);
       return cart;
     } catch (error) {
       throw new Error('Couldnt add product. Please try again later');

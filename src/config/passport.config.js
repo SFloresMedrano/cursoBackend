@@ -92,7 +92,7 @@ export function iniPassport() {
         clientSecret: process.env.GITHUB_clientSecret,
         callbackURL: 'http://localhost:8080/api/sessions/githubcallback',
       },
-      async (accesToken, _, profile, done) => {
+      async (accesToken, _, profile, done,req,res) => {
         try {
           const res = await fetch('https://api.github.com/user/emails', {
             headers: {

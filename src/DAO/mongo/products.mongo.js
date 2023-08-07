@@ -28,7 +28,7 @@ class ProductsModelLogic {
     );
   }
 
-  async getOne(pid){
+  async findById(pid){
     const product = await ProductsModel.findById(pid);
     return product;
   }

@@ -122,8 +122,30 @@ let cartId = localStorage.getItem('cart-id');
 const API_URL = 'http://localhost:8080/api';
 
 function putIntoCart(_id) {
+  if (!cartId) {
+    const url = API_URL + '/carts';
+    const data = {};
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    };
+    fetch(url, options)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Response:', data);
+        const cartId = data.cartId
+        localStorage.setItem('cart-id', cartId);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert(JSON.stringify(error));
+      });
+  }
+
   cartId = localStorage.getItem('cart-id');
-  const url = API_URL + '/carts/' + cartId + '/product/' + _id;
+  const url = API_URL + '/carts/' + cartId + '/product/' + _id
   const data = {};
   const options = {
     method: 'POST',
@@ -137,30 +159,6 @@ function putIntoCart(_id) {
     .then((res) => {
       console.log(res);
       alert('added');
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      alert(JSON.stringify(error));
-    });
-}
-
-if (!cartId) {
-  alert('no id');
-  const url = API_URL + '/carts';
-  const data = {};
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  };
-  fetch(url, options)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Response:', data);
-      const cartId = data.data.cart._id
-      localStorage.setItem('cart-id', cartId);
     })
     .catch((error) => {
       console.error('Error:', error);

@@ -1,10 +1,6 @@
 import { CartModel } from "./models/carts.model.js";
 
 export class CartModelLogic {
-  async cartSave(cart) {
-    return await cart.save();
-  }
-
   async createCart() {
     try {
       const cart = await CartModel.create({});

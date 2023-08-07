@@ -48,12 +48,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Rutas API
-app.use('/api/products', productsRouter);
+app.use('api/products', productsRouter);
 app.use('/api/carts', cartRouter);
 app.use('/chat', chatRouter);
 app.use('/', viewsRouter);
 app.use('/api/sessions', authRouter);
 app.use('/current', viewsRouter)
+
 
 app.engine(
   'handlebars',

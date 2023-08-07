@@ -20,6 +20,7 @@ class ViewsController {
       products.first_name = req.session.user.first_name;
       products.last_name = req.session.user.last_name;
       products.cart = req.session.user.cart;
+      products.role = req.session.role;
       return res.render('products', products);
     } catch (error) {
       return res

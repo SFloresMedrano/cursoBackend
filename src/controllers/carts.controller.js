@@ -1,10 +1,10 @@
 import { cartService } from '../services/cartService.js';
 
 class CartController {
-  async createCart() {
+  async createCart(req, res) {
     try {
       if (!req.session.cart) {
-        const cart = cartService.createOne;
+        const cart = await cartService.createOne;
         req.session.cart = cart._id;
         return res.status(201).json({ cart });
       } else {
@@ -18,11 +18,8 @@ class CartController {
 
   async getCart(req, res) {
     try {
-      console.log('entra');
       const cid = req.params.cid;
-      console.log(cid);
       const cart = await cartService.getCart(cid);
-      console.log(cart);
       const simplifiedCart = cart.products.map((item) => {
         return {
           title: item.product.title,
@@ -106,6 +103,18 @@ class CartController {
         status: 'Error',
         msg: "Can't empty the cart. Please try again later",
       });
+    }
+  }
+
+  async getCartId(req,res){
+    try {
+      const cartId = req.session.user.cart
+      return res.json({cartId})
+    } catch (error) {
+      return res.status(400).json({
+        status: 'Error',
+        msg: 'Couldnt get cart Id'
+      })
     }
   }
 }

@@ -16,7 +16,8 @@
         <p>{{this.category}}</p>
 
         <a href="/products/{{this._id}}">View details</a>
-        {{#if isAdmin}}{{else}}
+        {{#if isAdmin}}
+        {{else}}
         <button onclick="putIntoCart('{{this._id}}')">Add to cart</button>
         {{/if}}
     </div>

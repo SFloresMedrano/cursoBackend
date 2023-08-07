@@ -16,10 +16,9 @@ class ProductsController {
     return res.render('detail', { product: simplifiedProduct });
   }
 
-  async getAllProducts(req, res) {
+  async getAllProducts(queryParams) {
     try {
-      const query = req.query;
-      const response = await productService.get(query);
+      const response = await productService.get(queryParams);
       return res.status(200).json(response);
     } catch (e) {
       console.log(e);
