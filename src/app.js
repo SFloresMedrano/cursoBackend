@@ -7,24 +7,24 @@ import passport from 'passport';
 import path from 'path';
 import { Server } from 'socket.io';
 import { iniPassport } from './config/passport.config.js';
-import ProductManager from './productManager.js';
 import { authRouter } from './routes/authRouter.js';
 import cartRouter from './routes/cartRouter.js';
 import chatRouter from './routes/chatRouter.js';
+import loggerRouter from './routes/loggerRouter.js';
 import productsRouter from './routes/productsRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
-import { __dirname, addLogger, connectMongo } from './utils.js';
-import { persistance } from './config/configPersistence.js';
-import { addLogger } from './utils.js';
-const PM = new ProductManager('./src/products.json', './src/id.json');
+import { __dirname, addLogger, logger, connectMongo } from './utils.js';
 
 const app = express();
 const PORT = 8080;
 
-connectMongo();
-console.log(persistance)
+connectMongo()
+  .then(() => {
+    logger.info('Plugged Mongo');
+  })
 
-app.use(addLogger)
+
+app.use(addLogger);
 
 app.use(
   session({
@@ -56,8 +56,8 @@ app.use('/api/carts', cartRouter);
 app.use('/chat', chatRouter);
 app.use('/', viewsRouter);
 app.use('/api/sessions', authRouter);
-app.use('/current', viewsRouter)
-app.use('/loggerTest', loggerRouter)
+app.use('/current', viewsRouter);
+app.use('/loggerTest', loggerRouter);
 
 app.engine(
   'handlebars',
@@ -89,7 +89,7 @@ app.get('*', async (req, res) => {
 
 // Servidor comun
 const httpServer = app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`, __dirname);
+  logger.info(`Listening on port ${PORT}`, __dirname);
 });
 
 // Servidor socket
