@@ -13,8 +13,9 @@ import cartRouter from './routes/cartRouter.js';
 import chatRouter from './routes/chatRouter.js';
 import productsRouter from './routes/productsRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
-import { __dirname, connectMongo } from './utils.js';
+import { __dirname, addLogger, connectMongo } from './utils.js';
 import { persistance } from './config/configPersistence.js';
+import { addLogger } from './utils.js';
 const PM = new ProductManager('./src/products.json', './src/id.json');
 
 const app = express();
@@ -22,6 +23,8 @@ const PORT = 8080;
 
 connectMongo();
 console.log(persistance)
+
+app.use(addLogger)
 
 app.use(
   session({
@@ -54,7 +57,7 @@ app.use('/chat', chatRouter);
 app.use('/', viewsRouter);
 app.use('/api/sessions', authRouter);
 app.use('/current', viewsRouter)
-
+app.use('/loggerTest', loggerRouter)
 
 app.engine(
   'handlebars',

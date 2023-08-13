@@ -35,3 +35,43 @@ export const createHash = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 export const isValidPassword = (password, hashPassword) =>
   bcrypt.compareSync(password, hashPassword);
+
+
+//--------------------logger----------------
+import winston from 'winston';
+
+const devlogger = winston.createLogger({
+  transports: [
+    new winston.transports.Console({
+      level: 'debug',
+      format: winston.format.colorize({ all: true }),
+    }),
+  ],
+});
+
+const prodlogger = winston.createLogger({
+  transports: [
+    new winston.transports.Console({
+      level: 'info',
+      format: winston.format.colorize({ all: true }),
+    }),
+    new winston.transports.File({
+      filename: './errors.log',
+      level: 'error',
+      format: winston.format.simple(),
+    }),
+  ],
+});
+
+export const addLogger = (req, res, next) => {
+  const environment = process.env.NODE_ENV || 'development';
+  if (environment === 'production') {
+    req.logger = prodlogger;
+  } else {
+    req.logger = devlogger;
+  }
+  req.logger.info(
+    `${req.method} on ${req.url} - ${new Date().toLocaleTimeString()}`
+  );
+  next();
+};
