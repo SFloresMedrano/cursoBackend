@@ -58,6 +58,7 @@ app.use('/api/sessions', authRouter);
 app.use('/current', viewsRouter);
 app.use('/loggerTest', loggerRouter);
 app.use(errorHandler);
+
 app.engine(
   'handlebars',
   exphbs.create({

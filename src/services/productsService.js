@@ -1,6 +1,7 @@
 import { productsModelLogic } from '../DAO/mongo/products.mongo.js';
 import { ProductsModel } from '../DAO/mongo/models/products.model.js';
 import { logger } from '../utils.js';
+import errorsNum from '../errors/enum.js';
 
 class ProductService {
   validate(title, description, price, code, stock, category) {

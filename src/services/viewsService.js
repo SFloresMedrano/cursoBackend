@@ -27,7 +27,6 @@ class ViewsService {
       category: item.category,
     }));
     if (!productsSimplified) {
-      logger.warn('Can not connect to database');
       CustomError.createError({
         name: 'Retrieving products error',
         cause: generateUserErrorInfo(user),

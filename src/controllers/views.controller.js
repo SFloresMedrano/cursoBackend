@@ -23,22 +23,22 @@ class ViewsController {
       products.role = req.session.role;
       return res.render('products', products);
     } catch (error) {
-      return res
-        .status(500)
-        .json({ status: 'error', message: 'Error getting products' });
+      next();
     }
   }
 
   getCurrentUser = (req, res) => {
-    try {
-      if (!req.session.user.first_name == '') {
-        const user = new UserDTO(req.session.user);
-        return res.status(200).json({ user });
-      }
-    } catch (error) {
-      return res
-      .status(500)
-      .json({ status: 'error', message: 'User not logged in' });
+    if (!req.session.user.first_name) {
+      CustomError.createError({
+        name: 'User not logged in',
+        cause: 'Authorization failed',
+        message: 'Authorization failed',
+        code: errorsNum.AUTHORIZATION_FAILED,
+      });
+    }
+    if (!req.session.user.first_name == '') {
+      const user = new UserDTO(req.session.user);
+      return res.status(200).json({ user });
     }
   };
 
@@ -47,17 +47,15 @@ class ViewsController {
       const { limit = 10, page = 1, sort, query } = req.query;
       const queryParams = { limit, page, sort, query };
       const products = await viewsService.getProducts(queryParams);
+
       products.first_name = req.session.user.first_name;
       products.last_name = req.session.user.last_name;
       products.cart = req.session.user.cart;
       return res.render('home', products);
     } catch (error) {
-      return res
-        .status(500)
-        .json({ status: 'error', message: 'Error getting products' });
+      next();
     }
   }
-  
 }
 
 export const viewsController = new ViewsController();
