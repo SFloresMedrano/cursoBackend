@@ -21,12 +21,7 @@ class ProductsController {
       const response = await productService.get(queryParams);
       return res.status(200).json(response);
     } catch (e) {
-      console.log(e);
-      return res.status(500).json({
-        status: 'Error',
-        msg: "Couldn't retrieve data. Please try again later",
-        data: {},
-      });
+      next();
     }
   }
 
@@ -52,12 +47,7 @@ class ProductsController {
           data: productAdded,
         });
       } catch (e) {
-        console.log(e);
-        return res.status(500).json({
-          status: 'Error',
-          msg: 'Please check that the fields arent empty or code is alredy in use',
-          data: {},
-        });
+        next();
       }
     }
   }
@@ -72,12 +62,7 @@ class ProductsController {
         data: {},
       });
     } catch (e) {
-      console.log(e);
-      return res.status(500).json({
-        status: 'Error',
-        msg: "Couldn't delete the item(",
-        data: {},
-      });
+      next();
     }
   }
 }

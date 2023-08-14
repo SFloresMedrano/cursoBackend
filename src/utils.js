@@ -32,12 +32,21 @@ const logLevels = {
   debug: 5,
 };
 
+const options = { 
+  year: 'numeric', 
+  month: '2-digit', 
+  day: '2-digit', 
+  hour: '2-digit', 
+  minute: '2-digit', 
+  second: '2-digit' 
+};
+
 const myFormat = printf(({ level, message }) => {
-  return `[${new Date().toLocaleTimeString()}] [${level}]: ${message}`;
+  return `[${new Date().toLocaleTimeString(undefined, options)}] [${level}]: ${message}`;
 });
 
 const myFormatFile = printf(({ level, message }) => {
-  return `[${new Date().toLocaleTimeString()}] [${level.toLocaleUpperCase()}]: ${message}`;
+  return `[${new Date().toLocaleTimeString(undefined, options)}] [${level.toLocaleUpperCase()}]: ${message}`;
 });
 
 let logger;
