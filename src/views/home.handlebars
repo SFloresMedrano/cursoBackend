@@ -28,10 +28,10 @@
   {{#each products}}
     <ul id="{{_id}}" style='margin-bottom:30px;'>
       <li>Nombre: {{title}}</li>
+      <li>Codigo: {{description}}</li>
       <li>Codigo: {{code}}</li>
+      <li>Stock: {{stock}}</li>
       <li>ID: {{_id}}</li>
-      <button type="button" onclick="addProduct('{{_id}}')" name="Add">Add to Cart</button>
-      <button type="button" onclick="deleteProduct('{{_id}}')" name="Remove">Remove from Cart</button>
     </ul>
   {{/each}}
 

@@ -7,14 +7,15 @@ import passport from 'passport';
 import path from 'path';
 import { Server } from 'socket.io';
 import { iniPassport } from './config/passport.config.js';
+import errorHandler from './middlewares/error.js';
 import { authRouter } from './routes/authRouter.js';
 import cartRouter from './routes/cartRouter.js';
 import chatRouter from './routes/chatRouter.js';
 import loggerRouter from './routes/loggerRouter.js';
+import mockRouter from './routes/mockRouter.js';
 import productsRouter from './routes/productsRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
-import { __dirname, addLogger, logger, connectMongo } from './utils.js';
-import errorHandler from './middlewares/error.js';
+import { __dirname, addLogger, connectMongo, logger } from './utils.js';
 
 const app = express();
 const PORT = 8080;
@@ -57,6 +58,7 @@ app.use('/', viewsRouter);
 app.use('/api/sessions', authRouter);
 app.use('/current', viewsRouter);
 app.use('/loggerTest', loggerRouter);
+app.use('/mockingproducts', mockRouter);
 app.use(errorHandler);
 
 app.engine(
