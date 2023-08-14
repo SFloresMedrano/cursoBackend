@@ -1,13 +1,17 @@
 import { productsModelLogic } from '../DAO/mongo/products.mongo.js';
 import { ProductsModel } from '../DAO/mongo/models/products.model.js';
+import { logger } from '../utils.js';
 
 class ProductService {
   validate(title, description, price, code, stock, category) {
     if (!title || !description || !price || !code || !stock || !category) {
-      console.log('Validation error: Please check if all fields are correct.');
-      throw new Error(
-        'Validation error: Please check if all fields are correct.'
-      );
+      logger.info('Error creating product');
+      CustomError.createError({
+        name: 'Error creating products',
+        cause: 'Fields are empty or invalid type',
+        message: 'Validation error: Please check if all fields are correct.',
+        code: errorsNum.INVALID_TYPES_ERROR,
+      });
     }
   }
 
@@ -26,7 +30,15 @@ class ProductService {
     };
 
     const result = await ProductsModel.paginate(filter, options);
-
+    if (!result) {
+      logger.info('Error retrieving products');
+      CustomError.createError({
+        name: 'Error retrieving products',
+        cause: 'Products Model not responding',
+        message: 'Products Model in productsService not responding',
+        code: errorsNum.DATABASE_ERROR,
+      });
+    }
     const response = {
       status: 'success',
       payload: result.docs,
@@ -56,15 +68,28 @@ class ProductService {
       stock,
       category
     );
+    if (!productCreated) {
+      logger.info('Error creating product in database');
+      CustomError.createError({
+        name: 'Error creating products',
+        cause: 'Products Model not responding',
+        message: 'Products Model in productsService not responding',
+        code: errorsNum.DATABASE_ERROR,
+      });
+    }
     return productCreated;
   }
 
   async deleteOne(_id) {
     const deleted = await productsModelLogic.deleteOne(_id);
-    if (deleted.deletedCount === 1) {
-      return true;
-    } else {
-      throw new Error('Product not found');
+    if (!deleted) {
+      logger.info('Error deleting product in database');
+      CustomError.createError({
+        name: 'Error deleting products',
+        cause: 'Products Model not responding',
+        message: 'Products Model in productsService not responding',
+        code: errorsNum.DATABASE_ERROR,
+      });
     }
   }
 
@@ -79,11 +104,29 @@ class ProductService {
       stock,
       category
     );
+    if (!productUpdated) {
+      logger.info('Error updating product in database');
+      CustomError.createError({
+        name: 'Error updating products',
+        cause: 'Products Model not responding',
+        message: 'Products Model in productsService not responding',
+        code: errorsNum.DATABASE_ERROR,
+      });
+    }
     return productUpdated;
   }
 
   async getOne(pid) {
     const product = await productsModelLogic.getOne(pid);
+    if (!product) {
+      logger.info('Error retrieving product in database');
+      CustomError.createError({
+        name: 'Error retrieving one product',
+        cause: 'Products Model not responding',
+        message: 'Products Model in productsService not responding',
+        code: errorsNum.DATABASE_ERROR,
+      });
+    }
     return product;
   }
 }

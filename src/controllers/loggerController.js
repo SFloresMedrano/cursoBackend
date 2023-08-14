@@ -1,5 +1,5 @@
 class LoggerController {
-  async print(req, res) {
+  async printTest(req, res) {
     req.logger.debug('Debug');
     req.logger.http('info');
     req.logger.info('info');

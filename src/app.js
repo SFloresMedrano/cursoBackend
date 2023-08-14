@@ -14,15 +14,14 @@ import loggerRouter from './routes/loggerRouter.js';
 import productsRouter from './routes/productsRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
 import { __dirname, addLogger, logger, connectMongo } from './utils.js';
+import errorHandler from './middlewares/error.js';
 
 const app = express();
 const PORT = 8080;
 
-connectMongo()
-  .then(() => {
-    logger.info('Plugged Mongo');
-  })
-
+connectMongo().then(() => {
+  logger.info('Plugged Mongo');
+});
 
 app.use(addLogger);
 
@@ -58,7 +57,7 @@ app.use('/', viewsRouter);
 app.use('/api/sessions', authRouter);
 app.use('/current', viewsRouter);
 app.use('/loggerTest', loggerRouter);
-
+app.use(errorHandler);
 app.engine(
   'handlebars',
   exphbs.create({
