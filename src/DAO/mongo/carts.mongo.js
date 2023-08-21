@@ -12,7 +12,7 @@ export class CartModelLogic {
 
   async getCartById(cartId) {
     try {
-      const cart = await CartModel.findById(cartId).populate(
+      const cart = await CartModel.findById({_id:cartId}).populate(
         'products.product'
       );
       return cart;

@@ -1,3 +1,5 @@
+import { logger } from '../utils.js';
+
 class AuthController {
   async callback(req, res) {
     req.session.user = req.user;
@@ -21,9 +23,6 @@ class AuthController {
   }
 
   async loginPassport(req, res) {
-    if (!req.user) {
-      return res.json({ error: 'Invalid credentials' });
-    }
     req.session.user = {
       _id: req.user._id,
       email: req.user.email,
@@ -33,6 +32,10 @@ class AuthController {
       role: req.user.role,
       cart: req.user.cart,
     };
+    if (!req.session.user) {
+      return res.json({ error: 'Invalid credentials' });
+    }
+    logger.info(req.session.user);
     return res.redirect('/products');
   }
 
@@ -45,18 +48,19 @@ class AuthController {
   }
 
   async registerPassport(req, res) {
-    if (!req.user) {
-      return res.json({ error: 'Something went wrong' });
-    }
     req.session.user = {
       _id: req.user._id,
       email: req.user.email,
-      firstName: req.user.first_name,
-      lastName: req.user.last_name,
+      first_name: req.user.first_name,
+      last_name: req.user.last_name,
       age: req.user.age,
       role: req.user.role,
       cart: req.user.cart,
     };
+    if (!req.session.user) {
+      return res.json({ error: 'Something went wrong' });
+    }
+    logger.info(req.session.user);
     return res.redirect('/products');
   }
 

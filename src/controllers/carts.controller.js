@@ -1,14 +1,15 @@
 import { cartService } from '../services/cartService.js';
+import { logger } from '../utils.js';
 
 class CartController {
   async createCart(req, res) {
     try {
-      if (!req.session.cart) {
+      if (!req.session.user.cart) {
         const cart = await cartService.createOne;
-        req.session.cart = cart._id;
+        req.session.user.cart = cart._id;
         return res.status(201).json({ cart });
       } else {
-        cart = req.session.cart;
+        cart = req.session.user.cart;
         return res.status(201).json({ cart });
       }
     } catch (error) {
@@ -26,8 +27,8 @@ class CartController {
           description: item.product.description,
           price: item.product.price,
           code: item.product.code,
+          quantity: item.quantity,
           category: item.product.category,
-          quantity: item.product.quantity,
           id: item.product._id,
         };
       });
@@ -41,7 +42,7 @@ class CartController {
   }
   async addProductToCart(req, res) {
     try {
-      const cartId = req.params.cid;
+      const cartId = req.session.user.cart;
       const productId = req.params.pid;
       await cartService.addProduct(cartId, productId);
       return res.status(200).json({
@@ -49,6 +50,7 @@ class CartController {
         msg: 'Product added',
       });
     } catch {
+      logger.warn("Can't add new product. Please check the cart or product");
       return res.status(400).json({
         status: 'Error',
         msg: "Can't add new product. Please check the cart or product",
@@ -95,7 +97,7 @@ class CartController {
       const cartId = req.params.cid;
       await cartService.clearCart(cartId);
       return res.status(200).json({
-        status: 'Succes',
+        status: 'Success',
         msg: 'Emptied cart',
       });
     } catch (error) {
@@ -106,15 +108,15 @@ class CartController {
     }
   }
 
-  async getCartId(req,res){
+  async getCartId(req, res) {
     try {
-      const cartId = req.session.user.cart
-      return res.json({cartId})
+      const cartId = req.session.user.cart;
+      return res.json({ cartId });
     } catch (error) {
       return res.status(400).json({
         status: 'Error',
-        msg: 'Couldnt get cart Id'
-      })
+        msg: 'Couldnt get cart Id',
+      });
     }
   }
 }

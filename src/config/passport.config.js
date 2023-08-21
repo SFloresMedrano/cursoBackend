@@ -6,7 +6,7 @@ import local from 'passport-local';
 import { CartModel } from '../DAO/mongo/models/carts.model.js';
 import { UserSchema } from '../DAO/mongo/models/users.model.js';
 import { userModelLogic } from '../DAO/mongo/users.mongo.js';
-import { createHash, isValidPassword } from '../utils.js';
+import { createHash, isValidPassword, logger } from '../utils.js';
 
 const LocalStrategy = local.Strategy;
 
@@ -15,7 +15,7 @@ export function iniPassport() {
     'login',
     new LocalStrategy(
       { usernameField: 'email' },
-      async (username, password, done) => {
+      async (username, password, done,req,res) => {
         try {
           const user = await UserSchema.findOne({ email: username });
           if (!user) {
@@ -26,7 +26,7 @@ export function iniPassport() {
             console.log('Invalid Password');
             return done(null, false);
           }
-
+          logger.info('User logged in');
           return done(null, user);
         } catch (err) {
           return done(err);
@@ -50,7 +50,7 @@ export function iniPassport() {
             console.log('User already exists');
             return done(null, false);
           }
-          const cart = await CartModel.create({})
+          const cart = await CartModel.create({});
           const cartId = cart._id;
           const newUser = {
             email,
@@ -73,9 +73,10 @@ export function iniPassport() {
             role: userCreated.role,
             cart: userCreated.cart,
           };
-          console.log(req.session.user)
+          logger.info(req.session.user);
           return done(null, userCreated);
         } catch (e) {
+          logger.alert('Error registering new user');
           console.log('Error in register');
           console.log(e);
           return done(e);
@@ -92,7 +93,7 @@ export function iniPassport() {
         clientSecret: process.env.GITHUB_clientSecret,
         callbackURL: 'http://localhost:8080/api/sessions/githubcallback',
       },
-      async (accesToken, _, profile, done,req,res) => {
+      async (accesToken, _, profile, done, req, res) => {
         try {
           const res = await fetch('https://api.github.com/user/emails', {
             headers: {
@@ -111,6 +112,7 @@ export function iniPassport() {
 
           let user = await UserSchema.findOne({ email: profile.email });
           const fullname = profile._json.name.split(' ');
+
           if (!user) {
             const cart = await CartModel.create({});
             const cartId = cart._id;
@@ -134,7 +136,7 @@ export function iniPassport() {
               role: userCreated.role,
               cart: userCreated.cart,
             };
-            console.log(req.session.user)
+            console.log(req.session.user);
             return done(null, userCreated);
           } else {
             console.log('User already exists');

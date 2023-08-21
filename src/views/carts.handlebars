@@ -6,12 +6,17 @@ Listado de productos
 <ul>
     <li>Product: {{this.title}}</li>
     <li>Description: {{this.description}}</li>
-    <li>Code : {{this.code}}</li>
     <li>Price : {{this.price}}</li>
+    <li>Quantity: {{this.quantity}}</li>
     <li>Category : {{this.category}}</li>
-    <li>Id: {{this.id}}</li>
+    <li>Product Id: {{this.id}}</li>
 </ul>
 {{/each}}
+<a href="/products">Go to Products</a>
+<a href="">I have finished buying</a>
+
+<button onclick="clearCart()">Clear cart</button>
 {{else}}
 <h2>El carrito no tiene productos</h2>
+<a href="/products">Go to Products</a>
 {{/if}}

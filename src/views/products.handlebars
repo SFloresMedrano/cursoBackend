@@ -2,9 +2,8 @@
 </h1>
 {{#if first_name}}<a href="/api/sessions/logout">Cerrar sesión</a>{{else}}<a href="/api/sessions">Iniciar sesión</a>{{/if}}
 
-
-
 <h1>Products Paginated</h1>
+<a href="/carts/{{this.cart}}">Go to Cart</a>
 {{#each products}}
     <div>
         <h2>{{this.title}}</h2>

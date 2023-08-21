@@ -20,22 +20,15 @@ class CartService {
     try {
       const cart = await cartModelLogic.getCartById(cartId);
       const product = await productsModelLogic.findById(productId);
-      console.log(cart)
-      const prodIndex = cartProducts.findIndex(
-        (p) => p.product.toString() === productId
-      );
-      console.log(prodIndex)
-      if (!cart) {
-        throw new Error('Cart not found');
+      if (!cart || ! product) {
+        throw new Error('Cart or product not found');
       }
-      if (!product) {
-        throw new Error('Product not found');
-      }
-      if (prodIndex === -1) {
+      const productIndex = cart.products.findIndex(item => item.product._id.toString() === productId)
+      if (productIndex === -1) {
         cart.products.push({ product: product._id, quantity: 1 });
       } else {
-        cart.products[prodIndex].quantity =
-          cart.products[prodIndex].quantity + 1;
+        cart.products[productIndex].quantity =
+          cart.products[productIndex].quantity + 1;
       }
       await cartModelLogic.cartUpdate(cartId,cart.products);
       return cart;
@@ -89,7 +82,7 @@ class CartService {
 
   async clearCart(cartId) {
     try {
-      const cart = await cartModelLogic.findById(cartId);
+      const cart = await cartModelLogic.clearCart(cartId);
     } catch (error) {
       throw new Error('Couldnt empty cart.');
     }

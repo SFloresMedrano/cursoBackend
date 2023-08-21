@@ -1,4 +1,3 @@
-
 const addProductForm = document.getElementById('form');
 const addProductFormRealtime = document.getElementById('formRealtime');
 const productListContainer = document.getElementById('list');
@@ -121,31 +120,34 @@ Array.from(pageLinks).forEach((link) =>
 let cartId = localStorage.getItem('cart-id');
 const API_URL = 'http://localhost:8080/api';
 
-function putIntoCart(_id) {
-  if (!cartId) {
-    const url = API_URL + '/carts';
-    const data = {};
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    };
-    fetch(url, options)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Response:', data);
-        const cartId = data.cartId
-        localStorage.setItem('cart-id', cartId);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        alert(JSON.stringify(error));
-      });
-  }
+async function getCartId(){
+  const url = API_URL + '/carts';
+  const data = {};
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  await fetch(url, options)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Response:', data);
+      const cartId = data.cartId;
+      localStorage.setItem('cart-id', cartId);
+      console.log("cartId getId",cartId)
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert(JSON.stringify(error));
+    });
+};
 
+async function putIntoCart(_id) {
+    await getCartId();
   cartId = localStorage.getItem('cart-id');
-  const url = API_URL + '/carts/' + cartId + '/product/' + _id
+  console.log("cartId Local",cartId)
+  const url = API_URL + '/carts/' + cartId + '/product/' + _id;
   const data = {};
   const options = {
     method: 'POST',
@@ -162,6 +164,30 @@ function putIntoCart(_id) {
     })
     .catch((error) => {
       console.error('Error:', error);
+      alert(JSON.stringify(error));
+    });
+}
+
+async function clearCart() {
+  await getCartId();
+  cartId = localStorage.getItem('cart-id');
+  const url = API_URL + '/carts/' + cartId;
+  const data = {};
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  };
+  fetch(url, options)
+    .then((response) => response.json())
+    .then((res) => {
+      console.log(res);
+      alert('Emptied Cart');
+    })
+    .catch((error) => {
+      console.error('Error: Couldnt empty cart');
       alert(JSON.stringify(error));
     });
 }

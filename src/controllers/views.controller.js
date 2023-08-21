@@ -1,6 +1,7 @@
 import UserDTO from '../DAO/DTO/user.dto.js';
 import { productService } from '../services/productsService.js';
 import { viewsService } from '../services/viewsService.js';
+import { cartController } from './carts.controller.js';
 
 class ViewsController {
   async redirect(req, res) {
@@ -20,7 +21,7 @@ class ViewsController {
       products.first_name = req.session.user.first_name;
       products.last_name = req.session.user.last_name;
       products.cart = req.session.user.cart;
-      products.role = req.session.role;
+      products.role = req.session.user.role;
       return res.render('products', products);
     } catch (error) {
       next();
