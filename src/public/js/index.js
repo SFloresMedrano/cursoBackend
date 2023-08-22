@@ -6,15 +6,21 @@ const prevLinkE = document.getElementById('prevLink');
 const nextLinkE = document.getElementById('nextLink');
 
 async function deleteProduct(id) {
-  const response = await fetch(`/api/products/${id}`, {
+  const url = `/api/products/${id}`;
+  const options = {
     method: 'delete',
-  });
-  if (response.ok) {
-    const ul = document.getElementById(id);
-    ul.remove();
-  } else {
-    alert('Esto no pudo ser borrado');
-  }
+  };
+  await fetch(url, options)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Response: Product deleted from fetch', data);
+      const ul = document.getElementById(id);
+      ul.remove();
+    })
+    .catch((error) => {
+      console.error('Error: Couldnt delete from fetch', error);
+      alert(JSON.stringify(error));
+    });
 }
 
 function deleteProductSocket(id) {
@@ -36,15 +42,26 @@ try {
 
     const newProduct = { title, description, code, price, stock, category };
 
-    const response = await fetch('/api/products/', {
-      method: 'post',
-      body: JSON.stringify(newProduct),
+    const url = '/api/products';
+    const options = {
+      method: 'POST',
       headers: {
-        'content-type': 'application/json',
+        'Content-Type': 'application/json',
       },
-    });
+      body: JSON.stringify(newProduct),
+    };
+
+    await fetch(url, options)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Response: Product created fetch', data);
+      })
+      .catch((error) => {
+        console.error('Error: Couldnt create product from fetch', error);
+        alert(JSON.stringify(error));
+      });
+
     addProductForm.reset();
-    window.location.reload();
   });
 } catch (error) {}
 
@@ -120,7 +137,7 @@ Array.from(pageLinks).forEach((link) =>
 let cartId = localStorage.getItem('cart-id');
 const API_URL = 'http://localhost:8080/api';
 
-async function getCartId(){
+async function getCartId() {
   const url = API_URL + '/carts';
   const data = {};
   const options = {
@@ -135,18 +152,16 @@ async function getCartId(){
       console.log('Response:', data);
       const cartId = data.cartId;
       localStorage.setItem('cart-id', cartId);
-      console.log("cartId getId",cartId)
     })
     .catch((error) => {
       console.error('Error:', error);
       alert(JSON.stringify(error));
     });
-};
+}
 
 async function putIntoCart(_id) {
-    await getCartId();
+  await getCartId();
   cartId = localStorage.getItem('cart-id');
-  console.log("cartId Local",cartId)
   const url = API_URL + '/carts/' + cartId + '/product/' + _id;
   const data = {};
   const options = {
@@ -191,3 +206,6 @@ async function clearCart() {
       alert(JSON.stringify(error));
     });
 }
+
+try {
+} catch (error) {}

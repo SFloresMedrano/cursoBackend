@@ -1,4 +1,5 @@
 import { productService } from '../services/productsService.js';
+import { logger } from '../utils.js';
 
 class ProductsController {
   async getProduct(req, res) {
@@ -21,7 +22,7 @@ class ProductsController {
       const response = await productService.get(queryParams);
       return res.status(200).json(response);
     } catch (e) {
-      next();
+      logger.warn('Couldnt get products')
     }
   }
 
@@ -38,31 +39,31 @@ class ProductsController {
     const checkFields = reqFields.every((prop) => productBody[prop]);
     if (checkFields) {
       try {
-        const productAdded = await ProductsModel.create({
-          ...productBody,
-        });
+        const productAdded = await productService.createOne({ productBody });
         return res.status(201).json({
           status: 'Success',
           msg: 'Product added',
           data: productAdded,
         });
       } catch (e) {
-        next();
+        logger.warn('Couldnt add product');
       }
+    } else {
+      logger.warn('Fields are not validated');
     }
   }
 
   async deleteProduct(req, res) {
     try {
-      const { id } = req.params.pid;
-      const productDelete = await ProductsModel.deleteOne({ _id: id });
+      const id = req.params.pid;
+      const productDelete = await productService.deleteOne({ _id: id });
       return res.status(200).json({
         status: 'Success',
         msg: 'Product deleted',
         data: {},
       });
     } catch (e) {
-      next();
+      
     }
   }
 }

@@ -3,7 +3,8 @@
 {{#if first_name}}<a href="/api/sessions/logout">Cerrar sesión</a>{{else}}<a href="/api/sessions">Iniciar sesión</a>{{/if}}
 
 <h1>Products Paginated</h1>
-<a href="/carts/{{this.cart}}">Go to Cart</a>
+{{#if isAdmin}}<a href="/productsform">Go to Products Manager</a>{{else}}<a href="/carts/{{this.cart}}">Go to Cart</a>{{/if}}
+
 {{#each products}}
     <div>
         <h2>{{this.title}}</h2>

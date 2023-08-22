@@ -2,6 +2,7 @@ import { productsModelLogic } from '../DAO/mongo/products.mongo.js';
 import { ProductsModel } from '../DAO/mongo/models/products.model.js';
 import { logger } from '../utils.js';
 import errorsNum from '../errors/enum.js';
+import CustomError from '../errors/customError.js';
 
 class ProductService {
   validate(title, description, price, code, stock, category) {
@@ -59,7 +60,14 @@ class ProductService {
     return response;
   }
 
-  async createOne(title, description, price, code, stock, category) {
+  async createOne(productBody) {
+    const product = {...productBody.productBody}
+    const title = product.title;
+    const description = product.description;
+    const price = product.price;
+    const code = product.code;
+    const stock = product.stock;
+    const category = product.category;
     this.validate(title, description, price, code, stock, category);
     const productCreated = await productsModelLogic.createProduct(
       title,
@@ -81,10 +89,10 @@ class ProductService {
     return productCreated;
   }
 
-  async deleteOne(_id) {
-    const deleted = await productsModelLogic.deleteOne(_id);
+  async deleteOne(id) {
+    const deleted = await productsModelLogic.deleteOne(id);
     if (!deleted) {
-      logger.info('Error deleting product in database');
+      logger.warn('Error deleting product in database');
       CustomError.createError({
         name: 'Error deleting products',
         cause: 'Products Model not responding',

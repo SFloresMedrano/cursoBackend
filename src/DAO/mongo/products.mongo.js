@@ -18,7 +18,7 @@ class ProductsModelLogic {
   }
 
   async deleteOne(_id) {
-    await ProductsModel.deleteOne({ _id });
+    await ProductsModel.deleteOne({ "_id":_id });
   }
 
   async updateOne(id, title, description, price, code, stock, category) {

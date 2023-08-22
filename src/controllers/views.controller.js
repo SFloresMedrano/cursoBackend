@@ -2,6 +2,7 @@ import UserDTO from '../DAO/DTO/user.dto.js';
 import { productService } from '../services/productsService.js';
 import { viewsService } from '../services/viewsService.js';
 import { cartController } from './carts.controller.js';
+import CustomError from '../errors/customError.js';
 
 class ViewsController {
   async redirect(req, res) {
@@ -22,6 +23,7 @@ class ViewsController {
       products.last_name = req.session.user.last_name;
       products.cart = req.session.user.cart;
       products.role = req.session.user.role;
+      products.isAdmin = (products.role === 'admin') ? true : false;
       return res.render('products', products);
     } catch (error) {
       next();

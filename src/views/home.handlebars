@@ -28,11 +28,12 @@
   {{#each products}}
     <ul id="{{_id}}" style='margin-bottom:30px;'>
       <li>Nombre: {{title}}</li>
-      <li>Codigo: {{description}}</li>
-      <li>Codigo: {{code}}</li>
+      <li>Description: {{description}}</li>
+      <li>Price: {{price}}</li>
       <li>Stock: {{stock}}</li>
       <li>ID: {{_id}}</li>
     </ul>
+    <button onclick="deleteProduct('{{this._id}}')">Remove Product from DataBase</button>
   {{/each}}
 
 {{#if (gt currentPage 1)}}
