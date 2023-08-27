@@ -73,7 +73,6 @@ export function iniPassport() {
             role: userCreated.role,
             cart: userCreated.cart,
           };
-          logger.info(req.session.user);
           return done(null, userCreated);
         } catch (e) {
           logger.alert('Error registering new user');

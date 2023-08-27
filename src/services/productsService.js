@@ -61,7 +61,7 @@ class ProductService {
   }
 
   async createOne(productBody) {
-    const product = {...productBody.productBody}
+    const product = { ...productBody.productBody };
     const title = product.title;
     const description = product.description;
     const price = product.price;
@@ -100,6 +100,7 @@ class ProductService {
         code: errorsNum.DATABASE_ERROR,
       });
     }
+    return deleted;
   }
 
   async updateOne(id, title, description, price, code, stock, category) {

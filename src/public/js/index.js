@@ -19,7 +19,7 @@ async function deleteProduct(id) {
     })
     .catch((error) => {
       console.error('Error: Couldnt delete from fetch', error);
-      alert(JSON.stringify(error));
+      alert('Error deleting from fetch', JSON.stringify(error));
     });
 }
 
@@ -62,6 +62,14 @@ try {
       });
 
     addProductForm.reset();
+    window.location.reload();
+  });
+} catch (error) {}
+
+try {
+  productListContainer.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
   });
 } catch (error) {}
 
@@ -206,6 +214,3 @@ async function clearCart() {
       alert(JSON.stringify(error));
     });
 }
-
-try {
-} catch (error) {}
