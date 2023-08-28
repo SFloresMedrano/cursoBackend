@@ -16,10 +16,10 @@
         <p>{{this.category}}</p>
 
         <a href="/products/{{this._id}}">View details</a>
-        {{#if isAdmin}}
-        {{else}}
-        <button onclick="putIntoCart('{{this._id}}')">Add to cart</button>
+        {{#if ../isAdmin}}<button onclick="putIntoCart('{{this._id}}')" disabled>Add to cart</button>
+        {{else}}<button onclick="putIntoCart('{{this._id}}')">Add to cart</button>
         {{/if}}
+        
     </div>
 {{/each}}
 

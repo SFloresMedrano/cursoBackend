@@ -18,6 +18,6 @@ router.get('/carts/:cid', cartController.getCart);
 
 router.get('/products/:pid', productsController.getProduct);
 
-router.get('/current', viewsController.getCurrentUser);
+router.get('/user', viewsController.getCurrentUser);
 
 export default router;

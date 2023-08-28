@@ -17,28 +17,9 @@ async function pushChat(user, msg) {
   } catch (error) {}
 }
 
-/* async function pedirNombre() {
-  const { value: nombre } = await Swal.fire({
-    title: 'Enter your name',
-    input: 'text',
-    inputLabel: 'Your name',
-    inputValue: '',
-    showCancelButton: false,
-    inputValidator: (value) => {
-      if (!value) {
-        return 'You need to write something!';
-      }
-    },
-  });
-
-  nombreUsuario = nombre;
-} */
-
-/* pedirNombre(); */
-
 async function chatMsg() {
   try {
-    const url = 'http://localhost:8080/current';
+    const url = 'http://localhost:8080/current/user';
     const data = {};
     const options = {
       method: 'GET',
@@ -49,6 +30,7 @@ async function chatMsg() {
     const res = await fetch(url, options)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         nombreUsuario = data.user.email;
       })
       .catch((error) => {

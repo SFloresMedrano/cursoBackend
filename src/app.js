@@ -53,12 +53,12 @@ app.use(passport.session());
 // Rutas API
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartRouter);
-app.use('/chat', chatRouter);
-app.use('/', viewsRouter);
 app.use('/api/sessions', authRouter);
+app.use('/chat', chatRouter);
 app.use('/current', viewsRouter);
 app.use('/loggerTest', loggerRouter);
 app.use('/mockingproducts', mockRouter);
+app.use('/', viewsRouter);
 app.use(errorHandler);
 
 app.engine(

@@ -1,8 +1,8 @@
 import UserDTO from '../DAO/DTO/user.dto.js';
+import CustomError from '../errors/customError.js';
 import { productService } from '../services/productsService.js';
 import { viewsService } from '../services/viewsService.js';
-import { cartController } from './carts.controller.js';
-import CustomError from '../errors/customError.js';
+import { logger } from '../utils.js';
 
 class ViewsController {
   async redirect(req, res) {
@@ -26,7 +26,7 @@ class ViewsController {
       products.isAdmin = (products.role === 'admin') ? true : false;
       return res.render('products', products);
     } catch (error) {
-      next();
+      logger.alert('Couldnt load products')
     }
   }
 
