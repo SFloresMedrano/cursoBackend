@@ -1,9 +1,17 @@
+const socket = io();
 const addProductForm = document.getElementById('form');
 const addProductFormRealtime = document.getElementById('formRealtime');
 const productListContainer = document.getElementById('list');
 const pageLinks = document.getElementsByClassName('page-link');
 const prevLinkE = document.getElementById('prevLink');
 const nextLinkE = document.getElementById('nextLink');
+const chat = document.getElementById('chat');
+const input = document.getElementById('chat-box');
+const inputButton = document.getElementById('inputButton');
+const user = localStorage.getItem('userName');
+
+let cartId = localStorage.getItem('cart-id');
+const API_URL = 'http://localhost:8080/';
 
 async function deleteProduct(id) {
   const url = `/api/products/${id}`;
@@ -26,6 +34,28 @@ async function deleteProduct(id) {
 function deleteProductSocket(id) {
   socket.emit('productDelete', (id) => {});
   window.location.reload();
+}
+
+async function getUser() {
+  const url = API_URL + '/user';
+  const data = {};
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  await fetch(url, options)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Response:', data);
+      const userMail = data.email;
+      localStorage.setItem('userName', userMail);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert(JSON.stringify(error));
+    });
 }
 
 try {
@@ -77,6 +107,7 @@ try {
   socket.on('connect', () => {
     console.log('Conexion establecida con el servidor');
   });
+
 
   socket.on('productAdded', (product) => {
     const ul = `
@@ -142,11 +173,9 @@ Array.from(pageLinks).forEach((link) =>
 );
 
 //Fetching cartId
-let cartId = localStorage.getItem('cart-id');
-const API_URL = 'http://localhost:8080/api';
 
 async function getCartId() {
-  const url = API_URL + '/carts';
+  const url = API_URL + 'api/carts';
   const data = {};
   const options = {
     method: 'GET',

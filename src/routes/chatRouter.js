@@ -6,5 +6,8 @@ const chatRouter = express.Router();
 
 chatRouter.get('/', chatController.getMessages);
 
+chatRouter.get('/getchat', chatController.getChat);
+
 chatRouter.post('/', chatController.storeMessage);
+
 export default chatRouter;

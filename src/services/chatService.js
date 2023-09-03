@@ -2,7 +2,6 @@ import { messagesModelLogic } from '../DAO/mongo/messages.mongo.js';
 import { logger } from '../utils.js';
 import errorsNum from '../errors/enum.js';
 import CustomError from '../errors/customError.js';
-import { cartModelLogic } from '../DAO/mongo/carts.mongo.js';
 
 class ChatService {
   async getMessages() {
@@ -20,7 +19,6 @@ class ChatService {
   }
 
   async storeMessage(user, msg) {
-    console.log(user,msg,'service')
     const storedMessage = await messagesModelLogic.storeMessages(user,msg);
     if (!storedMessage) {
       logger.info('Error getting messages from database');

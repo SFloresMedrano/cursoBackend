@@ -7,20 +7,26 @@ import errorsNum from '../errors/enum.js';
 class ChatController {
   async getMessages(req, res) {
     if (!req.session.user) {
-        res.redirect('/api/sessions');     
+        return res.redirect('/api/sessions');     
     }
     const chat = {};
     chat.messages = await chatService.getMessages();
     chat.isAdmin = req.session.user.role === 'admin' ? true : false;
     chat.user = req.session.user.first_name;
     chat.email = req.session.user.email;
-    res.render('chat', { chat });
+    return res.render('chat', { chat });
   }
 
   async storeMessage(req, res) {
     const { user, msg } = req.body;
     const response = await messagesModelLogic.storeMessages({ user, msg });
     return response;
+  }
+
+  async getChat(req, res) {
+    const chat = {};
+    chat.messages = await chatService.getMessages();
+    return res.json({ chat});
   }
 }
 

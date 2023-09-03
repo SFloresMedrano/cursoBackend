@@ -16,9 +16,11 @@ import mockRouter from './routes/mockRouter.js';
 import productsRouter from './routes/productsRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
 import { __dirname, addLogger, connectMongo, logger } from './utils.js';
+import ip from 'ip';
 
 const app = express();
 const PORT = 8080;
+const ipClient = ip.address();
 
 connectMongo().then(() => {
   logger.info('Plugged Mongo');
@@ -98,18 +100,12 @@ const httpServer = app.listen(PORT, () => {
 const socketServer = new Server(httpServer);
 
 socketServer.on('connection', (socket) => {
-  console.log('Nuevo cliente conectado');
+  logger.info(`New client connected to chat ${ipClient}` )
   socket.emit('msg_back_to_front', { msg: 'Cliente Conectado' });
 
-  socket.on('productAdd', async (data) => {
-    const product = await PM.addProduct(data);
-    socketServer.emit('productAdded', product);
-  });
-
-  socket.on('productDelete', async (id) => {
-    await PM.deleteProduct(id);
-    socketServer.emit('productDeleted', id);
-  });
+  socket.on('Mensaje pusheado a BD',(data)=>{
+    console.log("Mensaje recibido")
+  })  
 });
 
 export default app;
