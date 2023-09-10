@@ -81,8 +81,6 @@ async function renderAllMessages() {
   document.getElementById('chat-messages').innerHTML = html;
 }
 
-/* socket.on('chat-message', (data) => {
-  renderAllMessages();
-}); */
+
 
 chatMsg();

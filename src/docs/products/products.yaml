@@ -1,0 +1,72 @@
+paths:
+  /products:
+    get:
+      summary: Obtiene todos los productos y renderiza una vista de los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron devueltos correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: Error del servidor. Falla de query o de conexión con el servidor
+  /products/{pid}:
+    get:
+      summary: Obtiene un producto de DB
+      tags:
+        - Product 
+      parameters:
+        - name: Product ID
+          in: path
+          required: true
+          description: ID del producto que se busca
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Products"
+        "500":
+        description: Falla en la conexión con BD
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        title:
+          type: String
+          description: Titulo del producto asignado por admin
+        description:
+          type: String
+          description: Descripcion del producto asignado por admin
+        code:
+          type: Number
+          description: Codigo interno del producto asignado por admin
+        price:
+          type: Number
+          description: Valor del producto asignado por admin
+        stock:
+          type: Number
+          description: Existencia del producto asignado por admin
+        category:
+          type: String
+          description: Categoria del producto asignado por admin
+      example:
+        _id: ObjectId("64eaeebeb5766b7749ecef71")
+        title: "Producto 3"
+        description: "Producto 3"
+        code: 120
+        price: 120
+        stock: 50
+        category: "Algo"

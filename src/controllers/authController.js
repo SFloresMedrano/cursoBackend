@@ -1,4 +1,5 @@
 import { logger } from '../utils.js';
+import { enviarCorreo } from '../utils.js';
 
 class AuthController {
   async callback(req, res) {
@@ -61,6 +62,7 @@ class AuthController {
       return res.json({ error: 'Something went wrong' });
     }
     logger.info(req.session.user);
+    enviarCorreo(req.session.user.email, req.session.user.first_name);
     return res.redirect('/products');
   }
 

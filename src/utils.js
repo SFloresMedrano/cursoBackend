@@ -32,21 +32,27 @@ const logLevels = {
   debug: 5,
 };
 
-const options = { 
-  year: 'numeric', 
-  month: '2-digit', 
-  day: '2-digit', 
-  hour: '2-digit', 
-  minute: '2-digit', 
-  second: '2-digit' 
+const options = {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
 };
 
 const myFormat = printf(({ level, message }) => {
-  return `[${new Date().toLocaleTimeString(undefined, options)}] [${level}]: ${message}`;
+  return `[${new Date().toLocaleTimeString(
+    undefined,
+    options
+  )}] [${level}]: ${message}`;
 });
 
 const myFormatFile = printf(({ level, message }) => {
-  return `[${new Date().toLocaleTimeString(undefined, options)}] [${level.toLocaleUpperCase()}]: ${message}`;
+  return `[${new Date().toLocaleTimeString(
+    undefined,
+    options
+  )}] [${level.toLocaleUpperCase()}]: ${message}`;
 });
 
 let logger;
@@ -120,3 +126,37 @@ export const createHash = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 export const isValidPassword = (password, hashPassword) =>
   bcrypt.compareSync(password, hashPassword);
+
+//----------------nodemailer --------------
+import nodemailer from 'nodemailer';
+
+const transport = nodemailer.createTransport({
+  service: 'gmail',
+  port: 587,
+  auth: {
+    user: process.env.GOOGLE_EMAIL,
+    pass: process.env.GOOGLE_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
+
+export const enviarCorreo = (address, name) => {
+  const result = transport.sendMail({
+    from: process.env.GOOGLE_EMAIL,
+    to: address,
+    subject: 'CODER Ecommerce - Registration succesful',
+    html: `
+              <div>
+                  <h1>Bienvenido a CODER Ecomm</h1>
+                  <p>Gracias por registrarte ${name}!!</p>
+                  <p>Esperamos que encuentres lo que estas buscando!</p>
+              </div>
+              <div>
+              <h4>Te saluda el equipo de CODER Ecomm</h4>
+              </div>
+
+          `,
+  });
+};

@@ -1,4 +1,5 @@
 const socket = io();
+
 const addProductForm = document.getElementById('form');
 const addProductFormRealtime = document.getElementById('formRealtime');
 const productListContainer = document.getElementById('list');
@@ -122,6 +123,10 @@ try {
   socket.on('productDelete', (id) => {
     const ul = document.getElementById(id);
     ul.remove();
+  });
+
+  socket.on('updateChat', () => {
+    renderAllMessages();
   });
 
   addProductFormRealtime.addEventListener('submit', async (e) => {

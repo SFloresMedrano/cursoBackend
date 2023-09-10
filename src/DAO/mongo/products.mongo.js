@@ -28,8 +28,8 @@ class ProductsModelLogic {
     );
   }
 
-  async findById(pid){
-    const product = await ProductsModel.findById(pid);
+  async getOne(pid){
+    const product = await ProductsModel.findById(pid)
     return product;
   }
 }

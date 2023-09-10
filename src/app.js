@@ -17,6 +17,8 @@ import productsRouter from './routes/productsRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
 import { __dirname, addLogger, connectMongo, logger } from './utils.js';
 import ip from 'ip';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-Ui-Express';
 
 const app = express();
 const PORT = 8080;
@@ -51,6 +53,22 @@ iniPassport();
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+//doc Swagger
+console.log(__dirname)
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Documentacion Proyecto Ecomm",
+      description: "Documentación Ecommerce",
+    },
+  },
+  apis: [`${__dirname.replace(/\/[^/]*$/, '/')}/docs/**/*.yaml`],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 // Rutas API
 app.use('/api/products', productsRouter);
@@ -100,12 +118,12 @@ const httpServer = app.listen(PORT, () => {
 const socketServer = new Server(httpServer);
 
 socketServer.on('connection', (socket) => {
-  logger.info(`New client connected to chat ${ipClient}` )
+  logger.info(`New client connected to chat ${ipClient}`);
   socket.emit('msg_back_to_front', { msg: 'Cliente Conectado' });
 
-  socket.on('Mensaje pusheado a BD',(data)=>{
-    console.log("Mensaje recibido")
-  })  
+  socket.on('Mensaje pusheado a BD', (data) => {
+    socket.broadcast.emit('updateChat');
+  });
 });
 
 export default app;

@@ -26,7 +26,7 @@ class ViewsController {
       products.isAdmin = (products.role === 'admin') ? true : false;
       return res.render('products', products);
     } catch (error) {
-      logger.alert('Couldnt load products')
+      logger.warn('Couldnt load products')
     }
   }
 
