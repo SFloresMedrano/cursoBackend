@@ -16,21 +16,32 @@ class CartService {
     }
   }
 
+  async getAllCarts(req,res) {
+    const carts = await cartModelLogic.getAllCarts(req,res);
+    if (carts) {
+      return carts;
+    } else {
+      throw new Error('Carts not found');
+    }
+  }
+
   async addProduct(cartId, productId) {
     try {
       const cart = await cartModelLogic.getCartById(cartId);
-      const product = await productsModelLogic.findById(productId);
-      if (!cart || ! product) {
+      const product = await productsModelLogic.getOne(productId);
+      if (!cart || !product) {
         throw new Error('Cart or product not found');
       }
-      const productIndex = cart.products.findIndex(item => item.product._id.toString() === productId)
+      const productIndex = cart.products.findIndex(
+        (item) => item.product._id.toString() === productId
+      );
       if (productIndex === -1) {
         cart.products.push({ product: product._id, quantity: 1 });
       } else {
         cart.products[productIndex].quantity =
           cart.products[productIndex].quantity + 1;
       }
-      await cartModelLogic.cartUpdate(cartId,cart.products);
+      await cartModelLogic.cartUpdate(cartId, cart.products);
       return cart;
     } catch (error) {
       throw new Error('Couldnt add product. Please try again later');

@@ -18,11 +18,12 @@ class ProductService {
   }
 
   async get(queryParams) {
+    
     const { limit = 10, page = 1, sort, query } = queryParams;
     const filter = {};
 
     if (query) {
-      filter.$or = [{ category: query }, { availability: query }];
+      filter.$or = [{ category: query }];
     }
 
     const options = {

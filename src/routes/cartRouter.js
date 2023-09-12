@@ -3,7 +3,9 @@ import { cartController } from '../controllers/carts.controller.js';
 export const cartRouter = new Router();
 
 // endpoint para leer los productos mongoose
-cartRouter.get('/',cartController.getCartId)
+cartRouter.get('/id',cartController.getCartId)
+
+cartRouter.get('/',cartController.getAllCarts)
 
 cartRouter.get('/:cid', cartController.getCart);
 

@@ -1,4 +1,3 @@
-const socket = io();
 
 const addProductForm = document.getElementById('form');
 const addProductFormRealtime = document.getElementById('formRealtime');
@@ -38,6 +37,7 @@ function deleteProductSocket(id) {
 }
 
 async function getUser() {
+  const API_URL = 'http://localhost:8080/';
   const url = API_URL + '/user';
   const data = {};
   const options = {
@@ -180,7 +180,8 @@ Array.from(pageLinks).forEach((link) =>
 //Fetching cartId
 
 async function getCartId() {
-  const url = API_URL + 'api/carts';
+  const API_URL = 'http://localhost:8080/';
+  const url = API_URL + 'api/carts/id';
   const data = {};
   const options = {
     method: 'GET',
@@ -204,7 +205,7 @@ async function getCartId() {
 async function putIntoCart(_id) {
   await getCartId();
   cartId = localStorage.getItem('cart-id');
-  const url = API_URL + '/carts/' + cartId + '/product/' + _id;
+  const url = API_URL + 'api/carts/' + cartId + '/product/' + _id;
   const data = {};
   const options = {
     method: 'POST',

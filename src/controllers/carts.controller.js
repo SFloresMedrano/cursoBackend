@@ -40,17 +40,31 @@ class CartController {
       });
     }
   }
+
+  async getAllCarts(req, res) {
+    try {
+      const carts = await cartService.getAllCarts();
+      return res.json(carts);
+    } catch (error) {
+      return res.status(400).json({
+        status: 'Error getting carts',
+        msg: error.message,
+      });
+    }
+  }
+
   async addProductToCart(req, res) {
     try {
-      const cartId = req.session.user.cart;
+      const cartId = req.params.cid;
       const productId = req.params.pid;
-      await cartService.addProduct(cartId, productId);
+      const productAdded = await cartService.addProduct(cartId, productId);
       return res.status(200).json({
         status: 'Success',
         msg: 'Product added',
       });
-    } catch {
+    } catch(error){
       logger.warn("Can't add new product. Please check the cart or product");
+      console.log(error)
       return res.status(400).json({
         status: 'Error',
         msg: "Can't add new product. Please check the cart or product",

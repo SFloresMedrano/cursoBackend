@@ -17,12 +17,12 @@ class ProductsController {
     return res.render('detail', { product: simplifiedProduct });
   }
 
-  async getAllProducts(queryParams) {
+  async getAllProducts(req,res,queryParams) {
     try {
       const response = await productService.get(queryParams);
       return res.status(200).json(response);
     } catch (e) {
-      logger.warn('Couldnt get products')
+      console.log(e)
     }
   }
 

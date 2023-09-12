@@ -5,7 +5,9 @@ import { viewsController } from '../controllers/views.controller.js';
 const productsRouter = express.Router();
 
 // middleware para leer los productos
-productsRouter.get('/', viewsController.getProducts);
+productsRouter.get('/', productsController.getAllProducts);
+
+productsRouter.get('/:pid', productsController.getProduct);
 
 //middleware para crear un producto con mongoose
 

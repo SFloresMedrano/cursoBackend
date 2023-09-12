@@ -1,4 +1,4 @@
-import { CartModel } from "./models/carts.model.js";
+import { CartModel } from './models/carts.model.js';
 
 export class CartModelLogic {
   async createCart() {
@@ -12,12 +12,21 @@ export class CartModelLogic {
 
   async getCartById(cartId) {
     try {
-      const cart = await CartModel.findById({_id:cartId}).populate(
+      const cart = await CartModel.findById({ _id: cartId }).populate(
         'products.product'
       );
       return cart;
     } catch (error) {
       throw 'Couldnt get cart. Please check ID';
+    }
+  }
+  async getAllCarts(req, res) {
+    try {
+      const cart = await CartModel.find().populate('products.product');
+      return cart;
+    } catch (error) {
+      console.log(error);
+      throw 'Couldnt get carts';
     }
   }
 

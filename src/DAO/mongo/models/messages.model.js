@@ -5,20 +5,24 @@ const validateUser = function (user) {
   return re.test(user);
 };
 
-const ChatSchema = new Schema({
-  user: {
-    type: String,
-    trim: true,
-    lowercase: true,
-    required: 'Email address is required',
-    validate: [validateUser, 'Please fill a valid email address'],
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Please fill a valid email address',
-    ],
+const ChatSchema = new Schema(
+  {
+    user: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      required: 'Email address is required',
+      validate: [validateUser, 'Please fill a valid email address'],
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        'Please fill a valid email address',
+      ],
+    },
+    msg: { type: String, required: true, max: 100, versionKey: false },
   },
-  msg: { type: String, required: true, max: 100 },
-  
-});
+  {
+    versionKey: false,
+  }
+);
 
 export const MessagesModel = model('messages', ChatSchema);

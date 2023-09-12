@@ -8,6 +8,8 @@ const schema = new Schema({
   price: { type: Number, required: true },
   stock: { type: Number, required: true },
   category: { type: String, required: true, max: 100 },
+},{
+  versionKey: false // Esto deshabilita la inclusión de __v en los documentos
 });
 
 schema.plugin(mongoosePaginate);

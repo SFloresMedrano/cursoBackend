@@ -12,12 +12,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#components/schemas/Products"
+                  $ref: "#components/schemas/Result"
         "500":
           description: Error del servidor. Falla de query o de conexión con el servidor
   /products/{pid}:
     get:
-      summary: Obtiene un producto de DB
+      summary: Obtiene un producto de DB y renderiza un detalle del mismo
       tags:
         - Product 
       parameters:
@@ -38,35 +38,65 @@ paths:
         description: Falla en la conexión con BD
 components:
   schemas:
-    Products:
+    Result:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Estado de la respuesta
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Producto'
+          description: Datos principales
+        totalPages:
+          type: integer
+          description: Total de páginas disponibles
+        prevPage:
+          type: integer
+          description: Página anterior
+        nextPage:
+          type: integer
+          description: Página siguiente
+        page:
+          type: integer
+          description: Página actual
+        hasPrevPage:
+          type: boolean
+          description: Indica si hay una página anterior
+        hasNextPage:
+          type: boolean
+          description: Indica si hay una página siguiente
+        prevLink:
+          type: string
+          description: Enlace a la página anterior
+        nextLink:
+          type: string
+          description: Enlace a la página siguiente
+    Producto:
       type: object
       properties:
         _id:
-          type: ObjectId
-          description: ID auto generado by mongo
+          type: string
+          description: ID del producto
         title:
-          type: String
-          description: Titulo del producto asignado por admin
+          type: string
+          description: Título del producto
         description:
-          type: String
-          description: Descripcion del producto asignado por admin
+          type: string
+          description: Descripción del producto
         code:
-          type: Number
-          description: Codigo interno del producto asignado por admin
+          type: integer
+          description: Código del producto
         price:
-          type: Number
-          description: Valor del producto asignado por admin
+          type: number
+          description: Precio del producto
         stock:
-          type: Number
-          description: Existencia del producto asignado por admin
+          type: integer
+          description: Cantidad en stock del producto
         category:
-          type: String
-          description: Categoria del producto asignado por admin
-      example:
-        _id: ObjectId("64eaeebeb5766b7749ecef71")
-        title: "Producto 3"
-        description: "Producto 3"
-        code: 120
-        price: 120
-        stock: 50
-        category: "Algo"
+          type: string
+          description: Categoría del producto
+        __v:
+          type: integer
+          description: Versión del documento
