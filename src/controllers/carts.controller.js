@@ -32,7 +32,7 @@ class CartController {
           id: item.product._id,
         };
       });
-      res.render('carts', { cart: simplifiedCart });
+      return res.json({simplifiedCart});
     } catch (error) {
       return res.status(400).json({
         status: 'Error getting cart',
@@ -62,9 +62,9 @@ class CartController {
         status: 'Success',
         msg: 'Product added',
       });
-    } catch(error){
+    } catch (error) {
       logger.warn("Can't add new product. Please check the cart or product");
-      console.log(error)
+      console.log(error);
       return res.status(400).json({
         status: 'Error',
         msg: "Can't add new product. Please check the cart or product",

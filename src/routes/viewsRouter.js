@@ -14,9 +14,9 @@ router.get('/products', viewsController.getProducts);
 
 router.get('/productsform', isAdmin, viewsController.productForm);
 
-router.get('/carts/:cid', cartController.getCart);
+router.get('/carts/:cid', viewsController.getCart);
 
-router.get('/products/:pid', productsController.getProduct);
+router.get('/products/:pid', viewsController.getProduct);
 
 router.get('/user', viewsController.getCurrentUser);
 

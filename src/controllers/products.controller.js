@@ -14,15 +14,15 @@ class ProductsController {
       quantity: product.quantity,
       id: product._id,
     };
-    return res.render('detail', { product: simplifiedProduct });
+    return res.json({simplifiedProduct});
   }
 
-  async getAllProducts(req,res,queryParams) {
+  async getAllProducts(req, res, queryParams) {
     try {
       const response = await productService.get(queryParams);
       return res.status(200).json(response);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
@@ -62,9 +62,7 @@ class ProductsController {
         msg: 'Product deleted',
         data: {},
       });
-    } catch (e) {
-      
-    }
+    } catch (e) {}
   }
 }
 
