@@ -1,12 +1,13 @@
-import bcrypt from 'bcrypt';
 import 'dotenv/config';
-import multer from 'multer';
 
+import multer from 'multer';
+//----------------multer------------
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, __dirname + '/public/uploads');
+    cb(null, __dirname + 'public/uploads');
   },
   filename: (req, file, cb) => {
+    console.log(file)
     cb(null, file.originalname);
   },
 });
@@ -122,6 +123,9 @@ export async function connectMongo() {
 }
 
 //----------------bcrypt------------------------------
+
+import bcrypt from 'bcrypt';
+
 export const createHash = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 export const isValidPassword = (password, hashPassword) =>

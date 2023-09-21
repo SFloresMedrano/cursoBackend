@@ -48,7 +48,7 @@ productsRouter.get('/:pid', async (req, res) => {
 //middleware para agregar un producto nuevo con FS
 /* uploader.single('thumbnail'), */
 /*     const newPicture = req.file.filename;
-    productBody.file = 'http://localhost:8080/public/uploads/' + newPicture; */
+    productBody.file = 'http://localhost:8080/public/uploads' + newPicture; */
 
 productsRouter.post('/', async (req, res) => {
   try {

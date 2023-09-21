@@ -14,7 +14,7 @@ class ProductsController {
       quantity: product.quantity,
       id: product._id,
     };
-    return res.json({simplifiedProduct});
+    return res.json({ simplifiedProduct });
   }
 
   async getAllProducts(req, res, queryParams) {
@@ -27,7 +27,9 @@ class ProductsController {
   }
 
   async addProduct(req, res) {
+    console.log("Add Product",req.body, req.file)
     const productBody = req.body;
+    productBody.thumbnail = 'http://localhost:8080/public/uploads/' + req.file.filename;
     const reqFields = [
       'title',
       'description',
@@ -37,7 +39,7 @@ class ProductsController {
       'category',
     ];
     const checkFields = reqFields.every((prop) => productBody[prop]);
-    if (checkFields) {
+    if (checkFields && productBody.thumbnail) {
       try {
         const productAdded = await productService.createOne({ productBody });
         return res.status(201).json({

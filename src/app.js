@@ -15,7 +15,7 @@ import loggerRouter from './routes/loggerRouter.js';
 import mockRouter from './routes/mockRouter.js';
 import productsRouter from './routes/productsRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
-import { __dirname, addLogger, connectMongo, logger } from './utils.js';
+import { __dirname, addLogger, connectMongo, logger ,uploader} from './utils.js';
 import ip from 'ip';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-Ui-Express';
@@ -24,8 +24,9 @@ const app = express();
 const PORT = 8080;
 const ipClient = ip.address();
 
+
 connectMongo().then(() => {
-  logger.info('Plugged Mongo');
+  logger.info('Plugged Mongo')
 });
 
 app.use(addLogger);
@@ -46,7 +47,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Render carpeta public
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname , 'public')));
 
 //Passport Login
 iniPassport();
@@ -55,7 +56,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //doc Swagger
-console.log(__dirname)
 const swaggerOptions = {
   definition: {
     openapi: "3.0.1",
@@ -71,7 +71,7 @@ const specs = swaggerJSDoc(swaggerOptions);
 app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 // Rutas API
-app.use('/api/products', productsRouter);
+app.use('/api/products',uploader.single('file'), productsRouter);
 app.use('/api/carts', cartRouter);
 app.use('/api/sessions', authRouter);
 app.use('/chat', chatRouter);
