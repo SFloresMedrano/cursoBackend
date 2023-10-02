@@ -1,4 +1,3 @@
-
 const addProductForm = document.getElementById('form');
 const addProductFormRealtime = document.getElementById('formRealtime');
 const productListContainer = document.getElementById('list');
@@ -71,8 +70,8 @@ try {
     const stock = Number(document.getElementById('inputStock').value);
     const category = document.getElementById('inputCategory').value;
 
-    const newProduct = { title, description, code, price, stock, category };
-
+    const newProduct = { title, description, code, price, stock, category};
+    console.log('newProduct',newProduct)
     const url = '/api/products';
     const options = {
       method: 'POST',
@@ -108,7 +107,6 @@ try {
   socket.on('connect', () => {
     console.log('Conexion establecida con el servidor');
   });
-
 
   socket.on('productAdded', (product) => {
     const ul = `

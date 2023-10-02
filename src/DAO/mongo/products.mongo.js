@@ -5,7 +5,7 @@ class ProductsModelLogic {
     await ProductsModel.paginate(filter, options);
   }
 
-  async createProduct(title, description, price, code, stock, category) {
+  async createProduct(title, description, price, code, stock, category, thumbnail) {
     const productCreated = await ProductsModel.create({
       title,
       description,
@@ -13,6 +13,7 @@ class ProductsModelLogic {
       code,
       stock,
       category,
+      thumbnail,
     });
     return productCreated;
   }

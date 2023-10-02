@@ -5,8 +5,8 @@ import errorsNum from '../errors/enum.js';
 import CustomError from '../errors/customError.js';
 
 class ProductService {
-  validate(title, description, price, code, stock, category) {
-    if (!title || !description || !price || !code || !stock || !category) {
+  validate(title, description, price, code, stock, category,thumbnail) {
+    if (!title || !description || !price || !code || !stock || !category || !thumbnail) {
       logger.info('Error creating product');
       CustomError.createError({
         name: 'Error creating products',
@@ -18,7 +18,6 @@ class ProductService {
   }
 
   async get(queryParams) {
-    
     const { limit = 10, page = 1, sort, query } = queryParams;
     const filter = {};
 
@@ -69,14 +68,16 @@ class ProductService {
     const code = product.code;
     const stock = product.stock;
     const category = product.category;
-    this.validate(title, description, price, code, stock, category);
+    const thumbnail = product.thumbnail;
+    this.validate(title, description, price, code, stock, category,thumbnail);
     const productCreated = await productsModelLogic.createProduct(
       title,
       description,
       price,
       code,
       stock,
-      category
+      category,
+      thumbnail,
     );
     if (!productCreated) {
       logger.info('Error creating product in database');

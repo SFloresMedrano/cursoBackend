@@ -1,5 +1,6 @@
 import { productService } from '../services/productsService.js';
 import { logger } from '../utils.js';
+import  fs  from 'fs';
 
 class ProductsController {
   async getProduct(req, res) {
@@ -27,9 +28,9 @@ class ProductsController {
   }
 
   async addProduct(req, res) {
-    console.log("Add Product",req.body, req.file)
     const productBody = req.body;
-    productBody.thumbnail = 'http://localhost:8080/public/uploads/' + req.file.filename;
+    productBody.thumbnail =
+      'http://localhost:8080/public/uploads/' + req.file.filename;
     const reqFields = [
       'title',
       'description',
@@ -37,9 +38,10 @@ class ProductsController {
       'price',
       'stock',
       'category',
+      'thumbnail',
     ];
     const checkFields = reqFields.every((prop) => productBody[prop]);
-    if (checkFields && productBody.thumbnail) {
+    if (checkFields) {
       try {
         const productAdded = await productService.createOne({ productBody });
         return res.status(201).json({
@@ -48,7 +50,10 @@ class ProductsController {
           data: productAdded,
         });
       } catch (e) {
-        logger.warn('Couldnt add product');
+        logger.warn(`Couldn add Product ${e}`);
+        if (fs.existsSync(productBody.thumbnail)) {
+          fs.unlinkSync(productBody.thumbnail);
+        }
       }
     } else {
       logger.warn('Fields are not validated');

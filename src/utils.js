@@ -1,23 +1,24 @@
 import 'dotenv/config';
 
-import multer from 'multer';
 //----------------multer------------
+import multer from 'multer';
+import path from 'path';
+import { fileURLToPath } from 'url';
+export const __filename = fileURLToPath(import.meta.url);
+export const __dirname = path.dirname(__filename);
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, __dirname + 'public/uploads');
+    cb(null, path.join(__dirname, 'public/uploads'));
   },
   filename: (req, file, cb) => {
-    console.log(file)
-    cb(null, file.originalname);
+
+    cb(null, Date.now()+file.originalname);
   },
 });
 
 export const uploader = multer({ storage });
 
-import path from 'path';
-import { fileURLToPath } from 'url';
-export const __filename = fileURLToPath(import.meta.url);
-export const __dirname = path.dirname(__filename);
 
 //--------------------logger----------------
 import winston from 'winston';

@@ -2,8 +2,8 @@
 <a href="/products">Productos</a>
 
 <div>
-    <form action="/api/products" method="POST" enctype="multipart/form-data" id="form">
-        <label for="title">
+<form action="/api/products/" method="POST" enctype="multipart/form-data">
+<label for="title">
             Title :<input type="text" name="title" id="inputName" >
         </label>
         <label for="description">
@@ -21,10 +21,11 @@
         <label for="category">
             Category :<input type="text" name="category" id="inputCategory">
         </label>
-        <input type="file" name='file' accept="image/*" >
-        <input type="submit">
-    </form>
-</div> 
+    <input type="file" name="file" accept="image/*">
+    <input type="submit" value="Upload">
+</form>
+
+</div>
 
 <div id="list">
   {{#each products}}
