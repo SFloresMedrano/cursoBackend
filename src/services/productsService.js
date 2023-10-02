@@ -79,6 +79,7 @@ class ProductService {
       category,
       thumbnail,
     );
+    
     if (!productCreated) {
       logger.info('Error creating product in database');
       CustomError.createError({

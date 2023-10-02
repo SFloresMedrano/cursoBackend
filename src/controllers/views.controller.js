@@ -4,6 +4,7 @@ import { productService } from '../services/productsService.js';
 import { viewsService } from '../services/viewsService.js';
 import { logger } from '../utils.js';
 import { cartService } from '../services/cartService.js';
+import { productsController } from './products.controller.js';
 
 class ViewsController {
   async redirect(req, res) {
@@ -46,6 +47,13 @@ class ViewsController {
     }
   };
 
+  async addProduct(req, res) {
+    try {
+      const response = await productsController.addProduct;
+      console.log(response)
+    } catch (error) {}
+  }
+
   async productForm(req, res) {
     try {
       const { limit = 10, page = 1, sort, query } = req.query;
@@ -76,7 +84,7 @@ class ViewsController {
     return res.render('detail', { product: simplifiedProduct });
   }
 
-  async getCart(req,res){
+  async getCart(req, res) {
     try {
       const cid = req.params.cid;
       const cart = await cartService.getCart(cid);

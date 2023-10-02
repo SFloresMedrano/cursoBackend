@@ -15,6 +15,6 @@ productsRouter.post('/', uploader.single('file'),productsController.addProduct)
 
 //middleware para borrar un elemento en MongoDB
 
-/* productsRouter.delete('/:pid', productsController.deleteProduct); */
+productsRouter.delete('/:pid', productsController.deleteProduct);
 
 export default productsRouter;

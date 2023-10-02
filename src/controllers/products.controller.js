@@ -1,6 +1,8 @@
+import Swal from 'sweetalert2';
 import { productService } from '../services/productsService.js';
 import { logger } from '../utils.js';
-import  fs  from 'fs';
+import fs from 'fs';
+import { __dirname } from '../utils.js';
 
 class ProductsController {
   async getProduct(req, res) {
@@ -44,16 +46,20 @@ class ProductsController {
     if (checkFields) {
       try {
         const productAdded = await productService.createOne({ productBody });
-        return res.status(201).json({
+        if (productAdded) {
+          logger.info(`Product added ${productAdded._id}`);
+        }
+        return res.status(200).json({
           status: 'Success',
-          msg: 'Product added',
-          data: productAdded,
+          msg: 'Product Added',
+          data: { productAdded },
         });
       } catch (e) {
-        logger.warn(`Couldn add Product ${e}`);
-        if (fs.existsSync(productBody.thumbnail)) {
-          fs.unlinkSync(productBody.thumbnail);
+        logger.warn(`Couldnt add Product ${e}`);
+        if (fs.existsSync(__dirname + '/public/uploads/' + req.file.filename)) {
+          fs.unlinkSync(__dirname + '/public/uploads/' + req.file.filename);
         }
+        return res.status(400).json(e);
       }
     } else {
       logger.warn('Fields are not validated');

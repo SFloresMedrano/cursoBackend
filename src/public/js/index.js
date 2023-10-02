@@ -92,7 +92,7 @@ try {
       });
 
     addProductForm.reset();
-    window.location.reload();
+
   });
 } catch (error) {}
 
