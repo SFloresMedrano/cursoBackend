@@ -4,7 +4,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "./src/app.js",
+    "start": "nodemon ./src/app.js",
     "dev": "nodemon -e yaml,js ./src/app.js"
   },
   "repository": {
@@ -41,7 +41,7 @@
     "socket.io": "^4.6.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "sweetalert2": "^11.7.12",
+    "sweetalert2": "^11.7.31",
     "twilio": "^4.16.0",
     "winston": "^3.10.0"
   },

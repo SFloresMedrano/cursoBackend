@@ -16,8 +16,8 @@ class CartService {
     }
   }
 
-  async getAllCarts(req,res) {
-    const carts = await cartModelLogic.getAllCarts(req,res);
+  async getAllCarts(req, res) {
+    const carts = await cartModelLogic.getAllCarts(req, res);
     if (carts) {
       return carts;
     } else {
@@ -29,6 +29,7 @@ class CartService {
     try {
       const cart = await cartModelLogic.getCartById(cartId);
       const product = await productsModelLogic.getOne(productId);
+      console.log(cart, product);
       if (!cart || !product) {
         throw new Error('Cart or product not found');
       }
@@ -41,6 +42,7 @@ class CartService {
         cart.products[productIndex].quantity =
           cart.products[productIndex].quantity + 1;
       }
+      console.log(productIndex);
       await cartModelLogic.cartUpdate(cartId, cart.products);
       return cart;
     } catch (error) {
@@ -76,15 +78,15 @@ class CartService {
 
   async removeProduct(cartId, productId) {
     try {
-      const cart = await cartModelLogic.findById(cartId);
+      const cart = await cartModelLogic.getCartById(cartId);
       const prodIndex = cart.products.findIndex(
-        (p) => p.product.toString() === productId
+        (p) => p.product._id.toString() === productId
       );
       if (prodIndex === -1) {
         throw new Error('Product not found in cart');
       }
       cart.products.splice(prodIndex, 1);
-      await cartModelLogic.save(cart);
+      await cartModelLogic.cartUpdate(cart._id,cart.products);
       return cart;
     } catch (error) {
       throw new Error('Couldnt remove product from cart.');

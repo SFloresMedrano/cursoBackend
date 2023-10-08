@@ -31,8 +31,7 @@ class ProductsController {
 
   async addProduct(req, res) {
     const productBody = req.body;
-    productBody.thumbnail =
-      'http://localhost:8080/public/uploads/' + req.file.filename;
+    productBody.thumbnail ='http://localhost:8080/public/uploads/' + req.file.filename;
     const reqFields = [
       'title',
       'description',

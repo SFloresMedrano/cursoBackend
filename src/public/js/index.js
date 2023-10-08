@@ -62,6 +62,11 @@ try {
   addProductForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    /*     const formData = new FormData();
+      const fileInput = document.querySelector('input[name="file"]');
+      const inputName = document.querySelector('input[name="title"]');
+      formData.append('myFile', fileInput.files[0].name);
+      console.log(...formData) */
 
     const title = document.getElementById('inputName').value;
     const description = document.getElementById('inputDescription').value;
@@ -70,8 +75,8 @@ try {
     const stock = Number(document.getElementById('inputStock').value);
     const category = document.getElementById('inputCategory').value;
 
-    const newProduct = { title, description, code, price, stock, category};
-    console.log('newProduct',newProduct)
+    const newProduct = { title, description, code, price, stock, category };
+    console.log('newProduct', newProduct);
     const url = '/api/products';
     const options = {
       method: 'POST',
@@ -81,18 +86,43 @@ try {
       body: JSON.stringify(newProduct),
     };
 
-    await fetch(url, options)
-      .then((response) => response.json())
-      .then((data) => {
+    try {
+      /*       const response = await fetch(url, options);
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Response: Product created fetch', data);
+          })
+          .catch((error) => {
+            console.error('Error: Couldnt create product from fetch', error);
+            alert(JSON.stringify(error));
+          }); */
+
+      if (response.ok) {
+        const data = await response.json();
         console.log('Response: Product created fetch', data);
-      })
-      .catch((error) => {
-        console.error('Error: Couldnt create product from fetch', error);
-        alert(JSON.stringify(error));
+
+        // Display SweetAlert success notification
+        Swal.fire({
+          title: 'Success!',
+          text: 'Product added successfully!',
+          icon: 'success',
+        });
+        addProductForm.reset();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong dentro de if!',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
       });
-
-    addProductForm.reset();
-
+    }
   });
 } catch (error) {}
 
@@ -227,7 +257,7 @@ async function putIntoCart(_id) {
 async function clearCart() {
   await getCartId();
   cartId = localStorage.getItem('cart-id');
-  const url = API_URL + '/carts/' + cartId;
+  const url = API_URL + 'api/carts/' + cartId;
   const data = {};
   const options = {
     method: 'PUT',
@@ -245,5 +275,39 @@ async function clearCart() {
     .catch((error) => {
       console.error('Error: Couldnt empty cart');
       alert(JSON.stringify(error));
+    });
+}
+
+async function deleteProductFromCart(_id) {
+  await getCartId();
+  cartId = localStorage.getItem('cart-id');
+  const url = API_URL + 'api/carts/' + cartId + '/product/' + _id;
+  const data = {};
+  const options = {
+    method: 'DELETE',
+  };
+
+  fetch(url, options)
+    .then((response) => response.json())
+    .then((res) => {
+      console.log(res);
+      Swal.fire({
+        icon: 'success',
+        title: 'Product removed',
+        text: 'The product was removed from the cart',
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      window.location.reload();
+    })
+    .catch((error) => {
+      console.error('Error: Couldnt delete product from cart');
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'The product was NOT removed from the cart. Please let us know',
+        showConfirmButton: false,
+        timer: 3000,
+      });
     });
 }

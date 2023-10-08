@@ -61,6 +61,7 @@ class CartController {
       return res.status(200).json({
         status: 'Success',
         msg: 'Product added',
+        data: {productAdded},
       });
     } catch (error) {
       logger.warn("Can't add new product. Please check the cart or product");
