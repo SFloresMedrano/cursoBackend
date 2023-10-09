@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "type": "module",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "start": "node ./src/app.js --mode PRODUCTION",
     "dev": "nodemon -e yaml,js ./src/app.js --mode DEVELOPMENT",
