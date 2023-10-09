@@ -18,7 +18,7 @@ import viewsRouter from './routes/viewsRouter.js';
 import { __dirname, addLogger, connectMongo, logger ,uploader} from './utils.js';
 import ip from 'ip';
 import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUiExpress from 'swagger-Ui-Express';
+/* import swaggerUiExpress from 'swagger-Ui-Express'; */
 
 const app = express();
 const PORT = 8080;
