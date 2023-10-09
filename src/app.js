@@ -1,10 +1,10 @@
+import express from 'express';
+import path from 'path';
 import MongoStore from 'connect-mongo';
 import 'dotenv/config';
-import express from 'express';
 import exphbs from 'express-handlebars';
 import session from 'express-session';
 import passport from 'passport';
-import path from 'path';
 import { Server } from 'socket.io';
 import { iniPassport } from './config/passport.config.js';
 import errorHandler from './middlewares/error.js';
@@ -18,7 +18,7 @@ import viewsRouter from './routes/viewsRouter.js';
 import { __dirname, addLogger, connectMongo, logger ,uploader} from './utils.js';
 import ip from 'ip';
 import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUiExpress from 'swagger-Ui-Express';
+import swaggerUiExpress from 'swagger-ui-express';
 
 const app = express();
 const PORT = 8080;

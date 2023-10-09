@@ -7,9 +7,9 @@
     "node": "16.x"
   },
   "scripts": {
-    "start": "node ./src/app.js --mode PRODUCTION",
-    "dev": "nodemon -e yaml,js ./src/app.js --mode DEVELOPMENT",
-    "qa": "node ./src/app.js --mode QA"
+    "start": "node ./src/app.js",
+    "dev": "nodemon -e yaml,js ./src/app.js",
+    "qa": "node ./src/app.js"
   },
   "repository": {
     "type": "git",
