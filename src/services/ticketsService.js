@@ -5,6 +5,11 @@ class TicketsService {
     const ticketCreate = ticketsModelLogic.createTicket(ticket);
     return ticketCreate;
   }
+
+  async getTickets(purchaser) {
+    const tickets = ticketsModelLogic.getTickets(purchaser);
+    return tickets;
+  }
 }
 
 export const ticketService = new TicketsService();

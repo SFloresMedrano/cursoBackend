@@ -43,6 +43,7 @@
     "swagger-ui-express": "^5.0.0",
     "sweetalert2": "^11.7.31",
     "twilio": "^4.16.0",
+    "uuid": "^9.0.1",
     "winston": "^3.10.0"
   },
   "description": "",

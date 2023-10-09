@@ -131,6 +131,7 @@ class ProductService {
 
   async getOne(pid) {
     const product = await productsModelLogic.getOne(pid);
+    console.log(product, 'producto recuperado')
     if (!product) {
       logger.info('Error retrieving product in database');
       CustomError.createError({

@@ -311,3 +311,27 @@ async function deleteProductFromCart(_id) {
       });
     });
 }
+
+async function createTicket() {
+  await getCartId();
+  cartId = localStorage.getItem('cart-id');
+  const url = API_URL  + cartId + '/purchase/'
+  const data = {};
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  };
+
+  fetch(url, options)
+    .then((response) => response.json())
+    .then((res) => {
+      console.log(res, 'Ticket created');
+    })
+    .catch((error) => {
+      console.error('Error: Couldnt create ticket');
+
+    });
+}

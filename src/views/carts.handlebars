@@ -1,4 +1,4 @@
-<h1>Cart</h1>
+<h1>Cart {{cart._id}}</h1>
 
 Listado de productos
 {{#if cart.length}}
@@ -17,7 +17,7 @@ Listado de productos
 <a href="/products">Go to Products</a>
 
 <button onclick="clearCart()">Clear cart</button>
-<button href="/{{_id}}/purchase">Wrap up Cart</button>
+<button onclick="createTicket()" href="/{{cart._id}}/purchase">Wrap up Cart</a>
 
 {{else}}
 <h2>El carrito no tiene productos</h2>

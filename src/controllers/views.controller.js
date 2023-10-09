@@ -4,6 +4,10 @@ import { productService } from '../services/productsService.js';
 import { viewsService } from '../services/viewsService.js';
 import { logger } from '../utils.js';
 import { cartService } from '../services/cartService.js';
+import { TicketsModel } from '../DAO/mongo/models/tickets.model.js';
+import { cartController } from './carts.controller.js';
+import { v4 } from 'uuid';
+import { ticketService } from '../services/ticketsService.js';
 
 class ViewsController {
   async redirect(req, res) {
@@ -91,6 +95,7 @@ class ViewsController {
           id: item.product._id,
         };
       });
+      simplifiedCart._id = cid;
       res.render('carts', { cart: simplifiedCart });
     } catch (error) {
       return res.status(400).json({
@@ -99,6 +104,14 @@ class ViewsController {
       });
     }
   }
+  async getTicket(req, res) {
+    const purchaser = req.session.user.email;
+    const tickets = await ticketService.getTickets(purchaser);
+    console.log(tickets,'tickets')
+    return res.render('tickets', tickets);
+  }
 }
+
+
 
 export const viewsController = new ViewsController();

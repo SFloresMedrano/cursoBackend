@@ -1,15 +1,31 @@
 import { Schema, model } from 'mongoose';
 
-const schema = new Schema(
+const ticketCollection = 'tickets';
+
+const TicketSchema = new Schema(
   {
-    code: { type: String, required: true, max: 100 },
-    purchase_datetime: { type: String, required: true, max: 100 },
+    code: { type: String, required: true, unique: true },
+    datetime: { type: Date, default: Date.now(), required: true },
     amount: { type: Number, required: true },
-    email: { type: String, required: true },
+    purchaser: { type: String, required: true},
+    products: [
+      {
+        id: { type: Schema.Types.ObjectId, ref: 'products' },
+        quantity: { type: Number, required: true, default: 0 },
+        _id: false,
+      },
+    ],
   },
-  {
-    versionKey: false,
-  }
+  { versionKey: false }
 );
 
-export const TicketsModel = model('tickets', schema);
+TicketSchema.pre('find', function () {
+  this.populate('products.id');
+});
+
+TicketSchema.pre('findOne', function () {
+  this.populate('products.id');
+});
+
+
+export const TicketsModel = model('tickets', TicketSchema);
