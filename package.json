@@ -4,8 +4,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon ./src/app.js",
-    "dev": "nodemon -e yaml,js ./src/app.js"
+    "start": "node ./src/app.js --mode PRODUCTION",
+    "dev": "nodemon -e yaml,js ./src/app.js --mode DEVELOPMENT",
+    "qa": "node ./src/app.js --mode QA"
   },
   "repository": {
     "type": "git",
