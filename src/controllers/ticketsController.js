@@ -1,42 +1,34 @@
+import { v4 } from 'uuid';
 import { cartService } from '../services/cartService.js';
 import { productService } from '../services/productsService.js';
-import { v4 } from 'uuid';
+import { ticketService } from '../services/ticketsService.js';
+import { logger } from '../utils.js';
 
 class TicketController {
-  async checkStock(products) {
+  async createTicket(req, res) {
+    const cartId = req.session.user.cart;
+    const cart = await cartService.getCart(cartId);
+    const products = cart.products;
+
     let productsInStock = [];
     let productsNotStock = [];
+    
     const productPromises = products.map(async (item) => {
       const pid = item.product._id.toString();
-      const productStock = await productService.getOne(pid);
-      console.log(productStock, 'productStock');
-
-      if (productStock.quantity >= item.quantity) {
-        console.log(item, 'item');
+      const productStock = await productService.getOne(pid);;
+      if (productStock.stock >= item.quantity) {
         productsInStock.push(item);
-        productStock.quantity -= item.quantity;
+        productStock.stock -= item.quantity;
         await productStock.save();
       } else {
         productsNotStock.push(item);
       }
     });
 
-    
-    await Promise.all(productPromises);
-
-    return { productsPurchase: productsInStock }, { productsNotStock };
-  }
-
-  async createTicket(req, res) {
-    const cartId = req.session.user.cart;
-    const cart = await cartService.getCart(cartId);
-    const products = cart.products;
-    const { productsPurchase, productsNotStock } =
-      ticketsController.checkStock(products);
-    console.log(productsPurchase, productsNotStock);
+    await Promise.all(productPromises); 
     const ticket = {};
     const code = v4();
-    const amount = productsPurchase.map(
+    const amount = productsInStock.map(
       (item) => item.product.price * item.quantity
     );
     ticket.code = code;
@@ -47,9 +39,16 @@ class TicketController {
       0
     );
     ticket.purchaser = req.session.user.email;
-    console.log(ticket);
-    /* const response = await ticketService.createTicket(ticket); */
-    return ticket;
+    ticket.products = productsInStock
+    console.log(ticket.products)
+    const response = await ticketService.createTicket(ticket);
+    if(response){
+      logger.info(`Ticket created at ${ticket.datetime} - Purchaser: ${ticket.purchaser}`)
+    }else{
+      logger.fatal(`Couldnt create Ticket ${ticket.datetime}- Purchaser: ${ticket.purchaser}`)
+    }
+      
+    return res.redirect(`/${cartId}/purchase`);
   }
 }
 

@@ -107,7 +107,6 @@ class ViewsController {
   async getTicket(req, res) {
     const purchaser = req.session.user.email;
     const tickets = await ticketService.getTickets(purchaser);
-    console.log(tickets,'tickets')
     return res.render('tickets', tickets);
   }
 }
