@@ -322,16 +322,22 @@ async function createTicket() {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),
   };
 
   fetch(url, options)
     .then((response) => response.json())
     .then((res) => {
-      console.log(res, 'Ticket created');
+      if (res.status == 200){
+        window.location.href =  `${url}`
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'No stock',
+          text: 'It seems that there is no stock. Please check the new stock',
+        });
+      }
     })
     .catch((error) => {
       console.error('Error: Couldnt create ticket');
-
     });
 }

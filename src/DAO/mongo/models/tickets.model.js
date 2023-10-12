@@ -15,6 +15,13 @@ const TicketSchema = new Schema(
         _id: false,
       },
     ],
+    productsNotPurchased: [
+      {
+        product: { type: Schema.Types.ObjectId, ref: 'products' },
+        quantity: { type: Number, required: true, default: 0 },
+        _id: false,
+      },
+    ],
   },
   { versionKey: false }
 );

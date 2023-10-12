@@ -106,11 +106,12 @@ class ViewsController {
   }
   async getTicket(req, res) {
     const purchaser = req.session.user.email;
-    const tickets = await ticketService.getTickets(purchaser);
+    const tickets = {};
+    tickets.ticket = await ticketService.getTickets(purchaser);
+    tickets.first_name = req.session.user.first_name;
+    tickets.cart = req.session.user.cart;
     return res.render('tickets', tickets);
   }
 }
-
-
 
 export const viewsController = new ViewsController();

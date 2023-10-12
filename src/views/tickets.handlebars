@@ -1,1 +1,23 @@
-<h1>Ticket</h1>
+<h1>Tickets</h1>
+
+<h1>Bienvenido {{first_name}}, estas son tus compras!
+</h1>
+<a href="/products">Go to Products</a>
+{{#if first_name}}<a href="/api/sessions/logout">Cerrar sesión</a>
+<a href="/carts/{{cart}}">Go to Cart</a>{{/if}}
+
+<h1>Tickets</h1>
+{{#each ticket}}
+{{!--     {{#if ticket.products.length}} --}}
+    <div>
+        <h4>Codigo de compra: {{this.code}}</h2>
+        <p>Fecha de Compra: {{this.datetime}}</p>
+        <p>Products: </p>
+            {{#each products}}
+                <p>Product ID: {{this.product}}</p>
+                <p>Quantity: {{this.quantity}}</p>
+            {{/each}}
+        <p>Monto total: ARS {{this.amount}}</p>        
+    </div>
+{{!--     {{/if}} --}}
+{{/each}}

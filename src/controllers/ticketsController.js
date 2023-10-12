@@ -3,6 +3,7 @@ import { cartService } from '../services/cartService.js';
 import { productService } from '../services/productsService.js';
 import { ticketService } from '../services/ticketsService.js';
 import { logger } from '../utils.js';
+import { cartController } from './carts.controller.js';
 
 class TicketController {
   async createTicket(req, res) {
@@ -12,10 +13,10 @@ class TicketController {
 
     let productsInStock = [];
     let productsNotStock = [];
-    
+
     const productPromises = products.map(async (item) => {
       const pid = item.product._id.toString();
-      const productStock = await productService.getOne(pid);;
+      const productStock = await productService.getOne(pid);
       if (productStock.stock >= item.quantity) {
         productsInStock.push(item);
         productStock.stock -= item.quantity;
@@ -25,7 +26,7 @@ class TicketController {
       }
     });
 
-    await Promise.all(productPromises); 
+    await Promise.all(productPromises);
     const ticket = {};
     const code = v4();
     const amount = productsInStock.map(
@@ -39,16 +40,37 @@ class TicketController {
       0
     );
     ticket.purchaser = req.session.user.email;
-    ticket.products = productsInStock
-    console.log(ticket.products)
-    const response = await ticketService.createTicket(ticket);
-    if(response){
-      logger.info(`Ticket created at ${ticket.datetime} - Purchaser: ${ticket.purchaser}`)
-    }else{
-      logger.fatal(`Couldnt create Ticket ${ticket.datetime}- Purchaser: ${ticket.purchaser}`)
+    ticket.products = productsInStock;
+    ticket.productsNotPurchased = productsNotStock;
+    if (ticket.products.length == 0) {
+      return res.status(400).json({
+        status: 'No stock available',
+        data: {},
+        msg: 'No stock available',
+      });
+    } else {
     }
-      
-    return res.redirect(`/${cartId}/purchase`);
+    const response = await ticketService.createTicket(ticket);
+    if (response) {
+      logger.info(
+        `Ticket created at ${ticket.datetime} - Purchaser: ${ticket.purchaser}`
+      );
+      cartService.clearCart(cartId);
+      console.log(ticket.productsNotPurchased);
+      return res.status(200).json({
+        status: 'Ticket created',
+        data: { response },
+      });
+    } else {
+      logger.fatal(
+        `Couldnt create Ticket ${ticket.datetime}- Purchaser: ${ticket.purchaser}`
+      );
+      return res.status(400).json({
+        status: 'Error creating Ticket created',
+        data: {},
+        msg: 'Ticket not created',
+      });
+    }
   }
 }
 

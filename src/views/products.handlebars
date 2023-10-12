@@ -3,17 +3,18 @@
 {{#if first_name}}<a href="/api/sessions/logout">Cerrar sesión</a>{{else}}<a href="/api/sessions">Iniciar sesión</a>{{/if}}
 
 <h1>Products Paginated</h1>
-{{#if isAdmin}}<a href="/productsform">Go to Products Manager</a>{{else}}<a href="/carts/{{this.cart}}">Go to Cart</a>{{/if}}
+{{#if isAdmin}}<a href="/productsform">Go to Products Manager</a>{{else}}
+<a href="/carts/{{this.cart}}">Go to Cart</a>{{/if}}
 
 {{#each products}}
     <div>
-        <h2>{{this.title}}</h2>
-        <p>{{this._id}}</p>
-        <p>{{this.description}}</p>
+        <h2>Titulo: {{this.title}}</h2>
+        <p>ID: {{this._id}}</p>
+        <p>Descripcion: {{this.description}}</p>
         <p>Price: {{this.price}}</p>
-        <p>{{this.code}}</p>
-        <p>{{this.stock}}</p>
-        <p>{{this.category}}</p>
+        <p>Codigo: {{this.code}}</p>
+        <p>Stock: {{this.stock}}</p>
+        <p>Categoria: {{this.category}}</p>
 
         <a href="/products/{{this._id}}">View details</a>
         {{#if ../isAdmin}}<button onclick="putIntoCart('{{this._id}}')" disabled>Add to cart</button>
