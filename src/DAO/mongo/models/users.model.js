@@ -8,6 +8,7 @@ const schema = new Schema({
   password: { type: String, required: true, max: 100 },
   role: { type: String, required: true, default: 'user' },
   cart: { type: String},
+  lastconnection : {type: Number},
 });
 
 export const UserSchema = model('users', schema);

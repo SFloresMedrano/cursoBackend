@@ -327,9 +327,11 @@ async function createTicket() {
   fetch(url, options)
     .then((response) => response.json())
     .then((res) => {
-      if (res.status == 200){
+      if (res.status === 'Ticket created'){
+        console.log(res.status, 'res.status')
         window.location.href =  `${url}`
       }else{
+        console.log(res.status, 'res.status')
         Swal.fire({
           icon: 'error',
           title: 'No stock',

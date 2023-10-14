@@ -163,3 +163,25 @@ export const enviarCorreo = (address, name) => {
           `,
   });
 };
+
+export const enviarTicket = (ticket) => {
+  const products = ticket.products
+  const productParagraphs = products.map(element => `<p>Product: ${element.product.title} Cantidad: ${element.quantity}</p>`).join('');
+  const result = transport.sendMail({
+    from: process.env.GOOGLE_EMAIL,
+    to: ticket.purchaser,
+    subject: 'CODER Ecommerce - Tu compra',
+    html: `
+              <div>
+                  <h1>Gracias por tu compra!</h1>
+                  <p>Estos son tus productos:!!</p>
+                  ${productParagraphs}
+                  <p>El total de la compra es de ${ticket.amount}</p>
+              </div>
+              <div>
+              <h4>Te saluda el equipo de CODER Ecomm</h4>
+              </div>
+
+          `,
+  });
+};

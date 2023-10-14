@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 import { cartService } from '../services/cartService.js';
 import { productService } from '../services/productsService.js';
 import { ticketService } from '../services/ticketsService.js';
-import { logger } from '../utils.js';
+import { enviarTicket, logger } from '../utils.js';
 import { cartController } from './carts.controller.js';
 
 class TicketController {
@@ -46,7 +46,7 @@ class TicketController {
       return res.status(400).json({
         status: 'No stock available',
         data: {},
-        msg: 'No stock available',
+        msg: 'No stock',
       });
     } else {
     }
@@ -56,10 +56,11 @@ class TicketController {
         `Ticket created at ${ticket.datetime} - Purchaser: ${ticket.purchaser}`
       );
       cartService.clearCart(cartId);
-      console.log(ticket.productsNotPurchased);
+      enviarTicket(ticket);
       return res.status(200).json({
         status: 'Ticket created',
         data: { response },
+        msg: 'Ticket created',
       });
     } else {
       logger.fatal(

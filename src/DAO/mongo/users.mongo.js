@@ -1,8 +1,9 @@
 import { UserSchema } from './models/users.model.js';
+import { CartModel } from './models/carts.model.js';
 
 class UserModel {
   async findOne(username) {
-    return await UserSchema.findOne({email:username});
+    return await UserSchema.findOne({ email: username });
   }
 
   async create(user) {
@@ -11,6 +12,11 @@ class UserModel {
 
   async findById(id) {
     return await UserSchema.findById(id);
+  }
+
+  async getUsers() {
+    const users = await UserSchema.find();
+    return users;
   }
 }
 

@@ -1,5 +1,6 @@
 import { logger } from '../utils.js';
 import { enviarCorreo } from '../utils.js';
+import { usersController } from './usersController.js';
 
 class AuthController {
   async callback(req, res) {
@@ -13,6 +14,8 @@ class AuthController {
   }
 
   async logout(req, res) {
+    const username = req.session.user.email;
+    usersController.updateUser(username);
     req.session.destroy((err) => {
       if (err) {
         return res.status(500).render('error', {

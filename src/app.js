@@ -19,6 +19,7 @@ import { __dirname, addLogger, connectMongo, logger ,uploader} from './utils.js'
 import ip from 'ip';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
+import { usersRouter } from './routes/usersRouter.js';
 
 const app = express();
 const PORT = 8080;
@@ -73,6 +74,7 @@ app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 // Rutas API
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/sessions', authRouter);
 app.use('/chat', chatRouter);
 app.use('/current', viewsRouter);
