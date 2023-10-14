@@ -185,3 +185,24 @@ export const enviarTicket = (ticket) => {
           `,
   });
 };
+
+export const enviarCuentaELiminada = (address) => {
+  const result = transport.sendMail({
+    from: process.env.GOOGLE_EMAIL,
+    to: address,
+    subject: 'CODER Ecommerce - Cuenta eliminada',
+    html: `
+              <div>
+                  <h1>Hola!</h1>
+                  <p>Te informamos que tu cuenta ha sido eliminada por inactividad.</p>
+                  <p>Si quieres volver a utilizar nuestros servicios deberás volver a crear una cuenta.</p>
+                  <p>Lo sentimos mucho.</p>
+                  <p>Si crees que fue un error, por escribinos a:</p>
+                  <h4>nosimportatuopinion@coderhouse.com</h4>
+              </div>
+              <div>
+              <h4>Te saluda el equipo de CODER Ecomm</h4>
+              </div>
+          `,
+  });
+};

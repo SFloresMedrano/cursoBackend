@@ -6,4 +6,4 @@ export const usersRouter = new Router();
 // endpoint para leer los productos mongoose
 usersRouter.get('/', usersController.getUsers);
 
-usersRouter.delete('/', isAdmin , usersController.deleteUsers);
+usersRouter.get('/deleteUsers', isAdmin , usersController.deleteUsers);

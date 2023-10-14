@@ -18,6 +18,10 @@ class UserModel {
     const users = await UserSchema.find();
     return users;
   }
+
+  async findAndDelete(email){
+    const userDeleted = await UserSchema.findOneAndDelete({email})
+  }
 }
 
 export const userModelLogic = new UserModel();
