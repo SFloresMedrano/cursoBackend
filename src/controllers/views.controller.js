@@ -46,6 +46,7 @@ class ViewsController {
     }
     if (!req.session.user.first_name == '') {
       const user = new UserDTO(req.session.user);
+      
       return res.status(200).json({ user });
     }
   };
