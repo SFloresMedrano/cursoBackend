@@ -214,7 +214,6 @@ async function getCartId() {
   const options = {
     method: 'GET',
     headers: {
-      'Access-Control-Allow-Origin':'https://coder-ecomm-prod.onrender.com',
       'Content-Type': 'application/json',
     },
   };

@@ -128,6 +128,7 @@ class CartController {
 
   async getCartId(req, res) {
     try {
+      res.setHeader('Access-Control-Allow-Origin', 'https://coder-ecomm-prod.onrender.com');
       const cartId = req.session.user.cart;
       return res.json({ cartId });
     } catch (error) {
