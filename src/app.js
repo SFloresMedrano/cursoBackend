@@ -22,7 +22,7 @@ import swaggerUiExpress from 'swagger-ui-express';
 import { usersRouter } from './routes/usersRouter.js';
 
 const app = express();
-const PORT = 8080;
+const PORT = porcess.env.PORT;
 const ipClient = ip.address();
 
 
