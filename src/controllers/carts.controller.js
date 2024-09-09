@@ -55,10 +55,12 @@ class CartController {
 
   async addProductToCart(req, res) {
     try {
-      res.setHeader('Access-Control-Allow-Origin', 'https://coder-ecomm-prod.onrender.com'); 
-      res.send(data);
+/*       res.setHeader('Access-Control-Allow-Origin', 'https://coder-ecomm-prod.onrender.com'); 
+      res.send(data); */
+
       const cartId = req.params.cid;
       const productId = req.params.pid;
+      console.log(cartId,productId);
       const productAdded = await cartService.addProduct(cartId, productId);
       return res.status(200).json({
         status: 'Success',
