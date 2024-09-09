@@ -57,7 +57,6 @@ class CartController {
     try {
 /*       res.setHeader('Access-Control-Allow-Origin', 'https://coder-ecomm-prod.onrender.com'); 
       res.send(data); */
-
       const cartId = req.params.cid;
       const productId = req.params.pid;
       console.log(cartId,productId);
